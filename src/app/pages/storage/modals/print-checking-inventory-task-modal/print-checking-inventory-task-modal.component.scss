@@ -1,0 +1,108 @@
+.pop-content {
+    width: 800px;
+    height: auto;
+    background: #fff;
+    color: #000;
+    font-size: 13px;
+    margin: -5px;
+    margin-left: -200px;
+    .modal-header,
+    .modal-footer {
+        height: 50px;
+        line-height: 50px;
+    }
+    .modal-header {
+        border-bottom: 1px solid rgba(0, 0, 0, .2) !important;
+        font-size: 20px;
+        font-weight: bold;
+    }
+    .modal-footer {
+        border-top: 1px solid rgba(0, 0, 0, .2);
+    }
+    .modal-body {
+        .print-body {
+            max-height: 700px;
+            overflow-x: hidden;
+        }
+    }
+}
+
+.task-wrap {
+    border: 1px solid #000;
+    width: 100%;
+    height: auto;
+    .task-header {
+        border: 1px solid #000;
+        width: 100%;
+        h3 {
+            display: block;
+            width: 100%;
+            text-align: center;
+            line-height: 30px;
+        }
+        .header-center,
+        .header-bottom {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-around;
+        }
+    }
+    .task-body {
+        width: 100%;
+        height: auto;
+        .body-header,
+        .body-bottom {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            border: 1px solid #000;
+            text-align: center;
+        }
+        .location-code,
+        .sku,
+        .sku-name,
+        .number,
+        .qrcode-wrap {
+            line-height: 50px;
+        }
+        .location-code {
+            width: 100px;
+            border-right: 2px solid #000;
+        }
+        .sku {
+            width: 150px;
+            border-right: 2px solid #000;
+        }
+        .sku-name {
+            flex: 1;
+            border-right: 2px solid #000;
+        }
+        .number {
+            width: 100px;
+            border-right: 2px solid #000;
+        }
+        .qrcode-wrap {
+            width: 70px;
+        }
+    }
+}
+
+
+/* .border-none td {
+    border-right: 1px solid #000 !important;
+    border-bottom: 1px solid #000 !important;
+    &:last-child {
+        border-right: none !important;
+    }
+}
+
+.table-bordered>tbody>tr>td {
+    border: 1px solid #000 !important;
+    padding: 0 !important;
+}
+
+.border-bottom-none {
+    border-bottom: 0 !important;
+} */

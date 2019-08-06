@@ -1,0 +1,81 @@
+.input-wrapper {
+  width: 100%;
+  height: auto;
+  float: left;
+  ul {
+    display: inline-block;
+    width: 60%;
+    height: auto;
+    padding: 0;
+    float: left;
+    li {
+      width: 100%;
+      height: 60px;
+      margin: 10px 0;
+      .list-label {
+        display: inline-block;
+        width: 30%;
+        height: 60px;
+        float: left;
+        text-align: center;
+        font-size: 20px;
+        line-height: 60px;
+        border: 1px solid rgba(255, 255, 255, .5);
+        background: rgba(255, 255, 255, .1);
+        border-radius: 5px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+      input {
+        width: 55%;
+        height: 60px;
+        float: left;
+        font-size: 35px;
+        border-radius: 0;
+        &:focus{
+          color:white;
+        }
+      }
+      .btn-group {
+        width: 15%;
+        height: 60px;
+        float: left;
+        .btn {
+          width: 100%;
+          font-size: 25px;
+          border-radius: 5px;
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
+      }
+    }
+  }
+}
+@media (max-width:1280px){ //Mac Pro 13英寸
+  .input-wrapper{
+    ul{
+      width:70%;
+      li{
+        .btn-group{
+          .btn{
+            font-size: 18px;
+          }
+        }
+      }
+    }}}
+.item{box-sizing: border-box;width:calc(50% - 10px);margin:0 10px 10px 0;
+  float:left;border: 1px solid #E8E5DF;padding:10px;
+  border-radius: 5px;display: flex;}
+.item:nth-of-type(5n+5){margin-right: 0;width: 50%;}
+.item>.img-wrap{display: flex;justify-content: center;width: 40%;align-items: center;}
+.item>.des{width: 60%;}
+.item>.img-wrap>.thumbnail{padding:3px;border: 2px solid #c4c1bb;border-radius: 3px;}
+.item>.des>.info{margin-bottom: 0;display: flex;border: 1px solid white;height: 20%;}
+.item>.des>.info:first-of-type{height: 50px;}
+.item>.des>.info:last-of-type{margin-bottom:10px;}
+.item>.des>.info>span{display: flex;align-items: center;height: 100%;}
+.item>.des>.info>.title{width: 120px;border-right: 1px solid white;padding-left: 5px;font-size: 18px;}
+.item>.des>.info>.messages{width: calc(100% - 120px);font-size: 12px;}
+@media screen  and(max-width: 1600px){
+  .item>.img-wrap>.thumbnail{width: 200px;height: 200px;}
+}

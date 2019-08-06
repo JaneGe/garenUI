@@ -1,0 +1,192 @@
+<div class=".col-md-8 card card-block">
+  <div class=".col-md-8 card card-block search-wrapper">
+    <ul class="search-condition">
+      <li style="margin-bottom: 8px;">
+        <label class="search-title">帐号选择：</label>
+        <div class="option-wrap">
+          <select2 [width]="395" [data]="allAccount" (valueChanged)="onChangeAccount($event)"></select2>
+        </div>
+      </li>
+      <li>
+        <label class="search-title">状态筛选：</label>
+        <div class="screen-wrapper" *ngFor="let item of status;let i = index">
+          <input type="radio" id="status{{item.id}}" name="warehouse" class="regular-radio" [checked]="i === 0" />
+          <label for="status{{item.id}}" (click)="onSelect($event.target,'status',item.id)">{{item.text}}</label>
+        </div>
+      </li>
+      <li>
+        <label class="search-title">时段筛选</label>
+        <div class="screen-wrapper" *ngFor="let time of suppprtTimeValueTypes;let i = index">
+          <input type="radio" id="search-time{{time.value}}" name="time" class="regular-radio" [checked]="i === 0" />
+          <label for="search-time{{time.value}}" (click)="onSelectTimeValueType(time.value)">{{time.text}}</label>
+        </div>
+        <span *ngIf="selectedTimeValueType == 'Custom'">
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <div class="input-group" style="width: auto;">
+                <input class="form-control"  placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="ngTimeSearchStart" ngbDatepicker
+                       #start="ngbDatepicker">
+                <div class="input-group-addon" (click)="start.toggle()">
+                  <i class="ion-android-calendar"></i>
+                </div>
+              </div>
+            </span>
+          </span>
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <ngb-timepicker [(ngModel)]="ngShortTimeStart" [seconds]="'true'"></ngb-timepicker>
+            </span>
+          </span>
+          -
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <div class="input-group" style="width: auto;">
+                <input class="form-control"  placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="ngTimeSearchEnd" ngbDatepicker
+                       #end="ngbDatepicker">
+                <div class="input-group-addon" (click)="end.toggle()">
+                  <i class="ion-android-calendar"></i>
+                </div>
+              </div>
+            </span>
+          </span>
+
+           <span class="datePick-wrap">
+            <span class="datePick">
+              <ngb-timepicker [(ngModel)]="ngShortTimeEnd" [seconds]="'true'"></ngb-timepicker>
+            </span>
+           </span>
+
+           <button class="btn btn-sm btn-primary" (click)="doTimeSearch()">确定</button>
+        </span>
+      </li>
+    </ul>
+  </div>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+                           autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                           screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="onQuery()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条数据</span>
+      </div>
+    </div>
+  </form>
+  <table class="table table-hover table-bordered">
+    <thead>
+    <tr>
+      <th style="width: 50px;">
+        <label class="checkbox-inline custom-checkbox nowrap">
+          <input type="checkbox" [checked]="selectProductIds.length === info.length && info.length > 0" (change)="onCheckAllPackageChanged($event.target.checked)">
+          <span></span>
+        </label>
+      </th>
+      <th style="width: 100px;">图片</th>
+      <th style="width: 120px;">供应商</th>
+      <th style="min-width: 120px;">标题</th>
+      <th style="min-width: 240px;">描述</th>
+      <th style="min-width: 90px;">价格区间</th>
+      <th style="min-width: 70px;">库存</th>
+      <th style="min-width: 70px;">
+        <p class="customP">商品状态</p>
+        <p class="customP">审核状态</p>
+      </th>
+      <th style="min-width:100px;">
+        <p class="customP">采集时间</p>
+        <p class="customP">推送时间</p>
+      </th>
+      <th style="min-width: 80px;">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of Data | paginate: { id: 'pager',
+          itemsPerPage:PageInfo.pageSize,
+          currentPage:PageInfo.pageIndex,
+          totalItems:PageInfo.totalCount};let i = index">
+      <td>
+        <label class="checkbox-inline custom-checkbox nowrap">
+          <input type="checkbox" [checked]="selectProductIds.indexOf(data.id) >= 0" (change)="onCheckPackageChanged($event.target.checked, item.id)">
+          <span></span>
+        </label>
+      </td>
+      <td style="padding-top:10px;">
+        <div class="imgwrap">
+          <img src={{data.picture}} alt="商品图" width="80" height="80">
+        </div>
+        <p>
+          <span>来源：</span>
+          <a href={{data.sourceLink}} target="_blank">1688</a>
+        </p>
+      </td>
+      <td>
+        <p>
+          深圳市龙岗区亮点派电子商务商行亮点派商行
+          <a href="https://amos.alicdn.com/getcid.aw?v=3&uid={{11111}}&site=cnalichn&groupid=0&charset=UTF-8"
+             target="_blank" class="alwangwang"></a>
+        </p>
+      </td>
+      <td>
+        <p>{{data.title}}</p>
+      </td>
+      <td>
+        <p>{{data.des}}</p>
+      </td>
+      <td>
+        <p>100~200</p>
+      </td>
+      <td>
+        <p>22</p>
+      </td>
+      <td>
+        <p class="customP">销售中</p>
+        <p class="customP">{{data.status}}</p>
+      </td>
+      <td>
+        <p class="customP">{{data.createdTime|date:'yyyy-MM-dd HH:mm:ss'}}</p>
+        <p class="customP">{{data.createdTime|date:'yyyy-MM-dd HH:mm:ss'}}</p>
+      </td>
+      <td>
+        <button class="btn btn-default btn-sm" (click)="DoEdit()">编辑</button>
+        <button class="btn btn-primary btn-sm">审核通过</button>
+        <button class="btn btn-danger btn-sm">删除</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+                           autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                           screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="onQuery()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条数据</span>
+      </div>
+    </div>
+  </form>
+</div>
+

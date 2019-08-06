@@ -1,0 +1,621 @@
+<div class=".col-md-8 card card-block">
+  <div class="tab-header">
+    <ul>
+      <li (click)="tabChange(0)" [class.tab-selected]="tabChangedIndex===0">拣货失败SKU</li>
+      <li (click)="tabChange(1)" [class.tab-selected]="tabChangedIndex===1">盘库任务</li>
+      <li (click)="tabChange(2)" [class.tab-selected]="tabChangedIndex===2">拣货失败包裹</li>
+    </ul>
+  </div>
+  <div class="tab-body" *ngIf="tabChangedIndex===0">
+    <div class=".col-md-8 card card-block search-wrapper">
+      <ul class="search-condition">
+        <li>
+          <label class="search-title">仓库筛选：</label>
+          <div class="screen-wrapper" *ngFor="let types of allWarehouses;let i = index">
+            <input type="radio" id="warahouser-{{types.warehouseId}}" name="warahouser" class="regular-radio" [checked]="i === 0" />
+            <label for="warahouser-{{types.warehouseId}}" (click)="onWarehouseSelect(types.warehouseId)">{{types.name}}</label>
+          </div>
+        </li>
+        <li>
+          <label class="search-title">时段筛选：</label>
+          <div class="screen-wrapper" *ngFor="let time of suppprtTaskTimeValueTypes;let i = index">
+            <input type="radio" id="search-time{{time.value}}" name="time" class="regular-radio" [checked]="i === 0" />
+            <label for="search-time{{time.value}}" (click)="onSelectTimeValueType(time.value)">{{time.text}}</label>
+          </div>
+          <span *ngIf="selectedTimeValueType == 'Custom'">
+            <!--<span class="datePick-wrap">-->
+              <!--<span class="datePick">-->
+                <!--<ng-datepicker [(ngModel)]="timeSearchStart" [options]="DatepickerOptions"></ng-datepicker>-->
+              <!--</span>-->
+            <!--</span>-->
+            <!-- - -->
+            <!--<span class="datePick-wrap">-->
+              <!--<span class="datePick">-->
+                <!--<ng-datepicker [(ngModel)]="timeSearchEnd" [options]="DatepickerOptions"></ng-datepicker>-->
+                <!--<button class="btn btn-sm btn-primary" (click)="doTimeSearch()">确定</button>-->
+              <!--</span>-->
+            <!--</span>-->
+            <span class="datePick-wrap">
+            <span class="datePick">
+              <div class="input-group" style="width: auto;">
+                <input class="form-control"  placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="ngTimeSearchStart1" ngbDatepicker
+                       #start="ngbDatepicker">
+                <div class="input-group-addon" (click)="start.toggle()">
+                  <i class="ion-android-calendar"></i>
+                </div>
+              </div>
+
+            </span>
+          </span>
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <ngb-timepicker [(ngModel)]="ngShortTimeStart1" [seconds]="'true'"></ngb-timepicker>
+            </span>
+          </span>
+          -
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <!--<ng-datepicker [(ngModel)]="timeSearchEnd" [options]="DatepickerOptions"></ng-datepicker>-->
+              <div class="input-group" style="width: auto;">
+                <input class="form-control"  placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="ngTimeSearchEnd1" ngbDatepicker
+                       #end="ngbDatepicker">
+                <div class="input-group-addon" (click)="end.toggle()">
+                  <i class="ion-android-calendar"></i>
+                </div>
+              </div>
+            </span>
+          </span>
+
+           <span class="datePick-wrap">
+            <span class="datePick">
+              <ngb-timepicker [(ngModel)]="ngShortTimeEnd1" [seconds]="'true'"></ngb-timepicker>
+            </span>
+           </span>
+
+           <button class="btn btn-sm btn-primary" (click)="doTimeSearch()">确定</button>
+          </span>
+        </li>
+        <li>
+          <label class="search-title">搜索类型：</label>
+          <div class="screen-wrapper" *ngFor="let searchType of suppprtTaskSearchTypes;let i = index">
+            <input type="radio" id="searchType-{{searchType.value}}" name="searchType" class="regular-radio" [checked]="i === 0" />
+            <label for="searchType-{{searchType.value}}" (click)="onSelectSearchType(searchType.value)">{{searchType.text}}</label>
+          </div>
+        </li>
+        <li>
+          <label class="search-title">搜索内容：</label>
+          <div class="input-group">
+            <input type="text" [(ngModel)]="searchText" class="form-control">
+            <div class="btn-group">
+              <button class="btn btn-primary" (click)="doSearch()">搜索</button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="btn-box">
+      <div class="checkbox">
+        <label class="checkbox-inline custom-checkbox nowrap">
+          <input type="checkbox" [checked]="isCheckAllFailSkus" (change)="onCheckAllFailSkusChanged($event.target.checked)">
+          <span>选中所有页</span>
+        </label>
+      </div>
+      <button type="button" class="btn btn-primary btn-sm" (click)="createCheckingStockTask()">生成盘库任务</button>
+    </div>
+    <form class="pagination-wrapper">
+      <div class="form-group pages">
+        <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+          autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+          screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
+      </div>
+      <div class="form-group options pages">
+        <div class="input-group input-group-sm">
+          <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+            <option>5</option>
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+            <option>200</option>
+          </select>
+          <span class="input-group-addon addon-right">条/页</span>
+          <span class="input-group-addon addon-right">共{{total}}条数据</span>
+        </div>
+      </div>
+    </form>
+    <table class="table table-hover table-bordered">
+      <thead>
+        <tr>
+          <th>
+            <label class="checkbox-inline custom-checkbox nowrap">
+              <input type="checkbox" [checked]="checkedFailSkuRecordIds.length == failSkuList.length && failSkuList.length > 0" (change)="onCheckThePageFailSkusChanged($event.target.checked)">
+              <span></span>
+            </label>
+          </th>
+          <th>SKU</th>
+          <th>货架位</th>
+          <th>是否可生成</th>
+          <th>创建时间
+            <br>[GMT+8:00]</th>
+          <th>打印时间
+            <br>[GMT+8:00]</th>
+          <th>盘库时间
+            <br>[GMT+8:00]</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let record of failSkuList | paginate: { id: 'pager',
+              itemsPerPage:pageSize,
+              currentPage:pageNumber,
+              totalItems:total};let i = index">
+          <td>
+            <label class="checkbox-inline custom-checkbox nowrap">
+              <input type="checkbox" [checked]="checkedFailSkuRecordIds.indexOf(record.recordItemId) >= 0" (change)="onCheckFailSkusChanged($event.target.checked, record.recordItemId)">
+              <span></span>
+            </label>
+          </td>
+          <td>{{record.skuCode}}</td>
+          <td>{{record.locationCode}}</td>
+          <td>{{ record.checkingStockTaskId > 0?record.checkingStockTaskId.toString(): (record.canCheckingInventory?"可以":"不可以")
+            }}
+          </td>
+          <td>{{record.createdTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm'}}</td>
+          <td>{{record.createdTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm'}}</td>
+          <td>{{record.checkInventoryTime && (record.checkInventoryTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm')}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <form class="pagination-wrapper">
+      <div class="form-group pages">
+        <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+          autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+          screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
+      </div>
+      <div class="form-group options pages">
+        <div class="input-group input-group-sm">
+          <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+            <option>5</option>
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+            <option>200</option>
+          </select>
+          <span class="input-group-addon addon-right">条/页</span>
+          <span class="input-group-addon addon-right">共{{total}}条数据</span>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="tab-body" *ngIf="tabChangedIndex===1">
+    <div class=".col-md-8 card card-block search-wrapper">
+      <ul class="search-condition">
+        <li>
+          <label class="search-title">仓库筛选：</label>
+          <div class="screen-wrapper" *ngFor="let types of allWarehouses;let i = index">
+            <input type="radio" id="warahouser-{{types.warehouseId}}" name="warahouser" class="regular-radio" [checked]="i === 0" />
+            <label for="warahouser-{{types.warehouseId}}" (click)="onWarehouseSelect(types.warehouseId)">{{types.name}}</label>
+          </div>
+        </li>
+        <li>
+          <label class="search-title">时段筛选：</label>
+          <div class="screen-wrapper" *ngFor="let time of suppprtTaskTimeValueTypes;let i = index">
+            <input type="radio" id="search-time{{time.value}}" name="time" class="regular-radio" [checked]="i === 0"/>
+            <label for="search-time{{time.value}}" (click)="onSelectTimeValueType(time.value)">{{time.text}}</label>
+          </div>
+          <span *ngIf="selectedTimeValueType == 'Custom'">
+            <!--<span class="datePick-wrap">-->
+              <!--<span class="datePick">-->
+                <!--<ng-datepicker [(ngModel)]="timeSearchStart" [options]="DatepickerOptions"></ng-datepicker>-->
+              <!--</span>-->
+            <!--</span>-->
+            <!-- - -->
+            <!--<span class="datePick-wrap">-->
+              <!--<span class="datePick">-->
+                <!--<ng-datepicker [(ngModel)]="timeSearchEnd" [options]="DatepickerOptions"></ng-datepicker>-->
+                <!--<button class="btn btn-sm btn-primary" (click)="doTimeSearch()">确定</button>-->
+              <!--</span>-->
+            <!--</span>-->
+            <span class="datePick-wrap">
+            <span class="datePick">
+              <div class="input-group" style="width: auto;">
+                <input class="form-control"  placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="ngTimeSearchStart2" ngbDatepicker
+                       #start="ngbDatepicker">
+                <div class="input-group-addon" (click)="start.toggle()">
+                  <i class="ion-android-calendar"></i>
+                </div>
+              </div>
+
+            </span>
+          </span>
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <ngb-timepicker [(ngModel)]="ngShortTimeStart2" [seconds]="'true'"></ngb-timepicker>
+            </span>
+          </span>
+          -
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <!--<ng-datepicker [(ngModel)]="timeSearchEnd" [options]="DatepickerOptions"></ng-datepicker>-->
+              <div class="input-group" style="width: auto;">
+                <input class="form-control"  placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="ngTimeSearchEnd2" ngbDatepicker
+                       #end="ngbDatepicker">
+                <div class="input-group-addon" (click)="end.toggle()">
+                  <i class="ion-android-calendar"></i>
+                </div>
+              </div>
+            </span>
+          </span>
+
+           <span class="datePick-wrap">
+            <span class="datePick">
+              <ngb-timepicker [(ngModel)]="ngShortTimeEnd2" [seconds]="'true'"></ngb-timepicker>
+            </span>
+           </span>
+
+           <button class="btn btn-sm btn-primary" (click)="doTimeSearch()">确定</button>
+          </span>
+        </li>
+        <li>
+          <label class="search-title">搜索类型：</label>
+          <div class="screen-wrapper" *ngFor="let searchType of suppprtTaskSearchTypes;let i = index">
+            <input type="radio" id="searchType-{{searchType.value}}" name="searchType" class="regular-radio"
+                   [checked]="i === 0"/>
+            <label for="searchType-{{searchType.value}}" (click)="onSelectSearchType(searchType.value)">{{searchType.text}}</label>
+          </div>
+        </li>
+        <li>
+          <label class="search-title">搜索内容：</label>
+          <div class="input-group">
+            <input type="text" [(ngModel)]="searchText" class="form-control">
+            <div class="btn-group">
+              <button class="btn btn-primary" (click)="doSearch()">搜索</button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <!--<div class="btn-box">-->
+    <!--<div class="checkbox">-->
+    <!--<label class="checkbox-inline custom-checkbox nowrap">-->
+    <!--<input type="checkbox" [checked]="isCheckAllPages" (change)="onCheclAllPageChange($event.target.checked)">-->
+    <!--<span>选中所有页</span>-->
+    <!--</label>-->
+    <!--</div>-->
+    <!--<button type="button" class="btn btn-primary btn-sm">BUTTON</button>-->
+    <!--</div>-->
+    <form class="pagination-wrapper">
+      <div class="form-group pages">
+        <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9"
+                             directionLinks="true"
+                             autoHide="true" previousLabel="上一页" nextLabel="下一页"
+                             screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                             screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
+      </div>
+      <div class="form-group options pages">
+        <div class="input-group input-group-sm">
+          <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+            <option>1</option>
+            <option>5</option>
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+            <option>200</option>
+          </select>
+          <span class="input-group-addon addon-right">条/页</span>
+          <span class="input-group-addon addon-right">共{{total}}条数据</span>
+        </div>
+      </div>
+    </form>
+    <table class="table table-hover table-bordered">
+      <thead>
+      <tr>
+        <th>任务编号</th>
+        <th>包裹数量</th>
+        <th>SKU数量</th>
+        <th>货架位数量</th>
+        <th>创建时间<br/>[GMT+8:00]</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of taskLists | paginate: { id: 'pager',
+            itemsPerPage:pageSize,
+            currentPage:pageNumber,
+            totalItems:total};let i = index">
+        <td>
+          <span>{{data.taskId}}</span>
+        </td>
+        <td>
+          <span>{{data.packageCount}}</span>
+        </td>
+        <td>
+          <span>{{data.skuTypeCount}}</span>
+        </td>
+        <td>
+          <span>{{data.locationCount}}</span>
+        </td>
+        <td>
+          <span>{{data.createdTime|amLocal| amDateFormat: 'YYYY-MM-DD HH:mm'}}</span>
+        </td>
+        <td>
+          <!--<button class="btn btn-primary btn-sm" (click)="openTaskList()">查看任务详情</button>-->
+          <button class="btn btn-danger btn-sm" (click)="printPackageDetailModal(data.taskId)">打印任务列表</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <form class="pagination-wrapper">
+      <div class="form-group pages">
+        <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9"
+                             directionLinks="true"
+                             autoHide="true" previousLabel="上一页" nextLabel="下一页"
+                             screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                             screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
+      </div>
+      <div class="form-group options pages">
+        <div class="input-group input-group-sm">
+          <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+            <option>1</option>
+            <option>5</option>
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+            <option>200</option>
+          </select>
+          <span class="input-group-addon addon-right">条/页</span>
+          <span class="input-group-addon addon-right">共{{total}}条数据</span>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="tab-body" *ngIf="tabChangedIndex===2">
+    <div class=".col-md-8 card card-block search-wrapper">
+      <ul class="search-condition">
+        <li>
+          <label class="search-title">仓库筛选：</label>
+          <div class="screen-wrapper" *ngFor="let types of allWarehouses;let i = index">
+            <input type="radio" id="warahouser-{{types.warehouseId}}" name="warahouser" class="regular-radio" [checked]="i === 0" />
+            <label for="warahouser-{{types.warehouseId}}" (click)="onWarehouseSelect(types.warehouseId)">{{types.name}}</label>
+          </div>
+        </li>
+        <li>
+          <label class="search-title">状态筛选：</label>
+          <div class="screen-wrapper" *ngFor="let item of suppprtSearchIsExceptionStatus;let i = index">
+            <input type="radio" id="planStatuss{{item.value}}" name="planStatuss" class="regular-radio" [checked]="i === 0" />
+            <label for="planStatuss{{item.value}}" (click)="onSelectedIsExceptionStatus( item.value)">{{item.text}}</label>
+          </div>
+        </li>
+        <li>
+          <label class="search-title">是否可发货：</label>
+          <div class="screen-wrapper" *ngFor="let item of suppprtHandleTypes;let i = index">
+            <input type="radio" id="handle{{item.value}}" name="handle" class="regular-radio" [checked]="i === 0" />
+            <label for="handle{{item.value}}" (click)="onSelectedCanShipStatus(item.value)">{{item.text}}</label>
+          </div>
+        </li>
+        <li>
+          <label class="search-title">是否已采购：</label>
+          <div class="screen-wrapper" *ngFor="let item of suppprtGenerateTypes;let i = index">
+            <input type="radio" id="generate{{item.value}}" name="generate" class="regular-radio" [checked]="i === 0" />
+            <label for="generate{{item.value}}" (click)="onSelectedIsCompletedStatus(item.value)">{{item.text}}</label>
+          </div>
+        </li>
+        <li>
+          <label class="search-title">包裹类型：</label>
+          <div class="screen-wrapper" *ngFor="let item of suppprtPackageTypes;let i = index">
+            <input type="radio" id="packageType{{item.value}}" name="packageType" class="regular-radio" [checked]="i === 0" />
+            <label for="packageType{{item.value}}" (click)="onSelectedPackageType(item.value)">{{item.text}}</label>
+          </div>
+        </li>
+        <li>
+          <label class="search-title">未处理时间筛选：</label>
+          <!--生成的时间到盘库的时间-->
+          <div class="screen-wrapper" *ngFor="let item of suppprtUntreatedTypes;let i = index">
+            <input type="radio" id="untreated{{item.value}}" name="untreated" class="regular-radio" [checked]="i === 0" />
+            <label for="untreated{{item.value}}" style="margin-right:20px" (click)="onSelectedUntreatedSearchType(item.value)">{{item.text}}</label>
+          </div>
+        </li>
+        <li>
+          <label class="search-title">时段筛选：</label>
+          <div class="screen-wrapper" *ngFor="let timeScreen of suppprtSearchTimeTypes;let i = index">
+            <input type="radio" id="timeScreen{{timeScreen.value}}" name="timeScreen" class="regular-radio" [checked]="i === 0" />
+            <label for="timeScreen{{timeScreen.value}}" (click)="onSelectTimeSearchType(timeScreen.value)">{{timeScreen.text}}</label>
+          </div>
+        </li>
+        <li>
+          <label class="search-title"></label>
+          <div class="screen-wrapper" *ngFor="let time of suppprtTimeValueTypes;let i = index">
+            <input type="radio" id="search-time{{time.value}}" name="time" class="regular-radio" [checked]="i === 0" />
+            <label for="search-time{{time.value}}" (click)="onSelectTimeValueType(time.value)">{{time.text}}</label>
+          </div>
+          <span *ngIf="selectedTimeValueType == 'Custom'">
+            <!--<span class="datePick-wrap">-->
+              <!--<span class="datePick">-->
+                <!--<ng-datepicker [(ngModel)]="timeSearchStart" [options]="DatepickerOptions"></ng-datepicker>-->
+              <!--</span>-->
+            <!--</span>-->
+            <!-- - -->
+            <!--<span class="datePick-wrap">-->
+              <!--<span class="datePick">-->
+                <!--<ng-datepicker [(ngModel)]="timeSearchEnd" [options]="DatepickerOptions"></ng-datepicker>-->
+                <!--<button class="btn btn-sm btn-primary" (click)="doTimeSearch()">确定</button>-->
+              <!--</span>-->
+            <!--</span>-->
+            <span class="datePick-wrap">
+            <span class="datePick">
+              <div class="input-group" style="width: auto;">
+                <input class="form-control"  placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="ngTimeSearchStart3" ngbDatepicker
+                       #start="ngbDatepicker">
+                <div class="input-group-addon" (click)="start.toggle()">
+                  <i class="ion-android-calendar"></i>
+                </div>
+              </div>
+
+            </span>
+          </span>
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <ngb-timepicker [(ngModel)]="ngShortTimeStart3" [seconds]="'true'"></ngb-timepicker>
+            </span>
+          </span>
+          -
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <!--<ng-datepicker [(ngModel)]="timeSearchEnd" [options]="DatepickerOptions"></ng-datepicker>-->
+              <div class="input-group" style="width: auto;">
+                <input class="form-control"  placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="ngTimeSearchEnd3" ngbDatepicker
+                       #end="ngbDatepicker">
+                <div class="input-group-addon" (click)="end.toggle()">
+                  <i class="ion-android-calendar"></i>
+                </div>
+              </div>
+            </span>
+          </span>
+
+           <span class="datePick-wrap">
+            <span class="datePick">
+              <ngb-timepicker [(ngModel)]="ngShortTimeEnd3" [seconds]="'true'"></ngb-timepicker>
+            </span>
+           </span>
+
+             <button class="btn btn-sm btn-primary" (click)="doTimeSearch()">确定</button>
+          </span>
+        </li>
+        <li>
+          <label class="search-title">搜索类型：</label>
+          <div class="screen-wrapper" *ngFor="let searchType of suppprtSearchTypes;let i = index">
+            <input type="radio" id="searchType-{{searchType.value}}" name="searchType" class="regular-radio" [checked]="i === 0" />
+            <label for="searchType-{{searchType.value}}" (click)="onSelectSearchType(searchType.value)">{{searchType.text}}</label>
+          </div>
+        </li>
+        <li>
+          <label class="search-title">搜索内容：</label>
+          <div class="input-group">
+            <input type="text" [(ngModel)]="searchText" class="form-control">
+            <div class="btn-group">
+              <button class="btn btn-primary" (click)="doSearch()">搜索</button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <form class="pagination-wrapper">
+      <div class="form-group pages">
+        <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+          autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+          screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
+      </div>
+      <div class="form-group options pages">
+        <div class="input-group input-group-sm">
+          <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+            <option>5</option>
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+            <option>200</option>
+          </select>
+          <span class="input-group-addon addon-right">条/页</span>
+          <span class="input-group-addon addon-right">共{{total}}条数据</span>
+        </div>
+      </div>
+    </form>
+    <table class="table table-hover table-bordered">
+      <thead>
+        <tr>
+          <th>包裹号</th>
+          <th>异常货架位</th>
+          <th>拣货类型</th>
+          <th>创建时间
+            <br>[GMT+8:00]
+          </th>
+          <th>盘库时间
+            <br>[GMT+8:00]
+          </th>
+          <th>发货时间
+            <br>[GMT+8:00]
+          </th>
+          <th>是否可发货</th>
+          <th>采购状态</th>
+          <th>状态</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of item | paginate: { id: 'pager',
+            itemsPerPage:pageSize,
+            currentPage:pageNumber,
+            totalItems:total};let i = index">
+          <td>
+            <span>{{data.packageNumber}}</span>
+            <span *ngIf="data.isPackageLocked">【已锁定】</span>
+          </td>
+          <td>
+            <span>{{data.exceptionLocationCode}}</span>
+          </td>
+          <td>
+            <span *ngIf="data.packageType!='None'">{{data.packageTypeDesc}}</span>
+            <span *ngIf="data.packageType=='None'">暂无拣货类型</span>
+          </td>
+          <td>
+            <span>{{data.createdTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</span>
+          </td>
+          <td>
+            <span *ngIf="data.checkInventoryTime !=null">{{data.checkInventoryTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</span>
+            <span *ngIf="data.checkInventoryTime ==null">暂未完成</span>
+          </td>
+          <td>
+            <span *ngIf="data.shippedTime !=null">{{data.shippedTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</span>
+            <span *ngIf="data.shippedTime ==null">没有发货</span>
+          </td>
+          <td>
+            <span *ngIf="!data.canShip">否</span>
+            <span *ngIf="data.canShip">是</span>
+          </td>
+          <td>
+            <span *ngIf="!data.isPurchased ">否</span>
+            <span *ngIf="data.isPurchased">是
+              <br/>
+            </span>
+            <span *ngIf="data.isPurchased">{{data.purchasedTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</span>
+          </td>
+          <td>{{data.statusDesc}}</td>
+          <td>
+            <button class="btn btn-primary btn-sm" (click)="openDetailModal(data.packageId)">查看包裹详情</button>
+            <button class="btn btn-warning btn-sm" *ngIf="!data.isPurchased" (click)="enterPurchaseNumber(data.packageId)">确认采购数量</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <form class="pagination-wrapper">
+      <div class="form-group pages">
+        <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+          autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+          screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
+      </div>
+      <div class="form-group options pages">
+        <div class="input-group input-group-sm">
+          <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+            <option>5</option>
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+            <option>200</option>
+          </select>
+          <span class="input-group-addon addon-right">条/页</span>
+          <span class="input-group-addon addon-right">共{{total}}条数据</span>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

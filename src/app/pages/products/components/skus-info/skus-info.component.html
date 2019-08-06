@@ -1,0 +1,12 @@
+<div class="wrapper .col-md-8 card card-block">
+  <div class="tab-header">
+    <ul>
+      <li *ngFor="let tab of tabs" (click)="tabChoose(tab)" [class.tab-selected]="tab.selected">
+        <span>{{tab.name}}</span>
+      </li>
+    </ul>
+  </div>
+  <app-sku-list *ngIf="selectedTab.name == '商品SKU'"></app-sku-list>
+  <app-virtual-sku-list *ngIf="selectedTab.name == '虚拟SKU'"></app-virtual-sku-list>
+  <app-logistics-sku *ngIf="selectedTab.name == '渠道SKU'"></app-logistics-sku>
+</div>

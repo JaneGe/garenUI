@@ -1,0 +1,22 @@
+<div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <span class="modal-title">导入商品</span>
+    <button type="button" class="close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <span class="explain">说明</span>
+    <p>请下载提供的商品导入模版，填写好后上传模版
+      <a href="/assets/download/templates/商品导入模板.xlsx"  download="商品导入模板.xlsx">下载</a>
+    </p>
+    <div class="card card-block">
+      <ba-file-uploader [fileUploaderOptions]="fileUploaderOptions" (onFileUploadCompleted)="uploadCompleted($event)"></ba-file-uploader>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-default" (click)="closeModal()">取消</button>
+    </div>
+  </div>
+</div>

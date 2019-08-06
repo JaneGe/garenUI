@@ -1,0 +1,33 @@
+.pop-content {
+    width: 820px;
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    .modal-body {
+        height:auto;
+        max-height: 700px;
+        overflow-y: scroll;
+        .card {
+            padding: 5px;
+            margin: 5px;
+            float: left;
+            img {
+                width: auto;
+                height: 100%;
+            }
+        }
+        .main-img {
+            width: 430px;
+            height: 430px;
+        }
+        .img-items {
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+        }
+        .check-item {
+            background: #209e91;
+        }
+    }
+}

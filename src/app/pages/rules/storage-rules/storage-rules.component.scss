@@ -1,0 +1,28 @@
+.searchPart{text-align: left;}
+.searchPart .title{font-size:18px;display: inline-block;}
+.searchPart .buttonpart{display: inline-block;}
+.searchPart .buttonpart span:nth-of-type(1){background: #fff;color:#2389F2;}
+#table thead tr th{width: 25%;}
+#table thead tr th:first-child{width: 10%;}
+#table thead tr th:nth-of-type(4){width: 10%;}
+#table tbody tr td input[type='text']{text-align: center;}
+#table tbody tr td button
+{width: 30%;}
+#table tbody tr td:nth-of-type(1) input{border-radius: 5px;width: 50%;height:70%;}
+#table tbody tr td:nth-of-type(4) button:nth-of-type(1) span{color: black;}
+.icon-wraper{
+  display: inline-block;
+  background: #209e91;
+  padding:2px;
+  border-radius: 2px;
+  width: 22px;
+  height: 22px;
+  line-height: 22px;
+  cursor: pointer;
+}
+input.priority-input{
+  text-align: center;
+  background-color: rgba(0,0,0,.3);
+  color:white;
+  border: none;
+}

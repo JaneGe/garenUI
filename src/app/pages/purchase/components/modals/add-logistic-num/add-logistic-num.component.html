@@ -1,0 +1,25 @@
+<form id="form2" (submit)="Onsubmit()" #form2="ngForm">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">添加物流</h4>
+      <button class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <span class="title">选择物流商：</span>
+        <select2 class="country-select" [width]="400" [data]="logistics" [value]="logistic" (valueChanged)="onChangeCountryChanged($event)"></select2>
+      </div>
+      <div class="form-group">
+        <span class="title" style="width: 100px;">运单号：</span>
+        <input type="text" name="wayBillNumber" class="form-control" required [(ngModel)]="wayBillNumber" #logisticNum="ngModel"
+          [ngClass]="{'invalid':logisticNum.invalid}">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-sm pull-right submit" [disabled]="form2.invalid">保存</button>
+      <a href="javascript:;" class="btn btn-sm pull-right cancel" (click)="closeModal()">取消</a>
+    </div>
+  </div>
+</form>

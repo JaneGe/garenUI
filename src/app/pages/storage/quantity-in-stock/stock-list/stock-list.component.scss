@@ -1,0 +1,46 @@
+.pagination-wrapper .pages {
+    margin: 0;
+}
+
+.out {
+    background: #209e91!important;
+    border-color: #209e91!important;
+    cursor: pointer;
+}
+
+table thead tr th,
+table {
+    text-align: center;
+    color: white;
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+#stockNum thead tr th span {
+    cursor: pointer;
+}
+
+#stockNum thead tr th span i {
+    position: relative;
+    left: 10px;
+}
+
+table tbody tr td {
+  position: relative;
+    font-size: 12px;
+    &:last-child {
+        .btn {
+            margin: 3px 0;
+        }
+    }
+  i.detail-icon{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    line-height: 20px;
+    background-color: #209e91;
+    border-radius: 5px;
+  }
+}
+

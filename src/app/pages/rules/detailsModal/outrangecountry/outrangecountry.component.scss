@@ -1,0 +1,12 @@
+#country .tag{ margin:0 15px 15px 0;}
+form{min-height: 400px;}
+.card div .inline:nth-of-type(1){width: 15%  }
+.card div .inline:nth-of-type(2){width: 85%  }
+.card div .inline:nth-of-type(2) select{width: 100%;}
+.result{background:#fff;color:#2389F2;display: inline-block;
+  margin:0 10px 10px 0;padding: 5px;border-radius: 5px;cursor: pointer;}
+.box{height: 100px;width: 100%;overflow: auto;}
+.tip{font-size: 14px;}
+.common>p:nth-of-type(2){display: flex;justify-content: space-around;align-items: center;}
+.selectCountry{display: flex;align-items: center;margin-bottom: 15px;}
+.title{width: 130px;}

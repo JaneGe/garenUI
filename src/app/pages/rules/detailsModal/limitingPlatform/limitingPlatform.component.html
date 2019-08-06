@@ -1,0 +1,25 @@
+<form class="smmodal">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">{{modalHeader}}
+        <span class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </span>
+      </h4>
+    </div>
+    <div class="modal-body height">
+      <div class="card card-block">
+        <select class="form-control" name="platform" #select>
+          <option value="">请选择</option>
+          <option *ngFor="let item of Platforms"
+                  [selected]="seletedPlatform.toLocaleLowerCase() == item.code.toLocaleLowerCase()"
+                  value="{{item.code}}">{{item.displayName}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-sm pull-right submit" (click)="closeModal(select.value)">确定</button>
+      <button class="btn btn-sm pull-right cancel" (click)="closeModal()">取消</button>
+    </div>
+  </div>
+</form>

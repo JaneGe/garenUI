@@ -1,0 +1,187 @@
+<div class="card card-block wrapper">
+  <div class="card card-block task-wrapper">
+
+    <div style="display: flex;">
+      <label class="total-desc">目前有
+        <span class="text-primary">{{pendingGeneratePackageCount}}</span> 个待处理包裹</label>
+      <label class="total-desc">目前有
+        <span>{{WaitingForTaskCount}}</span> 个待领取任务</label>
+    </div>
+    <ul>
+      <li *ngIf="toggleOperate==0" style="height:40px">
+        <label class="search-title">任务状态：</label>
+        <div class="screen-wrapper" *ngFor="let item of allStatsus;let i = index">
+          <input type="radio" id="purchasePlanTypes{{item.value}}" name="allStatsus" class="regular-radio" [checked]="i === 0" />
+          <label for="purchasePlanTypes{{item.value}}" (click)="onStatusChange(item.value)">{{item.text}}</label>
+        </div>
+      </li>
+      <!--<li *ngIf="toggleOperate==0" style="height:40px">-->
+      <!--<label class="search-title">任务进度：</label>-->
+      <!--<div class="screen-wrapper" *ngFor="let item of taskSchedule;let i = index">-->
+      <!--<input type="radio" id="taskSchedule{{item.value}}" name="taskSchedule" class="regular-radio" [checked]="i === 0" />-->
+      <!--<label for="taskSchedule{{item.value}}" (click)="onSlectProgress(item.value)">{{item.text}}</label>-->
+      <!--</div>-->
+      <!--</li>-->
+      <li>
+        <label class="list-label">选择仓库</label>
+        <select class="form-control select-option" (change)="OnWarehouseChange($event.target)">
+          <option *ngFor="let name of warehose;" value="{{name.warehouseId}}">{{name.name}}</option>
+        </select>
+      </li>
+      <li *ngIf="toggleOperate==1">
+        <label class="list-label">工号输入：</label>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="请输入工号" [(ngModel)]="storeSearchKey"  (keyup.enter)="genterTask()">
+          <div class="btn-group">
+            <button class="btn btn-primary" (click)="genterTask()">确定</button>
+            <!--<button class="btn btn-primary" (click)="openModal(4)">sas</button>-->
+          </div>
+        </div>
+      </li>
+      <!-- <li *ngIf="toggleOperate==0">
+        <label class="list-label">状态：</label>
+        <div class="statu-wrap">
+          <span *ngFor="let pStatus of allStatsus;let index=index;" (click)="onStatusChange(pStatus.value)" [ngClass]="{'tag':pStatus.value==selectedpStatus}">{{pStatus.text}}</span>
+        </div>
+      </li> -->
+
+      <li *ngIf="toggleOperate==0">
+        <label class="list-label">搜索单号：</label>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="请输入搜索内容" [(ngModel)]="storeSearchKey" value={{storeSearchKey}}>
+          <div class="btn-group">
+            <button class="btn btn-danger" (click)="loadData()">搜索</button>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <div class="toggleOperate">
+      <div class="btn-group">
+        <button class="btn" (click)="changeTab(1)" [ngClass]="{'default-button-left':toggleOperate==0,'btn-primary':toggleOperate==1}">操作</button>
+        <button class="btn" (click)="changeTab(0)" [ngClass]="{'default-button-right':toggleOperate==1,'btn-primary':toggleOperate==0}">搜索</button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <button [disabled]="loadingGeneratePicking" class="btn btn-warning" (click)="generatePicking()">生成拣货任务</button>
+  </div>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="loadData()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条</span>
+      </div>
+    </div>
+  </form>
+  <div class="table-wrapper">
+    <table class="table table-hover table-bordered" id="table">
+      <thead>
+        <tr>
+          <th>编号</th>
+          <th>领取人</th>
+          <th>领取时间</th>
+          <th>任务类型</th>
+          <th>任务状态</th>
+          <th>任务进度</th>
+          <th style="width: 200px;">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of taskData|paginate: { id: 'pager',
+                                                        itemsPerPage:PageInfo.pageSize,
+                                                        currentPage: PageInfo.pageIndex,
+                                                        totalItems: PageInfo.totalCount}">
+          <td class="pickNumber">{{item.id}}</td>
+          <td>{{item.empName}}</td>
+          <td>{{item.time}}</td>
+
+          <!--<td>{{item.pickingType == 'ByPackage'? item.pickingTypeDesc: item.packTypeDesc}}</td>-->
+          <td *ngIf="item.pickingType == 'ByPackage'">特殊包裹</td>
+          <td *ngIf="item.pickingType == 'BigPackage'">{{item.pickingTypeDesc}}</td>
+          <td *ngIf="item.pickingType == 'BySku'">{{item.packTypeDesc}}</td>
+          <td *ngIf="item.status=='Shipped'">已完成</td>
+          <td *ngIf="item.status!='Shipped'">{{item.state}}</td>
+          <td>{{item.completePackageCount}}/{{item.totalPackageCount}}</td>
+          <td class="operate">
+            <div style="display: flex;justify-content: center;">
+              <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  操作
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a href="javascript:;" (click)="openModal(item.pickId)" *ngIf="item.pickingType !== 'ByPackage'">重新打印拣货单</a>
+                  </li>
+                  <li>
+                    <a href="javascript:;" (click)="printPDF('localhost:8081/shipping-label/11907/label/DGI1G00002/pre')" *ngIf="item.pickingType == 'BigPackage'">打印面单</a>
+                  </li>
+                  <li>
+                    <a href="javascript:;" (click)="openPackingInventory(item.pickId)" *ngIf="item.pickingType == 'ByPackage'">拣货清单</a>
+                  </li>
+                  <li>
+                    <a href="javascript:;" *ngIf="item.pickingType == 'ByPackage'">批量打印面单</a>
+                  </li>
+                  <li>
+                    <a href="javascript:;" (click)="openEditModal(item.pickId,item.empId)" *ngIf="item.pickingType !== 'ByPackage'&&item.pickingType !== 'BigPackage'">指定拣货人</a>
+                  </li>
+                  <li>
+                    <a href="javascript:;" (click)="openDetailsModal(item.id,item.pickId,item.empName,item.packType)">包裹详情</a>
+                  </li>
+                  <li>
+                    <a href="javascript:;" (click)="openSkusModal(item.id,item.pickId,item.empName,item.packType)">SKU详情</a>
+                  </li>
+                </ul>
+              </div>
+              <!-- <button class="btn btn-sm btn-primary" (click)="openModal(item.pickId)" *ngIf="item.pickingType !== 'ByPackage'">重新打印捡货单</button>
+              <button class="btn btn-sm btn-warning" *ngIf="item.pickingType == 'BigPackage'">打印面单</button>
+              <button class="btn btn-sm btn-success" *ngIf="item.pickingType == 'ByPackage'">捡货清单</button>
+              <button class="btn btn-sm btn-primary" *ngIf="item.pickingType == 'ByPackage'">批量打印面单</button>
+              <button class="btn btn-sm btn-danger" (click)="openEditModal(item.pickId,item.empId)" *ngIf="item.pickingType !== 'ByPackage'&&item.pickingType !== 'BigPackage'">指定拣货人</button>
+              <button class="btn btn-sm btn-info" (click)="openDetailsModal(item.id,item.pickId,item.empName,item.packType)">包裹详情</button>
+              <button class="btn btn-sm btn-info" (click)="openSkusModal(item.id,item.pickId,item.empName,item.packType)">SKU详情</button> -->
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="loadData()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条</span>
+      </div>
+    </div>
+  </form>
+</div>

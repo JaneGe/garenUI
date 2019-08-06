@@ -1,0 +1,382 @@
+<div class=".col-md-8 card card-block">
+  <div class=".col-md-8 card card-block search-wrapper">
+    <ul class="search-condition">
+      <li>
+        <label class="search-title">销售渠道：</label>
+        <div class="screen-wrapper" *ngFor="let channel of supportChannelTypes;let i = index">
+          <input type="radio" id="channel-{{channel.code}}" name="channel" class="regular-radio" [checked]="i === 0" />
+          <label for="channel-{{channel.code}}" (click)="onSelectChannelType(channel.code)">{{channel.displayName}}</label>
+        </div>
+
+        <div class="btn-group" role="group" aria-label="...">
+          <button type="button" class="btn" (click)="seekMode(0)" [ngClass]="{'btn-primary':!seekmode,'btn-default':seekmode}">筛选
+          </button>
+          <button type="button" class="btn" (click)="seekMode(1)" [ngClass]="{'btn-primary':seekmode,'btn-default':!seekmode}">搜索
+          </button>
+        </div>
+      </li>
+      <li *ngIf="isShowChannelAccount('Amazon')||isShowChannelAccount('Wish')">
+        <label class="search-title">账号筛选：</label>
+        <!-- <div class="screen-wrapper">
+          <input type="radio" id="amazon-all" name="amazon" class="regular-radio" checked/>
+          <label for="amazon-all" (click)="onSelectChannelId('')">所有</label>
+        </div> -->
+        <!-- <div class="screen-wrapper" *ngFor="let amazon of amazonAccounts;">
+          <input type="radio" id="amazon-{{amazon.channelId}}" name="amazon" class="regular-radio" />
+          <label for="amazon-{{amazon.channelId}}" (click)="onSelectChannelId(amazon.channelId)">{{amazon.displayName}}</label>
+        </div> -->
+        <select2 class="country-select" [data]="accountItems" [options]="options" [width]="300" [value]="value" #accountSelect (valueChanged)="onChanged($event,accountSelect)"></select2>
+      </li>
+      <li>
+        <label class="search-title">订单状态：</label>
+        <div *ngFor="let state of allOrderSearchStatus;let i = index">
+          <div class="screen-wrapper" *ngIf="i<8">
+            <input type="radio" id="state-{{state.value}}" name="state" class="regular-radio" [checked]="i === 0" />
+            <label for="state-{{state.value}}" (click)="onSelectOrderStatus(state.value)">{{state.text}}</label>
+          </div>
+        </div>
+      </li>
+      <li>
+        <label class="search-title"></label>
+        <div *ngFor="let state of allOrderSearchStatus;let i = index">
+          <div class="screen-wrapper" *ngIf="i>7">
+            <input type="radio" id="state-{{state.value}}" name="state" class="regular-radio" />
+            <label for="state-{{state.value}}" (click)="onSelectOrderStatus(state.value)">{{state.text}}</label>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <ul class="search-condition" *ngIf="!seekmode && searchMore===1">
+      <li>
+        <label class="search-title">国家筛选：</label>
+        <div class="screen-wrapper" *ngFor="let county of supportFilterCountries;let i = index">
+          <input type="radio" id="county-{{county.value}}" name="county" class="regular-radio" [checked]="i === 0" />
+          <label for="county-{{county.value}}" (click)="onSelectCountry(county.value)">{{county.text}}</label>
+        </div>
+      </li>
+      <li>
+        <label class="search-title">是否回传：</label>
+        <div class="screen-wrapper" *ngFor="let feedBack of iffeedBacks;let i = index">
+          <input type="radio" id="feedBack-{{feedBack.value}}" name="feedBack" class="regular-radio" [checked]="i === 0" />
+          <label for="feedBack-{{feedBack.value}}" (click)="onIfFeedBack(feedBack.value)">{{feedBack.text}}</label>
+        </div>
+      </li>
+      <li>
+        <label class="search-title">备注：</label>
+        <div class="screen-wrapper" *ngFor="let filterHasNote of filterHasNotes;let i = index">
+          <input type="radio" id="remarks-{{filterHasNote.value}}" name="remarks" class="regular-radio" [checked]="i === 0" />
+          <label for="remarks-{{filterHasNote.value}}" (click)="onSelectHasNote(filterHasNote.value)">{{filterHasNote.text}}</label>
+        </div>
+      </li>
+      <li>
+        <label class="search-title">时段筛选：</label>
+        <div class="screen-wrapper" *ngFor="let timeScreen of suppprtSearchTimeTypes;let i = index">
+          <input type="radio" id="timeScreen{{timeScreen.value}}" name="timeScreen" class="regular-radio" [checked]="i === 0" />
+          <label for="timeScreen{{timeScreen.value}}" (click)="onSelectTimeSearchType(timeScreen.value)">{{timeScreen.text}}</label>
+        </div>
+      </li>
+      <li>
+        <label class="search-title"></label>
+        <div class="screen-wrapper" *ngFor="let time of suppprtTimeValueTypes;let i = index">
+          <input type="radio" id="search-time{{time.value}}" name="time" class="regular-radio" [checked]="i === 0" />
+          <label for="search-time{{time.value}}" (click)="onSelectTimeValueType(time.value)">{{time.text}}</label>
+        </div>
+        <!-- <div class="custom" style="float:left;" *ngIf="selectedTimeValueType == 'Custom'">
+          <input type="date" [(ngModel)]="timeSearchStart" /> -
+          <input type="date" [(ngModel)]="timeSearchEnd" />
+          <div class="btn-group">
+            <button class="btn btn-primary" (click)="doTimeSearch()">确定</button>
+          </div>
+        </div> -->
+        <span *ngIf="selectedTimeValueType == 'Custom'">
+          <!--<span class="datePick-wrap">-->
+          <!--<span class="datePick">-->
+          <!--<ng-datepicker [(ngModel)]="timeSearchStart" [options]="DatepickerOptions"></ng-datepicker>-->
+          <!--</span>-->
+          <!--</span>-->
+          <!-- - -->
+          <!--<span class="datePick-wrap">-->
+          <!--<span class="datePick">-->
+          <!--<ng-datepicker [(ngModel)]="timeSearchEnd" [options]="DatepickerOptions"></ng-datepicker>-->
+          <!--<button class="btn btn-sm btn-primary" (click)="doTimeSearch()">确定</button>-->
+          <!--</span>-->
+          <!--</span>-->
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <!--<ng-datepicker [(ngModel)]="timeSearchStart" [options]="DatepickerOptions"></ng-datepicker>-->
+              <div class="input-group" style="width: auto;">
+                <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="ngTimeSearchStart" ngbDatepicker #start="ngbDatepicker">
+                <div class="input-group-addon" (click)="start.toggle()">
+                  <i class="ion-android-calendar"></i>
+                </div>
+              </div>
+
+            </span>
+          </span>
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <ngb-timepicker [(ngModel)]="ngShortTimeStart" [seconds]="'true'"></ngb-timepicker>
+            </span>
+          </span>
+          -
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <!--<ng-datepicker [(ngModel)]="timeSearchEnd" [options]="DatepickerOptions"></ng-datepicker>-->
+              <div class="input-group" style="width: auto;">
+                <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="ngTimeSearchEnd" ngbDatepicker #end="ngbDatepicker">
+                <div class="input-group-addon" (click)="end.toggle()">
+                  <i class="ion-android-calendar"></i>
+                </div>
+              </div>
+            </span>
+          </span>
+
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <ngb-timepicker [(ngModel)]="ngShortTimeEnd" [seconds]="'true'"></ngb-timepicker>
+            </span>
+          </span>
+
+          <button class="btn btn-sm btn-primary" (click)="doTimeSearch()">确定</button>
+        </span>
+      </li>
+    </ul>
+    <ul class="search-condition" *ngIf="seekmode">
+      <li>
+        <label class="search-title">搜索类型：</label>
+        <div class="screen-wrapper" *ngFor="let searchType of suppprtSearchTypes;let i = index">
+          <input type="radio" id="searchType-{{searchType.value}}" name="searchType" class="regular-radio" [checked]="i === 0" />
+          <label for="searchType-{{searchType.value}}" (click)="onSelectSearchType(searchType.value)">{{searchType.text}}</label>
+        </div>
+      </li>
+      <li>
+        <label class="search-title">搜索内容：</label>
+        <div class="input-group">
+          <input type="text" class="form-control with-primary-addon search-input" [(ngModel)]="searchText" placeholder="双击可批量查询" (dblclick)="ModalState()">
+          <button class="btn btn-primary" (click)="doSearch()">搜索</button>
+        </div>
+      </li>
+    </ul>
+    <div class="btn-group search-more" role="group" aria-label="..." *ngIf="!seekmode">
+      <button class="btn btn-primary" [innerHtml]="!searchMore?'高级筛选':'收起'" (click)="SearchMore()">
+      </button>
+    </div>
+  </div>
+  <div class="batch-modal" *ngIf="modalstate">
+    <div class="pop-content">
+      <div class="modal-header">
+        <h3>批量查询</h3>
+        <a href="javascript:;" (click)="ModalState()">
+          <i class="ion-close-round"></i>
+        </a>
+      </div>
+      <form>
+        <label class="radio-inline custom-radio nowrap">
+          <input type="radio" name="batchSearchOption" id="inlineRadio3" value="OrderNumber" (click)="onSelectdoOrederBatchSearchType($event.target.value)"
+            checked>
+          <span>按订单编号</span>
+        </label>
+        <label class="radio-inline custom-radio nowrap">
+          <input type="radio" name="batchSearchOption" id="inlineRadio3" value="BuyName" (click)="onSelectdoOrederBatchSearchType($event.target.value)">
+          <span>按客户姓名</span>
+        </label>
+        <!-- <label class="radio-inline custom-radio nowrap">
+          <input type="radio" name="batchSearchOption" id="inlineRadio3" value="InTrackingNumber" (click)="onSelectdoOrederBatchSearchType($event.target.value)">
+          <span>按内部跟踪号</span>
+        </label> -->
+        <label class="radio-inline custom-radio nowrap">
+          <input type="radio" name="batchSearchOption" id="inlineRadio3" value="TrackingNumber" (click)="onSelectdoOrederBatchSearchType($event.target.value)">
+          <span>按跟踪号</span>
+        </label>
+        <label class="modal-desc">每行一个（支持excel复制粘贴）</label>
+        <textarea name="orderBatchSearch" id="" cols="60" rows="10" [(ngModel)]="orderBatchsearchText"></textarea>
+        <div class="modal-footer">
+          <div class="btn-group">
+            <button class="btn btn-sm btn-default" type="button" (click)="ModalState()">关闭</button>
+            <button class="btn btn-sm btn-primary" type="submit" (click)="doOrderBatchSearch()">确定</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="btn-box">
+    <div class="checkbox">
+      <label class="checkbox-inline custom-checkbox nowrap">
+        <input type="checkbox" [checked]="isCheckAllPages" (change)="onCheclAllPageChange($event.target.checked)">
+        <span>选中所有页</span>
+      </label>
+    </div>
+    <button type="button" class="btn btn-primary" *ngIf="checkAuthority(6)" (click)="openOutputModal()">导出</button>
+    <button type="button" class="btn btn-primary" *ngIf="checkAuthority(5)" (click)="openInHandworkModal()">导入手工订单</button>
+    <button type="button" class="btn btn-primary" *ngIf="checkAuthority(1)" (click)="openAddHandworkModal()">添加手工订单</button>
+  </div>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{total}}条</span>
+      </div>
+    </div>
+  </form>
+  <table class="table table-hover table-bordered">
+    <thead>
+      <tr>
+        <th width="50px">
+          <label class="checkbox-inline custom-checkbox nowrap">
+            <input type="checkbox"
+              [checked]="selectOrderIds.length == items.length && items.length > 0"
+              (change)="onCheckAllOrderChanged($event.target.checked)">
+            <span></span>
+          </label>
+        </th>
+        <!--<th>图片</th>-->
+        <th class="order-id" style="width: 200px">
+          <p>订单号</p>
+          <p class="mb-0">帐号名</p>
+        </th>
+        <th style="width: 350px">商品信息</th>
+        <th style="width: 250px">订单信息</th>
+        <th width="250px">时间
+          <br>[GMT+8:00]</th>
+        <th style="width: 125px">状态</th>
+        <th style="width: 50px">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of items | paginate: { id: 'pager',
+                                                itemsPerPage: pageSize,
+                                                currentPage: pageNumber,
+                                                totalItems: total};let i = index">
+        <td>
+          <label class="checkbox-inline custom-checkbox nowrap">
+            <input type="checkbox"
+              [checked]="selectOrderIds.indexOf(order.id) >= 0"
+              (change)="onCheckOrderChanged($event.target.checked, order.id)"/>
+            <span></span>
+          </label>
+        </td>
+        <td class="short-info order-number-td">
+          <a href="javascript:;" class="orderNumber-text" (click)="openOrderDetailModal(order.id)">{{order.orderNumber}}</a>
+          <span *ngIf="order.channelType=='Amazon'" class="send-mail" title="发送邮件" (click)="sendMail(order.id)">
+            <i class="ion-email"></i>
+          </span>
+          <br>
+          <span class="has-remark" *ngIf="order.orderMessage!=null || order.orderNoteCount!=0">有备注</span>
+          <span>{{order.displayAccountName}}（{{order.channelType!='Manual'?order.sellName:order.creatName}}）</span>
+        </td>
+        <td class="short-info">
+          <div class="skuInfo-wrap">
+            <table>
+              <thead>
+              <tr>
+                <th>渠道SKU/Asin</th>
+                <th>库存SKU</th>
+                <th>数量</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let prdinfo of order.orderLines">
+                <td>
+                  <p *ngIf="prdinfo.externalSku" href="javascript:;">{{prdinfo.externalSku}}</p>
+                  <p *ngIf="!prdinfo.externalSku" href="javascript:;">无</p>
+                  <p *ngIf="prdinfo.externalItemId" href="javascript:;"><a href={{prdinfo.productUrl}} target="_blank">{{prdinfo.externalItemId}}</a></p>
+                  <p *ngIf="!prdinfo.externalItemId" href="javascript:;">无</p>
+                </td>
+                <td>
+                  <p  *ngIf="prdinfo.skuCode" class="skuImgDetail" (click)="openSkuImgDetail()">{{prdinfo.skuCode}}</p>
+                  <p *ngIf="!prdinfo.skuCode" class="skuImgDetail">无</p>
+                </td>
+                <td>
+                  <p>{{prdinfo.quantity}}</p>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </td>
+        <td class="short-info">
+          <div class="infobox">
+            <span>目的地：
+              <img class="country-flag" src="{{order.flag}}" alt="">{{order.shippingCountryName}}</span>
+            <span class="money-text">金额：{{order.currency}} {{order.totalAmount}}</span>
+            <span>买家：{{order.buerName}}</span>
+            <span>仓库：{{order.warehouseName}}</span>
+            <span>物流：{{order.shippingServiceName}}</span>
+            <span *ngIf="order.isCompleteSales">是否回传：是</span>
+            <span *ngIf="!order.isCompleteSales">是否回传：否</span>
+          </div>
+        </td>
+        <td>
+          <div class="infobox">
+            <span>下单时间：{{order.orderedTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</span>
+            <span>付款时间：{{order.paidTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</span>
+
+            <span *ngIf="order.printedTime != null">打印时间：{{order.printedTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</span>
+            <span *ngIf="order.printedTime == null">打印时间：未打印 </span>
+
+            <span *ngIf="order.shippedTime != null">发货时间：{{order.shippedTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</span>
+            <span *ngIf="order.shippedTime == null">发货时间：未发货</span>
+            <span *ngIf="order.successOrFailedTime == null">回传时间：无</span>
+            <span *ngIf="order.successOrFailedTime">回传时间：{{order.successOrFailedTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</span>
+          </div>
+        </td>
+        <!--<td class="short-info" [ngStyle]="{'color':order.exception != 'None'?'rgb(255, 23, 81)':'#fff'}">{{ order.exception != 'None'? '异常订单' : order.statusDesc}}</td>-->
+        <td class="short-info" *ngIf="order.status!='Merged'">
+          <span style="position: relative;" class="statu">
+            <b *ngIf="(order.exception != 'None')&& (!order.isLocked)" class="fa fa-exclamation-triangle text-danger"></b>
+            {{order.exceptionDesc }}
+          </span>
+          <span *ngIf="order.exceptionDesc === '物流异常'" class="display-block order-first-log">详情：{{order.orderFirstLog}}</span>
+          <span *ngIf="(order.exception == 'None')&& (!order.isLocked) ">{{order.statusDesc }}</span>
+          <span style="color:rgb(255, 23, 0);font-size:15px;" *ngIf="order.isLocked == true" class="ion-alert-circled">已锁定</span>
+        </td>
+        <td class="short-info" *ngIf="order.status=='Merged'">
+          <span>{{order.statusDesc}}</span>
+        </td>
+        <td class="short-info">
+          <a href="javascript:;" (click)="openOrderDetailModal(order.id)">详细</a>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+    </tfoot>
+  </table>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{total}}条</span>
+      </div>
+    </div>
+  </form>
+</div>

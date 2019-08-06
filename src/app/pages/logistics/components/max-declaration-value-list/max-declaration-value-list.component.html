@@ -1,0 +1,44 @@
+<div class="wrapper .col-md-8 card card-block">
+  <h3 class="card-title">设置报关价格</h3>
+  <div class="card card-block">
+    <span class="explain">说明：</span>
+    <span>设置后，报关单的申报总值将不会超过此金额。</span>
+  </div>
+  <button class="btn btn-primary add-max" (click)="openModal(null)">添加最高报关价</button>
+  <div class="vertical-scroll table-box">
+    <table class="table table-hover table-bordered">
+      <thead>
+      <tr>
+        <th>地区</th>
+        <th>地区名称</th>
+        <th>地区代码</th>
+        <th>最高报关金额</th>
+        <th>币种</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of amount;let i = index">
+        <td>
+            <img src="{{item.flag}}">
+        </td>
+        <td>{{item.country}}</td>
+        <td>
+          <span>{{item.countryCode}}</span>
+        </td>
+        <td class="amount">
+          <span class="price">{{item.declarationAmount.amount}}</span>
+          <span class="unit">{{item.declarationAmount.currencySymbol}}</span>
+        </td>
+        <td>{{item.declarationAmount.currencyCode}}</td>
+        <td>
+          <a href="javascript:;" class="edit-btn" (click)="openModal(i)">
+            <i class="ion-compose"></i>
+            <span>编辑</span>
+          </a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

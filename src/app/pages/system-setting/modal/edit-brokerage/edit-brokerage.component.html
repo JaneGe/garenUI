@@ -1,0 +1,72 @@
+<form id="form" (submit)="Onsubmit()">
+  <div class="pop-content">
+  <div class="modal-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">{{modalHeader}}
+        <button class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </h4>
+    </div>
+    <div class="modal-body">
+      <div class="card card-block">
+        <table class="table table-bordered">
+          <tbody>
+          <tr>
+            <td>销售平台：</td>
+            <td>
+              <span *ngIf="platform!=''">{{platform}}</span>
+              <select name="platform" class="form-control" *ngIf="platform==''" [(ngModel)]="selectedPlatform">
+                <option *ngFor="let item of platForms">{{item}}</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>帐号：</td>
+            <td class="check">
+              <div class="part checkbox">
+              <label class="checkbox-inline custom-checkbox nowrap">
+                <input type="checkbox" [checked]="selectedallaccount" (change)="selectAllaccount()"/>
+                <span></span>
+              </label>
+              <span>全部</span>
+               </div>
+            </td>
+          </tr>
+          <tr>
+            <td>{{settingValue}}</td>
+            <td>
+                <input type="number" name="brokerage" *ngIf="settingValue=='佣金'" step="0.001" class="form-control" [(ngModel)]="brokerage">
+                <input type="number" name="warningprofit" *ngIf="settingValue=='利润警戒值'" step="0.001" class="form-control" [(ngModel)]="warningprofit">
+            </td>
+          </tr>
+          <tr>
+            <td>是否通过API获取</td>
+            <td class="check">
+              <div class="part checkbox">
+              <label class="checkbox-inline custom-checkbox nowrap">
+                <input type="checkbox"/>
+                <span></span>
+              </label>
+              <span>是</span>
+              </div>
+              <div class="part checkbox">
+                <label class="checkbox-inline custom-checkbox nowrap">
+                  <input type="checkbox"/>
+                  <span></span>
+                </label>
+                <span>否</span>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-sm pull-right submit">保存</button>
+      <a href="javascript:;"  class="btn btn-sm pull-right cancel" (click)="closeModal()">取消</a>
+    </div>
+  </div>
+  </div>
+</form>

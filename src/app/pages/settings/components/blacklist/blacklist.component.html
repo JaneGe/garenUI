@@ -1,0 +1,493 @@
+<div class=".col-md-8 card card-block">
+  <div class="tab-header">
+    <ul>
+      <li (click)="tabChange(1)" [class.tab-selected]="tabChanged === 1">补发列表</li>
+      <li (click)="tabChange(2)" [class.tab-selected]="tabChanged === 2">退货列表</li>
+      <li (click)="tabChange(3)" [class.tab-selected]="tabChanged === 3">退款列表</li>
+      <li (click)="tabChange(4)" [class.tab-selected]="tabChanged === 4">刷单列表</li>
+    </ul>
+  </div>
+  <div class="tab-body" *ngIf="tabChanged === 1">
+    <div class=".col-md-8 card card-block search-wrapper">
+      <ul class="search-condition" [ngStyle]="{'height':searchMore?'auto':'40px'}" *ngIf="!seekmode">
+        <li >
+        <!--<li *ngFor="let item of screen;let index = index">-->
+          <label class="search-title">国家：</label>
+          <!--<div class="screen-wrapper" *ngFor="let item of item.items;let i = index">-->
+            <!--<input type="radio" id="{{index}}{{item}}" name="{{index}}" class="regular-radio" [checked]="i === 0" />-->
+            <!--<label for="{{index}}{{item}}" (click)="onSelect($event.target)">{{item}}</label>-->
+          <!--</div>-->
+          <div class="screen-wrapper" *ngFor="let county of supportFilterCountries;let i = index">
+            <input type="radio" id="county-{{county.value}}" name="county" class="regular-radio" [checked]="i === 0" />
+            <label for="county-{{county.value}}" (click)="onSelectCountry(county.value)">{{county.text}}</label>
+          </div>
+        </li>
+        <li>
+          <label class="search-title">补发次数：</label>
+          <input type="number" class="counter" placeholder="0" [(ngModel)]="reissueNumberStart">
+          <i class="ion-minus"></i>
+          <input type="number" class="counter" placeholder="0" [(ngModel)]="reissueNumberEnd">
+          <div class="btn-group">
+            <button class="btn btn-sm btn-primary" (click)="doSearch()">查找</button>
+          </div>
+        </li>
+        <li>
+          <label class="search-title">收件人搜索：</label>
+          <div class="input-wrapper">
+            <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="输入收件人名称">
+            <div class="btn-group">
+              <button class="btn btn-primary" (click)="doSearch()">搜索</button>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="btn-group search-more" role="group" aria-label="..." *ngIf="!seekmode">
+        <button class="btn btn-primary" [innerHtml]="!searchMore?'高级筛选':'收起'" (click)="SearchMore()">
+        </button>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <form class="pagination-wrapper">
+      <div class="form-group pages">
+        <pagination-controls class="my-pagination" id="pager2" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+          autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+          screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
+      </div>
+      <div class="form-group options pages">
+        <div class="input-group input-group-sm">
+          <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+            <option>1</option>
+            <option>5</option>
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+            <option>200</option>
+          </select>
+          <span class="input-group-addon addon-right">条/页</span>
+          <span class="input-group-addon addon-right">共{{total}}条数据</span>
+        </div>
+      </div>
+    </form>
+    <table class="table table-hover table-bordered">
+      <thead>
+        <tr>
+          <th width="50px">
+            <label class="checkbox-inline custom-checkbox nowrap">
+              <!--<input type="checkbox">-->
+              <input type="checkbox" [checked]="selectOrderIds.length == blacklistUserList.length && blacklistUserList.length > 0" (change)="onCheckAllOrderChanged($event.target.checked)">
+              <span></span>
+            </label>
+          </th>
+          <th>收件人</th>
+          <th>国家</th>
+          <th>补发次数</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of blacklistUserList | paginate: { id: 'pager2',
+        itemsPerPage: pageSize,
+        currentPage: pageNumber,
+        totalItems: total};let i = index">
+          <td>
+            <label class="checkbox-inline custom-checkbox nowrap">
+              <!--<input type="checkbox">-->
+              <input type="checkbox" [checked]="selectOrderIds.indexOf(item.id) >= 0" (change)="onCheckOrderChanged($event.target.checked, item.id)"
+              />
+              <span></span>
+            </label>
+          </td>
+          <td>{{item.buyerName}}</td>
+          <td>{{item.countryCnName}}</td>
+          <td>{{item.reissueNumber}}</td>
+          <td width="250px">
+            <button class="btn btn-sm btn-primary btn-with-icon" (click)="openModal(item.id,'补发')">
+              <i class="ion-information"></i>详情</button>
+            <button class="btn btn-sm btn-danger btn-with-icon" (click)="deleteItem(item.id)">
+              <i class="ion-close-round"></i>移除</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <form class="pagination-wrapper">
+      <div class="form-group pages">
+        <pagination-controls class="my-pagination" id="pager2" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+          autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+          screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
+      </div>
+      <div class="form-group options pages">
+        <div class="input-group input-group-sm">
+          <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+            <option>1</option>
+            <option>5</option>
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+            <option>200</option>
+          </select>
+          <span class="input-group-addon addon-right">条/页</span>
+          <span class="input-group-addon addon-right">共{{total}}条数据</span>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="tab-body" *ngIf="tabChanged === 2">
+    <div class=".col-md-8 card card-block search-wrapper">
+      <ul class="search-condition" [ngStyle]="{'height':searchMore?'auto':'40px'}" *ngIf="!seekmode">
+        <li>
+          <label class="search-title">国家：</label>
+          <div class="screen-wrapper" *ngFor="let county of supportFilterCountries;let i = index">
+            <input type="radio" id="county-{{county.value}}" name="county" class="regular-radio" [checked]="i === 0" />
+            <label for="county-{{county.value}}" (click)="onSelectCountry(county.value)">{{county.text}}</label>
+          </div>
+        </li>
+        <li>
+          <label class="search-title">补发次数：</label>
+          <input type="number" class="counter" placeholder="0" [(ngModel)]="reissueNumberStart">
+          <i class="ion-minus"></i>
+          <input type="number" class="counter" placeholder="0" [(ngModel)]="reissueNumberEnd">
+          <div class="btn-group">
+            <button class="btn btn-sm btn-primary" (click)="doSearch()">查找</button>
+          </div>
+        </li>
+        <li>
+          <label class="search-title">收件人搜索：</label>
+          <div class="input-wrapper">
+            <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="输入收件人名称">
+            <div class="btn-group">
+              <button class="btn btn-primary" (click)="doSearch()">搜索</button>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="btn-group search-more" role="group" aria-label="..." *ngIf="!seekmode">
+        <button class="btn btn-primary" [innerHtml]="!searchMore?'高级筛选':'收起'" (click)="SearchMore()">
+        </button>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <form class="pagination-wrapper">
+      <div class="form-group pages">
+        <pagination-controls class="my-pagination" id="pager2" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+          autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+          screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
+      </div>
+      <div class="form-group options pages">
+        <div class="input-group input-group-sm">
+          <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+            <option>1</option>
+            <option>5</option>
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+            <option>200</option>
+          </select>
+          <span class="input-group-addon addon-right">条/页</span>
+          <span class="input-group-addon addon-right">共{{total}}条数据</span>
+        </div>
+      </div>
+    </form>
+    <table class="table table-hover table-bordered">
+      <thead>
+        <tr>
+          <th width="50px">
+            <label class="checkbox-inline custom-checkbox nowrap">
+              <input type="checkbox" [checked]="selectOrderIds.length == blacklistUserList.length && blacklistUserList.length > 0" (change)="onCheckAllOrderChanged($event.target.checked)">
+              <span></span>
+            </label>
+          </th>
+          <th>收件人</th>
+          <th>国家</th>
+          <th>退货次数</th>
+          <th>退货总金额</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of blacklistUserList | paginate: { id: 'pager2',
+          itemsPerPage: pageSize,
+          currentPage: pageNumber,
+          totalItems: total};let i = index">
+          <td>
+            <label class="checkbox-inline custom-checkbox nowrap">
+              <input type="checkbox" [checked]="selectOrderIds.indexOf(item.id) >= 0" (change)="onCheckOrderChanged($event.target.checked, item.id)"
+              />
+              <span></span>
+            </label>
+          </td>
+          <td>{{item.buyerName}}</td>
+          <td>{{item.countryCnName}}</td>
+          <td>{{item.reissueNumber}}</td>
+          <td>{{item.amount}}</td>
+          <td width="250px">
+            <button class="btn btn-sm btn-primary btn-with-icon" (click)="openModal(item.id,'退货')">
+              <i class="ion-information"></i>详情</button>
+            <button class="btn btn-sm btn-danger btn-with-icon" (click)="deleteItem(item.id)">
+              <i class="ion-close-round"></i>移除</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <form class="pagination-wrapper">
+      <div class="form-group pages">
+        <pagination-controls class="my-pagination" id="pager2" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+          autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+          screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
+      </div>
+      <div class="form-group options pages">
+        <div class="input-group input-group-sm">
+          <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+            <option>1</option>
+            <option>5</option>
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+            <option>200</option>
+          </select>
+          <span class="input-group-addon addon-right">条/页</span>
+          <span class="input-group-addon addon-right">共{{total}}条数据</span>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="tab-body" *ngIf="tabChanged === 3">
+    <div class=".col-md-8 card card-block search-wrapper">
+      <ul class="search-condition" [ngStyle]="{'height':searchMore?'auto':'40px'}" *ngIf="!seekmode">
+        <li>
+          <label class="search-title">国家：</label>
+          <div class="screen-wrapper" *ngFor="let county of supportFilterCountries;let i = index">
+            <input type="radio" id="county-{{county.value}}" name="county" class="regular-radio" [checked]="i === 0" />
+            <label for="county-{{county.value}}" (click)="onSelectCountry(county.value)">{{county.text}}</label>
+          </div>
+        </li>
+        <li>
+          <label class="search-title">补发次数：</label>
+          <input type="number" class="counter" placeholder="0" [(ngModel)]="reissueNumberStart">
+          <i class="ion-minus"></i>
+          <input type="number" class="counter" placeholder="0" [(ngModel)]="reissueNumberEnd">
+          <div class="btn-group">
+            <button class="btn btn-sm btn-primary" (click)="doSearch()">查找</button>
+          </div>
+        </li>
+        <li>
+          <label class="search-title">收件人搜索：</label>
+          <div class="input-wrapper">
+            <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="输入收件人名称">
+            <div class="btn-group">
+              <button class="btn btn-primary" (click)="doSearch()">搜索</button>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="btn-group search-more" role="group" aria-label="..." *ngIf="!seekmode">
+        <button class="btn btn-primary" [innerHtml]="!searchMore?'高级筛选':'收起'" (click)="SearchMore()">
+        </button>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <form class="pagination-wrapper">
+      <div class="form-group pages">
+        <pagination-controls class="my-pagination" id="pager2" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+          autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+          screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
+      </div>
+      <div class="form-group options pages">
+        <div class="input-group input-group-sm">
+          <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+            <option>5</option>
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+            <option>200</option>
+          </select>
+          <span class="input-group-addon addon-right">条/页</span>
+          <span class="input-group-addon addon-right">共{{total}}条数据</span>
+        </div>
+      </div>
+    </form>
+    <table class="table table-hover table-bordered">
+      <thead>
+        <tr>
+          <th width="50px">
+            <label class="checkbox-inline custom-checkbox nowrap">
+              <input type="checkbox" [checked]="selectOrderIds.length == blacklistUserList.length && blacklistUserList.length > 0" (change)="onCheckAllOrderChanged($event.target.checked)">
+              <span></span>
+            </label>
+          </th>
+          <th>收件人</th>
+          <th>国家</th>
+          <th>退款次数</th>
+          <th>退款总金额</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of blacklistUserList | paginate: { id: 'pager2',
+        itemsPerPage: pageSize,
+        currentPage: pageNumber,
+        totalItems: total};let i = index">
+          <td>
+            <label class="checkbox-inline custom-checkbox nowrap">
+              <input type="checkbox" [checked]="selectOrderIds.indexOf(item.id) >= 0" (change)="onCheckOrderChanged($event.target.checked, item.id)"
+              />
+              <span></span>
+            </label>
+          </td>
+          <td>{{item.buyerName}}</td>
+          <td>{{item.countryCnName}}</td>
+          <td>{{item.reissueNumber}}</td>
+          <td>{{item.amount}}</td>
+          <td width="250px">
+            <button class="btn btn-sm btn-primary btn-with-icon" (click)="openModal(item.id,'退款')">
+              <i class="ion-information"></i>详情</button>
+            <button class="btn btn-sm btn-danger btn-with-icon" (click)="deleteItem(item.id)">
+              <i class="ion-close-round"></i>移除</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <form class="pagination-wrapper">
+      <div class="form-group pages">
+        <pagination-controls class="my-pagination" id="pager2" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+          autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+          screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
+      </div>
+      <div class="form-group options pages">
+        <div class="input-group input-group-sm">
+          <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+            <option>5</option>
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+            <option>200</option>
+          </select>
+          <span class="input-group-addon addon-right">条/页</span>
+          <span class="input-group-addon addon-right">共{{total}}条数据</span>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="tab-body" *ngIf="tabChanged === 4">
+    <div class=".col-md-8 card card-block search-wrapper">
+      <ul class="search-condition" [ngStyle]="{'height':searchMore?'auto':'40px'}" *ngIf="!seekmode">
+        <li>
+          <label class="search-title">国家：</label>
+          <div class="screen-wrapper" *ngFor="let county of supportFilterCountries;let i = index">
+            <input type="radio" id="county-{{county.value}}" name="county" class="regular-radio" [checked]="i === 0" />
+            <label for="county-{{county.value}}" (click)="onSelectCountry(county.value)">{{county.text}}</label>
+          </div>
+        </li>
+        <li>
+          <label class="search-title">收件人搜索：</label>
+          <div class="input-wrapper">
+            <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="输入收件人名称">
+            <div class="btn-group">
+              <button class="btn btn-primary" (click)="doSearch()">搜索</button>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="btn-group search-more" role="group" aria-label="..." *ngIf="!seekmode">
+        <button class="btn btn-primary" [innerHtml]="!searchMore?'高级筛选':'收起'" (click)="SearchMore()">
+        </button>
+      </div>
+    </div>
+    <button class="btn btn-sm btn-primary" (click)="openAddShuadanModal()">添加刷单用户信息</button>
+    <div class="clearfix"></div>
+    <form class="pagination-wrapper">
+      <div class="form-group pages">
+        <pagination-controls class="my-pagination" id="pager2" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+          autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+          screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
+      </div>
+      <div class="form-group options pages">
+        <div class="input-group input-group-sm">
+          <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+            <option>5</option>
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+            <option>200</option>
+          </select>
+          <span class="input-group-addon addon-right">条/页</span>
+          <span class="input-group-addon addon-right">共{{total}}条数据</span>
+        </div>
+      </div>
+    </form>
+    <table class="table table-hover table-bordered">
+      <thead>
+        <tr>
+          <th width="50px">
+            <label class="checkbox-inline custom-checkbox nowrap">
+              <input type="checkbox" [checked]="selectOrderIds.length == blacklistUserList.length && blacklistUserList.length > 0" (change)="onCheckAllOrderChanged($event.target.checked)">
+              <span></span>
+            </label>
+          </th>
+          <th>收件人</th>
+          <th>国家</th>
+          <th>地址信息</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of blacklistUserList | paginate: { id: 'pager2',
+        itemsPerPage: pageSize,
+        currentPage: pageNumber,
+        totalItems: total};let i = index">
+          <td>
+            <label class="checkbox-inline custom-checkbox nowrap">
+              <input type="checkbox" [checked]="selectOrderIds.indexOf(item.id) >= 0" (change)="onCheckOrderChanged($event.target.checked, item.id)"
+              />
+              <span></span>
+            </label>
+          </td>
+          <td>{{item.buyerName}}</td>
+          <td>{{item.countryCnName}}</td>
+          <td>{{item.stateOrProvince}}-{{item.city}}-{{item.addressLine}}</td>
+          <td width="250px">
+            <button class="btn btn-sm btn-primary btn-with-icon" (click)="openModal(item.id,'刷单')">
+              <i class="ion-information"></i>详情</button>
+            <button class="btn btn-sm btn-danger btn-with-icon" (click)="deleteItem(item.id)">
+              <i class="ion-close-round"></i>移除</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <form class="pagination-wrapper">
+      <div class="form-group pages">
+        <pagination-controls class="my-pagination" id="pager2" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+          autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+          screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
+      </div>
+      <div class="form-group options pages">
+        <div class="input-group input-group-sm">
+          <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+            <option>5</option>
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+            <option>200</option>
+          </select>
+          <span class="input-group-addon addon-right">条/页</span>
+          <span class="input-group-addon addon-right">共{{total}}条数据</span>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        font-size: 1mm;
+    }
+
+    .bill-wrap {
+        width: 32mm;
+        height: 25mm;
+        float: left;
+    }
+
+    .bill-wrap:nth-child(odd) {
+        margin-left: 2mm;
+    }
+
+    .bill-wrap td {
+        text-align: center;
+    }
+
+    .qr-wrap img {
+        width: 12mm;
+        margin: 0 auto;
+    }
+
+    .bill-number {
+        font-size: 1mm;
+        text-align: right;
+    }
+</style>
+
+<body>
+    <table class="bill-wrap">
+        <tbody>
+            <tr>
+                <td>LMS00384F</td>
+                <td>D28C03</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="qr-wrap">
+                    <img src="./QR.png" alt="">
+                    <span class="bill-number">1/30</span>
+                </td>
+            </tr>
+            <tr>
+                <td>247912</td>
+                <td>1-8888</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>

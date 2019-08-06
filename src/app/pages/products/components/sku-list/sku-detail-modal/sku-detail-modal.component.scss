@@ -1,0 +1,174 @@
+.attrBox-wrapper {
+    float: left;
+    width: 100%;
+    margin-bottom: 15px;
+    .inputArrBox input {
+        border-color: #209e91;
+        margin-top: 8px;
+    }
+    div.attrBox {
+        padding: 5px;
+        border: none;
+        border-radius: 5px;
+        margin: 8px 0;
+        height: 32px;
+        background-color: rgba(0, 0, 0, .3);
+        span.attrItem {
+            display: inline-block;
+            padding: 2px 4px;
+            border-radius: 3px;
+            background-color: #00ABFF;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+    }
+}
+
+.pop-content {
+    width: 1100px;
+    margin-left: -350px;
+    .modal-title {
+        display: block;
+        width: 100%;
+        height: 30px;
+    }
+    .tab-child {
+        .input-group {
+            .form-control {
+                font-size: 0.9em;
+            }
+            .input-group-addon {
+                font-size: 1em;
+                text-indent: -0.5em;
+            }
+            .btn {
+                border-radius: 0 3px 3px 0;
+            }
+        }
+        .info-modal-title {
+            display: inline-block;
+            width: 100%;
+            height: 20px;
+            margin: 5px 0;
+            font-size: 15px;
+        }
+        .table {
+            margin: 20px 0;
+            float: left;
+            a {
+                color: #fff;
+                text-decoration: underline !important;
+                &:hover {
+                    color: rgb(1, 18, 250);
+                }
+            }
+            .natures {
+                display: inline-block;
+                margin: 0 5px;
+                border: 1px solid rgba(0, 0, 0, .1);
+                border-radius: 5px;
+            }
+        }
+    }
+    .btn-group {
+        float: right;
+    }
+}
+
+form {
+    ul {
+        width: 50%;
+        height: auto;
+        float: left;
+        padding: 0;
+        li {
+            display: block;
+            width: 100%;
+            float: left;
+            margin: 10px 0;
+            label {
+                display: block;
+                width: 100px;
+                float: left;
+            }
+            .input-group {
+                width: 360px;
+                float: left;
+                margin: 0;
+                .addon-right {
+                    width: 40px;
+                }
+            }
+            p {
+                width: 100%;
+                font-size: 12px;
+                float: left;
+                margin: 10px 0 -10px 20px;
+            }
+            .short-input {
+                width: 360px;
+                float: left;
+            }
+            .error-input {
+                border: 1px solid rgb(253, 66, 66);
+                color: rgb(253, 66, 66)
+            }
+        }
+    }
+}
+
+table tbody tr td div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+table tbody tr td div p {
+    margin: 0;
+    line-height: 1.1;
+}
+
+table tbody {
+    max-height: 142px;
+    overflow-y: auto;
+}
+
+.tinput {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.item {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 14px !important;
+    width: 50% !important;
+}
+
+.item input {
+    width: calc(100% - 60px);
+    display: inline-block;
+}
+
+.item:nth-of-type(1) {
+    padding-left: 5px !important;
+}
+
+.item:nth-of-type(2) {
+    float: right !important;
+}
+
+.attrsGroup {
+    display: inline-block;
+    width: auto;
+    float: left;
+    margin-right: 15px;
+}
+
+.right {
+    float: right !important;
+}
+
+.myModal {
+    margin-left: -354px;
+}

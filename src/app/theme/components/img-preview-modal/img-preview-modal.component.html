@@ -1,0 +1,25 @@
+<div class="pop-content">
+  <div class="modal-header head">
+    <h4 class="modal-title mytitle">图片预览</h4>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <label class="display-block">
+      <span class="explain">说明</span>
+      点击图片查看大图
+    </label>
+    <div class="main-img card">
+      <img src="{{checkedImg.src}}" alt="{{checkedImg.src}}">
+    </div>
+    <div class="img-items card" *ngFor="let item of imgItems;let i = index" [ngClass]="{'check-item':item.checked}" (click)="checkedItem(i)">
+      <img src="{{item.src}}" alt="{{item.src}}">
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="closeModal()">关闭</button>
+    </div>
+  </div>
+</div>

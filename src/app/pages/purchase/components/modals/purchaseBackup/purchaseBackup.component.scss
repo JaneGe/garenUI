@@ -1,0 +1,68 @@
+.pop-content {
+    width: 800px;
+    position: absolute;
+    left: 50%;
+    top: 50px;
+    transform: translate(-50%, 0);
+}
+
+.card {
+    margin-bottom: 15px;
+}
+.searchResult-wrap{
+  .add{
+    display: flex;
+    padding:8px;
+    p{
+      margin-bottom: 0;
+      height: 35px;
+      display: flex;
+      width: 100%;
+      &:nth-of-type(2){
+        width: calc(100% - 510px);
+        span{text-align: center}
+      }
+      span{
+        width: 80px;
+        display: inline-block;
+        line-height: 35px;
+      }
+      input{
+        height: 35px;
+      }
+    }
+  }
+  .table-wrap{
+    max-height: 300px;
+    overflow-y: auto
+  }
+}
+.mytextarea{
+  height: 300px;
+  overflow-y: auto;
+}
+.icon-wraper{
+  display: inline-block;
+  background: #209e91;
+  padding:2px;
+  border-radius: 2px;
+  width: 22px;
+  height: 22px;
+  line-height: 22px;
+  cursor: pointer;
+}
+input.priority-input{
+  text-align: center;
+  background-color: rgba(0,0,0,.3);
+  color:white;
+  border: none;
+}
+.show-wrap{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .icon-wraper{
+    margin-right: 15px;
+  }
+}
+table tbody tr td input{border-radius: 5px;width: 50%;height:70%;}

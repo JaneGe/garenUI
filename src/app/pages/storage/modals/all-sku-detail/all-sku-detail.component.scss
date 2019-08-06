@@ -1,0 +1,34 @@
+tr td button {
+    background-color: #f95372!important;
+    border-color: #f95372!important;
+}
+.magRL{
+  margin:0 5px;
+}
+.search-condition {
+    width: 100%;
+    float: left;
+    height: auto;
+    padding: 0 5px;
+    li {
+        width: 100%;
+        float: left;
+
+        .search-title {
+            width: 120px;
+            font-weight: bold;
+            float: left;
+            margin: 7px 0;
+        }
+        .input-group {
+            width: 400px;
+            height: 30px;
+            float: left;
+            .btn-group {
+                .btn {
+                    border-radius: 0 3px 3px 0;
+                }
+            }
+        }
+    }
+}

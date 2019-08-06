@@ -1,0 +1,66 @@
+<form class="smmodal" (submit)="OnSubmit()">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">{{modalHeader}}
+        <span class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </span>
+      </h4>
+    </div>
+    <div class="modal-body">
+      <div class="card card-block">
+        <div class="platform">
+          <p class="inline">平台：</p>
+          <p class="inline">
+            <select name="select" #account
+                    (change)="platformChange(account.value)">
+              <option *ngFor="let option of Platforms" value={{option}}
+                      [attr.selected]="option == selectedPlatform ? true : null"
+                      [style.color]="option == selectedPlatform ? 'red' : 'green'">
+                {{option}}
+              </option>
+            </select>
+          </p>
+        </div>
+        <div class="station">
+          <p class="inline">站点：</p>
+          <p class="inline">
+            <select name="select" #station id="station"
+                    (change)="stationChange(station.value)">
+              <option *ngFor="let station of Stations" value={{station}}
+                      [attr.selected]="station == selectedStation ? true : null"
+                      [style.color]="station == selectedStation ? 'red' : 'green'">
+                {{station}}
+              </option>
+            </select>
+          </p>
+        </div>
+        <div class="logistics">
+          <p class="inline">物流：</p>
+          <p class="inline">
+            <select name="select" #logisticses (change)="choose(logisticses.value)">
+              <option selected>请选择</option>
+              <option *ngFor="let logistics of Logistics;"
+                      value={{account.value}}+{{station.value}}+{{logistics.shippingCode}}+{{logistics.id}}>
+                {{logistics.shippingName}}
+              </option>
+            </select>
+          </p>
+        </div>
+      </div>
+      <div>
+        <h4>选择内容：<span class="tip">(单击删除)</span></h4>
+        <p class="inline box">
+          <span class="result" *ngFor="let item of limitinglogistics" (click)="del(item)">
+            ({{item.platform}})({{item.stations}}){{item.logistics}}
+          </span>
+        </p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-sm pull-right submit">确定</button>
+      <button class="btn btn-sm pull-right cancel" (click)="closeModal()">取消</button>
+    </div>
+  </div>
+</form>
+

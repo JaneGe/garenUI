@@ -1,0 +1,21 @@
+.pop-content {
+    width: 500px;
+    height: auto;
+    position: relative;
+    left:200px;
+}
+
+.modal-body {
+    iframe{
+        width:460px;
+    }
+}
+
+@media print {
+    body {
+        display: none;
+    }
+    .modal-content {
+        display: block;
+    }
+}

@@ -1,0 +1,14 @@
+.pop-content {
+    width: 500px;
+    height: auto;
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.modal-body {
+    iframe {
+        width: 460px;
+    }
+}

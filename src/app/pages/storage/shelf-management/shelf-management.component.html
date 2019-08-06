@@ -1,0 +1,105 @@
+<div class="card card-block">
+  <div class="btn-group" style="margin:10px 0">
+    <button class="btn btn-primary btn-sm" [routerLink]="['/pages/storage/area-management',18]">
+      <i class="ion-reply"></i> 返回区域管理列表</button>
+  </div>
+  <div class="card card-block">
+    <ul>
+      <li>
+        <label class="list-label">货架位筛选：</label>
+        <div class="screen-wrapper" *ngFor="let item of screenItem;let i = index">
+          <input type="radio" id="{{item.name}}" name="screenItem" class="regular-radio" />
+          <label for="{{item.name}}" (click)="onSelect(i)">{{item.name}}</label>
+        </div>
+      </li>
+      <li>
+        <label class="list-label">货架位搜索：</label>
+        <div class="input-group search-group">
+          <input type="text" class="form-control" (keyup.enter)="doSearch()" [(ngModel)]="serachCode" placeholder="请输入货架位...">
+          <div class="btn-group">
+            <button class="btn btn-sm btn-primary" (click)="doSearch()">搜索货架位</button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="btn-box">
+    <button class="btn btn-sm btn-primary" (click)="openaddShelfModal()">
+      <span class="ion-plus-round icon-gap"></span>
+      新增货架位
+    </button>
+  </div>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{total}}条</span>
+      </div>
+    </div>
+  </form>
+  <table class="table table-hover table-bordered gap" id="table">
+    <thead>
+      <tr class="black-muted-bg">
+        <th>货架位</th>
+        <th>是否使用</th>
+        <th>类型</th>
+        <th>是否锁定</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of items| paginate: { id: 'pager',
+                                                      itemsPerPage: pageSize,
+                                                      currentPage: pageNumber,
+                                                      totalItems: total}">
+        <td>{{item.code}}</td>
+        <td>否</td>
+        <td>{{item.locationTypeDesc}}</td>
+        <td>否</td>
+        <td>
+          <button class="btn btn-xs btn-primary">锁定</button>
+          <button class="btn btn-xs btn-info">打印</button>
+          <button class="btn btn-xs btn-success" (click)="deleteLocationCode(item.id)">删除</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{total}}条</span>
+      </div>
+    </div>
+  </form>
+</div>

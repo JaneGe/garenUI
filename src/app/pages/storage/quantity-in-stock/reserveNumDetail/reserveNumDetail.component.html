@@ -1,0 +1,78 @@
+<form class="customform">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">预留库存详情
+        <button class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </h4>
+    </div>
+    <div class="modal-body">
+      <div class="card card-block">
+
+        <div class="searchPart" style="margin-bottom: 15px;">
+          <span class="title">搜索类型：</span>
+          <div class="buttonpart">
+            <span class="tag"  *ngFor="let item of searchType" (click)="addClass1($event.target,'searchType',item)">{{item.text}}</span>
+          </div>
+        </div>
+        <div>
+          <div class="input-group">
+            <span class="title">搜索内容：</span>
+            <input type="text" class="form-control customInput" name="searchText" [(ngModel)]="searchText"   (keyup.enter)="loadData()">
+            <span class="input-group-addon">
+              <span  (click)="loadData()">搜索</span>
+            </span>
+          </div>
+        </div>
+
+      </div>
+      <form class="pagination-wrapper">
+        <div class="form-group pages">
+          <pagination-controls class="my-pagination" id="repager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+                               autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                               screenReaderCurrentLabel="You're on page">
+          </pagination-controls>
+        </div>
+        <div class="form-group options pages">
+          <div class="input-group input-group-sm">
+            <select style="height: 30px!important;" class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="loadData()">
+              <option>1</option>
+              <option>5</option>
+              <option>10</option>
+              <option>20</option>
+              <option>50</option>
+              <option>100</option>
+              <option>200</option>
+            </select>
+            <span class="input-group-addon addon-right">条/页</span>
+            <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条数据</span>
+          </div>
+        </div>
+      </form>
+      <table class="table table-hover table-bordered">
+       <thead>
+       <tr class="black-muted-bg">
+         <th>订单号</th>
+         <th>包裹号</th>
+         <th>数量</th>
+       </tr>
+       </thead>
+        <tbody>
+        <tr *ngFor="let item of items|paginate: { id: 'repager',
+                                                      itemsPerPage: PageInfo.pageSize,
+                                                      currentPage: PageInfo.pageIndex,
+                                                      totalItems: PageInfo.totalCount}">
+          <td>{{item.orderNumber}}</td>
+          <td>{{item.packageNumber}}</td>
+          <td>{{item.quantity}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-sm pull-right cancel" (click)="closeModal()">关闭</button>
+    </div>
+  </div>
+</form>
+

@@ -1,0 +1,90 @@
+h4{
+  text-align: left;
+  border-bottom: 1px solid white;
+  margin-bottom: 15px;
+  padding-bottom: 5px;
+  line-height: 36px;
+  >button{
+   margin-left: 10px;
+  }
+}
+.formula{
+  padding-bottom: 40px;
+  .content{
+    display: flex;
+    align-items: center;
+    span{
+      display: inline-block;
+      margin-right: 10px;
+    }
+    .item{
+      display: flex;
+      width: 200px;
+      flex-wrap: wrap;
+      position: relative;
+      .input-group{
+        margin-bottom: 0;
+      }
+      .tip{
+        position: absolute;
+        width: 200px;
+        bottom: -30px;
+        left:50%;
+        margin-left: -50px;
+      }
+    }
+    .confirm{
+      height: 35px;
+      margin-left: 10px;
+      button{
+        height: 35px;
+      }
+    }
+    .operate{
+      margin:0 10px;
+      font-size: 20px;
+    }
+  }
+}
+.brokerage{
+  .option{
+    border: 1px solid white;
+    border-bottom: none;
+    border-radius: 3px 3px 0 0 ;
+    padding:5px 0;
+    span{
+      margin-left: 10px;
+      cursor: pointer;
+      i{
+        margin-right: 5px;
+      }
+    }
+  }
+  table>tbody>tr>td>a{
+    color: white;
+    text-decoration: underline!important;
+  }
+  table.custom-table tr th{
+    width: 200px;
+  }
+}
+input{
+  text-align: center;
+  &:disabled{
+    color: #e3e3e3;
+  }
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0;
+}
+#thirdTime thead tr th{position: relative;}
+.title{position: absolute;left: 50%;margin-left: -100px;}
+table tbody tr td>.input-group{
+  margin:5px 0;
+  height: 35px;
+}
+.select2 /deep/ .select2-container--default.select2-container--disabled .select2-selection--single{
+  cursor: not-allowed;
+}

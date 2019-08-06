@@ -1,0 +1,210 @@
+<div class="wrapper card card-block">
+  <h3 class="card-title">物流方式列表</h3>
+  <div class="card card-block">
+    <div class="screen-box">
+      <ul class="screen-list">
+        <li>
+          <label class="screen-title">选择仓库：</label>
+          <div class="screen-wrapper" *ngFor="let tag of allWarehouses;let i = index">
+            <input type="radio" id="warehouseId{{tag.warehouseId}}" name="tag" class="regular-radio"
+                   [checked]="i === 0"/>
+            <label for="warehouseId{{tag.warehouseId}}"
+                   (click)="onWarehouseSelect(tag.warehouseId)">{{tag.name}}</label>
+          </div>
+        <li>
+          <label class="screen-title">物流承运商：</label>
+          <div class="screen-wrapper" *ngFor="let sp of allSps;let i = index">
+            <input type="radio" id="sp_{{sp.spId}}" name="carrier" class="regular-radio" [checked]="i === 0"/>
+            <label for="sp_{{sp.spId}}" (click)="onSpSelect(sp.spId)">{{sp.spName}}</label>
+          </div>
+        </li>
+        <li>
+          <label class="screen-title">渠道使用状态：</label>
+          <label class="radio-inline custom-radio nowrap">
+            <input type="radio" name="isShippingMethodsUsing" id="inlineRadio2"
+                   [checked]="isShippingMethodsUsing == null" (click)="setIsUsingFilterValue()"
+            />
+            <span>全部</span>
+          </label>
+          <label class="radio-inline custom-radio nowrap">
+            <input type="radio" name="isShippingMethodsUsing" id="inlineRadio3"
+                   [checked]="isShippingMethodsUsing == true" (click)="setIsUsingFilterValue(true)"
+            />
+            <span>是</span>
+          </label>
+          <label class="radio-inline custom-radio nowrap">
+            <input type="radio" name="isShippingMethodsUsing" id="inlineRadio3"
+                   [checked]="isShippingMethodsUsing == false" (click)="setIsUsingFilterValue(false)"
+            />
+            <span>否</span>
+          </label>
+        </li>
+        <li>
+          <label class="screen-title">搜索类型：</label>
+          <div class="screen-wrapper" *ngFor="let st of searchTypes;let i = index">
+            <input type="radio" id="types-{{st.value}}" name="searchType" class="regular-radio" [checked]="i === 0"/>
+            <label for="types-{{st.value}}" (click)="onSearchTypeSelect(st.value)">{{st.text}}</label>
+          </div>
+        </li>
+        <li>
+          <label class="screen-title">搜索内容：</label>
+          <div class="input-group search">
+            <input type="text" class="form-control" (keyup.enter)="doSearch()" placeholder="搜索物流信息"
+                   [(ngModel)]="searchText">
+            <div class="btn-group">
+              <button class="btn btn-sm btn-primary" (click)="doSearch()">搜索</button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="btn-box">
+    <button type="button" class="btn btn-primary" (click)="openAddShippingServiceSettingModal()">添加物流方式</button>
+    <button type="button" class="btn btn-primary" (click)="openInShamTrackNumberModal()">导入虚拟跟踪号</button>
+  </div>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9"
+                           directionLinks="true"
+                           autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination"
+                           screenReaderPageLabel="page"
+                           screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{total}}条</span>
+      </div>
+    </div>
+  </form>
+  <div class="table-box">
+    <table class="table table-hover table-bordered">
+      <thead>
+      <tr>
+        <th>物流名称</th>
+        <th>物流商</th>
+        <th>是否需跟踪号</th>
+        <th>授权</th>
+        <th>跟踪号码</th>
+        <th>使用状态</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let shippingMethods of pageShippingMethods| paginate: { id: 'pager',
+      itemsPerPage: pageSize,
+      currentPage: pageNumber,
+      totalItems: total}">
+        <td>{{shippingMethods.ssName}}
+          <ng-container *ngIf="shippingMethods.logisticsProviderShippingMethod != null">
+            <br/><span class="label label-success">渠道代码: {{shippingMethods.logisticsProviderShippingMethod}}</span>
+          </ng-container>
+
+        </td>
+        <td>{{shippingMethods.spName}}</td>
+        <td *ngIf="shippingMethods.hasTrackingNumber">
+          <span *ngIf="shippingMethods.trackingNumberApiName==null " class="false-sign custombtn"
+                (click)="openImportTraceNumModal(shippingMethods.ssId)">导入</span>
+          是
+        </td>
+        <td *ngIf="!shippingMethods.hasTrackingNumber">
+          否
+        </td>
+        <td *ngIf="shippingMethods.needAuthorize">
+            <span class="false-sign" [ngStyle]="{'color':shippingMethods.isAuthorized?'#F8D452':'#F95372'}">
+              <i class="ion-flag"></i>
+            </span>
+          {{shippingMethods.isAuthorized?"已授权":"未授权"}}
+        </td>
+        <td *ngIf="!shippingMethods.needAuthorize">
+            <span class="false-sign" [ngStyle]="{'color':shippingMethods.isAuthorized?'#F8D452':'#F95372'}">
+              <i class="ion-flag"></i>
+            </span>
+          无需授权
+        </td>
+        <td>
+            <span class="false-sign" [ngStyle]="{'color':shippingMethods.hasTrackingNumber?'#F8D452':'#F95372'}">
+              <i class="ion-flag"></i>
+            </span>
+          {{shippingMethods.hasTrackingNumber?"有":"无"}}
+        </td>
+        <td>
+            <span class="false-sign" [ngStyle]="{'color':shippingMethods.isSelected?'#F8D452':'#F95372'}">
+              <i class="ion-flag"></i>
+            </span>
+          {{shippingMethods.isSelected?"已启用":"未启用"}}
+        </td>
+        <td>
+          <a *ngIf="shippingMethods.isSelected" href="javascript:;" class="edit-btn"
+             (click)="unSelectShippingService(shippingMethods.ssId)">
+            <i class="ion-close-round"></i>
+            <span>停用</span>
+          </a>
+          <a
+            *ngIf="(!shippingMethods.isSelected && shippingMethods.isAuthorized)|| (!shippingMethods.needAuthorize && !shippingMethods.isSelected)"
+            href="javascript:;" class="edit-btn" (click)="selectShippingService(shippingMethods.ssId)">
+            <i class="ion-checkmark-round"></i>
+            <span>启用</span>
+          </a>
+          <a *ngIf="shippingMethods.isSelected" href="javascript:;"
+             (click)="openShippingServiceSettingModal(shippingMethods.ssId)"
+             class="edit-btn">
+            <i class="ion-compose"></i>
+            <span>编辑</span>
+          </a>
+          <a *ngIf="shippingMethods.isCustom" href="javascript:;"
+             (click)="deleteCustomShippingService(shippingMethods.ssId)" class="edit-btn">
+            <i class="ion-trash-b"></i>
+            <span>删除</span>
+          </a>
+          <a *ngIf="shippingMethods.isSelected" href="javascript:;" class="edit-btn"
+             (click)="openShippingFeeRuleModal(shippingMethods.ssId, shippingMethods.ssName)">
+            <i class="ion-gear-a"></i>
+            <span>设置运费规则</span>
+          </a>
+          <a href="javascript:;" class="edit-btn" (click)="openVirtualTracknumberSettingModal(shippingMethods.ssId)">
+            <i class="ion-levels"></i>
+            <span>虚拟跟踪号管理</span>
+          </a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9"
+                           directionLinks="true"
+                           autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination"
+                           screenReaderPageLabel="page"
+                           screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{total}}条</span>
+      </div>
+    </div>
+  </form>
+</div>

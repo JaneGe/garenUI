@@ -1,0 +1,18 @@
+.search-condition {
+    li {
+        margin: 5px 0;
+        .input-group {
+            width: 300px;
+        }
+        .input-group-addon {
+            border-radius: 0 5px 5px 0;
+        }
+        .btn {
+            margin-left: 100px;
+        }
+    }
+}
+
+.ship-fee {
+    cursor: pointer;
+}

@@ -1,0 +1,74 @@
+.pagination-wrapper {
+    >.form-group {
+        margin: 0;
+    }
+}
+
+table {
+    font-size: 12px;
+    tr th {
+        padding: 6px;
+    }
+    td div.error {
+        span>i.errornum {
+            display: inline-block;
+            font-style: normal;
+            color: red;
+            width: 50px;
+            font-size: 18px;
+        }
+    }
+    td:last-of-type button {
+        width: 118px;
+        font-size: 14px;
+        margin-bottom: 3px;
+    }
+    td>a.hover-a {
+        text-decoration: underline!important;
+        cursor: pointer;
+    }
+}
+
+div.slide-wrap {
+    max-height: 500px;
+    overflow-y: auto;
+    table {
+        tbody tr td>div.error i.errornum {
+            width: auto;
+        }
+    }
+}
+
+.input-group {
+    margin: 10px;
+}
+
+.buy-count-text {
+    width: 60px;
+    height: 30px;
+    background: rgba(255, 255, 255, .1);
+    border: 1px solid #fff;
+    outline: none;
+    border-radius: 3px 0 0 3px;
+    color: #fff;
+    text-align: center;
+    font-size: 14px;
+    float: left;
+    &:focus {
+        border: 1px solid #209e91;
+    }
+}
+
+.count-edit-btn {
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    background: #209e91;
+    border: none;
+    float: left;
+    color: #fff;
+    font-size: 12px;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 0 3px 3px 0;
+}

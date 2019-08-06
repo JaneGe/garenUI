@@ -1,0 +1,34 @@
+<div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <span class="modal-title">发送邮件</span>
+  </div>
+  <div class="modal-body">
+    <div class="tem-wrap">
+      <label>
+        <span class="must">必填</span>主题：</label>
+      <input type="text" class="form-control" placeholder="主题" id="subject" name="subject" [(ngModel)]="subject">
+    </div>
+    <div class="tem-wrap-6">
+      <label>收件人邮箱：</label>
+      <input type="text" class="form-control" placeholder="收件人邮箱" id="mailAddress" name="mailAddress" [(ngModel)]="mailAddress">
+    </div>
+    <div class="tem-wrap-6">
+      <label>发件人邮箱：</label>
+      <input type="text" class="form-control" placeholder="发件人邮箱" id="sendAddress" name="sendAddress" [(ngModel)]="sendAddress">
+    </div>
+    <div class="tem-wrap-template">
+      <label>
+        <span class="explain">选填</span>选择邮件模板：</label>
+      <select2 [data]="shippmentTypes" [width]="760" [value]="value" (valueChanged)="onChanged($event)"></select2>
+    </div>
+    <div class="clearfix"></div>
+    <textarea class="mail-editor form-control" [(ngModel)]="ckeditorContent"></textarea>
+    <!-- <ck-editor [(ngModel)]="ckeditorContent" [config]="config"></ck-editor> -->
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-default" (click)="closeModal()">关闭</button>
+      <button class="btn btn-primary" (click)="sendEmail()">发送</button>
+    </div>
+  </div>
+</div>

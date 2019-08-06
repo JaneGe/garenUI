@@ -1,0 +1,11 @@
+<div class="wrapper card card-block">
+  <div class="tab-header">
+    <ul>
+      <li *ngFor="let tab of tabs" (click)="tabChoose(tab)" [class.tab-selected]="tab.selected">
+        <span>{{tab.name}}</span>
+      </li>
+    </ul>
+  </div>
+  <purchase-pond-detail-1688 *ngIf="selectedTab.name == '1688采购单'"></purchase-pond-detail-1688>
+  <purchase-pond-detail-other *ngIf="selectedTab.name == '其他采购单'"></purchase-pond-detail-other>
+</div>

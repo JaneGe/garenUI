@@ -1,0 +1,8 @@
+.form-group{
+  display: flex;
+  align-items: center;
+  span.title{
+    width: 100px;
+  }
+  >input.form-control{width: calc(100% - 100px)}
+}

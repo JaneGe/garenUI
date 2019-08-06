@@ -1,0 +1,19 @@
+<div class="animated fadeIn error-wrap">
+  <div class="row">
+    <div class="overlay">
+      <div class="svg"></div>
+      <div class="bg-img">
+        <video src="/assets/error-page/video/Crocodile.mp4" width="700" height="500" autoplay="autoplay" loop="loop">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+    <div class="animated fadeInUp col-md-12 text-center">
+      <h2>{{errorInfo.errorText}}</h2>
+      <p>
+        <a *ngIf="errorInfo.pId" [routerLink]="errorInfo.routerLink" class="btn btn-primary" [queryParams]="{pid:errorInfo.pId}">{{errorInfo.buttonText}}</a>
+        <a *ngIf="!errorInfo.pId" [routerLink]="errorInfo.routerLink" class="btn btn-primary">{{errorInfo.buttonText}}</a>
+      </p>
+    </div>
+  </div>
+</div>

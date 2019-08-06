@@ -1,0 +1,92 @@
+<div class="pop-content" id="form">
+  <div class="modal-header">
+    <span class="modal-title">打印拣货任务清单</span>
+  </div>
+  <div class="modal-body">
+    <div class="print-body">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <td colspan="8">
+              <h3>批量拣货统计单</h3>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="4" width="340px" *ngIf="pickTaskModel">
+              <ul style="text-align:left;">
+                <li>
+                  <label class="list-label">时间：</label>
+                  <span class="detail">{{pickTaskModel.pickTimeDesc}}</span>
+                </li>
+                <li>
+                  <label class="list-label">仓库：</label>
+                  <span class="detail">{{pickTaskModel.warehouseName}}</span>
+                </li>
+                <li>
+                  <label class="list-label">类型：</label>
+                  <!--<span class="detail">{{pickTaskModel.pickingTypeTypeDesc}}</span>-->
+                  <span class="detail">{{pickTaskModel.pickingType == 'ByPackage'? pickTaskModel.pickingTypeTypeDesc: pickTaskModel.packTypeDesc}}</span>
+                </li>
+              </ul>
+            </td>
+            <td colspan="4" width="340px">
+              <div style="display: flex;flex-direction: row;flex-wrap: nowrap;justify-content: space-around;">
+                <div id="barcodeTarget" class="barcodeTarget" style="margin-top:20px;"></div>
+                <ul style="text-align:left;" *ngIf="pickTaskModel">
+                  <li>
+                    <label class="list-label">拣货人：</label>
+                    <span class="detail">{{pickTaskModel.pickUser}}</span>
+                  </li>
+                  <li>
+                    <label class="list-label">工号：</label>
+                    <span class="detail">{{pickTaskModel.workNo}}</span>
+                  </li>
+                  <li>
+                    <label class="list-label">拣货任务编号：</label>
+                    <span class="detail">{{pickTaskModel.pickNumber}}</span>
+                  </li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="pickTaskModel">
+            <td colspan="8" class="border-bottom-none">
+              <label>SKU总数：</label>
+              <span style="margin-right:40px;">{{pickTaskModel.skuTotalCount}}</span>
+              <label>产品总数：</label>
+              <span>{{pickTaskModel.productTotal}}</span>
+            </td>
+          </tr>
+          </thead>
+        <tbody>
+          <tr *ngIf="pickTaskModel">
+            <td colspan="8" style="padding:0">
+              <table style="float:left;width:50%;border:1px solid #000" class="table table-bordered border-none table-left" *ngFor="let tasks of allPickPrintDetails">
+                <tbody>
+                  <tr>
+                    <td>编号</td>
+                    <td>库位</td>
+                    <td>SKU</td>
+                    <td>数量</td>
+                  </tr>
+                  <tr *ngFor="let item of tasks;let i = index" style="border-top:1px solid #000">
+                    <td>{{item.num}}</td>
+                    <td>{{item.locationLabel}}</td>
+                    <td>{{item.skuCode}}</td>
+                    <td>{{item.quantity}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="printPDF()">打印面单</button>
+      <button class="btn btn-primary" (click)="closeModal()">取消</button>
+    </div>
+  </div>
+</div>

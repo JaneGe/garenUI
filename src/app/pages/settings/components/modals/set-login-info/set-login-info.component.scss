@@ -1,0 +1,42 @@
+.head {
+    padding: 5px 0;
+    border-radius: 5px 5px 0 0;
+    min-height: 35px!important;
+}
+
+.mytitle {
+    font-size: 16px;
+    margin: 5px 15px;
+    border-bottom: 1px solid white;
+    color: white;
+}
+
+.smhead {
+    padding: 5px 0 5px 8px;
+    border-radius: 5px;
+    color: #2a2a2a;
+    font-size: 16px;
+    background: rgba(255, 255, 255, .3);
+    border-bottom: 1px solid white;
+}
+
+.submit {
+    background-color: #c78100;
+    border: 1px solid #c78100;
+    color: whitesmoke;
+}
+
+.cancel {
+    background-color: transparent;
+    border: 1px solid whitesmoke;
+    color: whitesmoke;
+}
+
+span.bg-danger {
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+}

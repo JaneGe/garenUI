@@ -1,0 +1,45 @@
+.pop-content {
+    width: 1200px;
+    position: absolute;
+    left: 50%;
+    top: 50px;
+    transform: translate(-50%, 0);
+}
+.card{
+  .wrap{
+    display: flex;
+    justify-content: space-between;
+    .part{
+      width: 25%;
+      margin-right: 25px;
+      padding: 15px;
+      border-radius: 5px;
+      &:last-of-type{
+        margin-right: 0;
+      }
+      &:nth-of-type(even){
+        background-color: rgba(210, 184, 184, 0.5);
+      }
+      &:nth-of-type(odd){
+        background-color: rgba(190, 192, 157, 0.5);
+      }
+    }
+  }
+  p{
+    margin-bottom: 0;
+    line-height: 30px;
+    span{
+      display: inline-block;
+      width: 120px;
+      text-align: left;
+    }
+    i{
+      display: inline-block;
+      font-weight: bold;
+      min-width: 100px;
+    }
+  }
+}
+.total-text{
+  color:#712199;
+}

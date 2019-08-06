@@ -1,0 +1,16 @@
+<div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <span class="modal-title">打印商品标签</span>
+  </div>
+  <div class="modal-body">
+    <span class="explain">说明</span>
+    选择SKU打印标签
+    <select2 [width]="460" [data]="goodsList" (valueChanged)="onChanged($event)"></select2>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="closeModal()">打印</button>
+      <button class="btn btn-default" (click)="closeModal()">取消</button>
+    </div>
+  </div>
+</div>

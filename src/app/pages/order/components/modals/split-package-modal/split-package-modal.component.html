@@ -1,0 +1,104 @@
+<div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <span class="modal-title">拆分订单</span>
+    <button type="button" class="close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body clearfix">
+    <!-- <div class="order-info">
+      <span class="caption">包裹号</span>
+      {{PackageNumber}}
+    </div> -->
+    <div class="table-wrapper">
+      <form class="pagination-wrapper">
+        <div class="form-group pages">
+          <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+            autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+            screenReaderCurrentLabel="You're on page">
+          </pagination-controls>
+        </div>
+        <div class="form-group options pages">
+          <div class="input-group input-group-sm">
+            <select style="height:32px" class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="onQuery()">
+              <option>1</option>
+              <option>5</option>
+              <option>10</option>
+              <option>20</option>
+              <option>50</option>
+              <option>100</option>
+              <option>200</option>
+            </select>
+            <span class="input-group-addon addon-right">条/页</span>
+            <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条</span>
+          </div>
+        </div>
+      </form>
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>SKU图片</th>
+            <th>SKU详情</th>
+            <th>数量</th>
+            <th width="100px">拆分数量</th>
+            <th width="150px">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of orderDetailItem | paginate: { id: 'pager', itemsPerPage: PageInfo.pageSize, currentPage: PageInfo.pageIndex, totalItems: PageInfo.totalCount};let i = index">
+            <td>
+              <img src="{{item.skuImg}}" alt="package-img" class="order-img">
+            </td>
+            <td>
+              <label>{{item.skuCode}}</label>
+            </td>
+            <td>{{item.quantity}}</td>
+            <td>
+              <div class="display-block">
+                <input type="number" class="form-control" name="item.id" [(ngModel)]="item.defuseCount" (change)="addRefused($event.target,item)">
+              </div>
+            </td>
+            <td>
+              <div class="display-block">
+                <select name="move" class="form-control" [(ngModel)]="item.statusInt" (change)="changStatus($event.target,item)">
+                  <option value="0">保留至本包裹</option>
+                  <option value="1">移动至新包裹</option>
+                </select>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <form class="pagination-wrapper">
+        <div class="form-group pages">
+          <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+            autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+            screenReaderCurrentLabel="You're on page">
+          </pagination-controls>
+        </div>
+        <div class="form-group options pages">
+          <div class="input-group input-group-sm">
+            <select style="height:32px" class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="onQuery()">
+              <option>1</option>
+              <option>5</option>
+              <option>10</option>
+              <option>20</option>
+              <option>50</option>
+              <option>100</option>
+              <option>200</option>
+            </select>
+            <span class="input-group-addon addon-right">条/页</span>
+            <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条</span>
+          </div>
+        </div>
+      </form>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <div class="footer-btn">
+      <button class="btn btn-default" type="submit" (click)="closeModal()">取消</button>
+      <button class="btn btn-primary" (click)="RefusedPackage()">确定拆分包裹</button>
+    </div>
+  </div>
+</div>

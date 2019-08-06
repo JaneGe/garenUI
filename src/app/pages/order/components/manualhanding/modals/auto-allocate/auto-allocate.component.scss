@@ -1,0 +1,44 @@
+form {
+    margin: -5px;
+    width: 101%;
+}
+
+.head {
+    padding: 5px 0;
+    border-radius: 5px 5px 0 0;
+}
+
+.mytitle {
+    font-size: 16px;
+    padding-left: 15px;
+}
+
+.submit {
+    background-color: #c78100;
+    border: 1px solid #c78100;
+    color: whitesmoke;
+}
+
+.cancel {
+    background-color: transparent;
+    border: 1px solid whitesmoke;
+    color: whitesmoke;
+}
+
+.close {
+    margin-right: 10px;
+}
+
+.tip {
+    color: white;
+}
+
+select {
+    width: 200px;
+    height: 25px;
+    border-radius: 5px;
+}
+
+.opt-wrap {
+    margin-bottom: 15px;
+}

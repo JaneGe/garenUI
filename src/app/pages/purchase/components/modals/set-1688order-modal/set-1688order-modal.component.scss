@@ -1,0 +1,13 @@
+.pop-content{
+    width:420px;
+    margin-top:200px;
+    padding:5px;
+    overflow: hidden;
+    .modal-body{
+        height:auto;
+        .list-label{
+            display: block;
+            font-size: 16px;
+        }
+    }
+}

@@ -1,0 +1,18 @@
+.modal-header{
+  padding:15px;
+}
+.time{
+  margin-right: 15px;
+}
+.modal-body ul{
+  padding-left: 0;
+  margin-bottom: 0;
+  max-height: 600px;
+  overflow-y: auto;
+}
+.modal-body ul li {
+  span,p{
+    display: inline-block;
+    font-size: 16px;
+  }
+}

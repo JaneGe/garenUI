@@ -1,0 +1,60 @@
+<div class="pop-content">
+  <div class="modal-header">
+    <span class="modal-title">角色详细设置</span>
+    <button type="button" class="close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="permissions-wrap">
+      <div class="row" *ngIf="isNextStep === 0">
+        <div class="col-sm-12">
+          <label class="control-label">
+            <span class="must">必填</span>角色名称</label>
+          <input type="text" class="form-control" [(ngModel)]="roleName">
+          <label class="control-label">
+            <span class="must">必填</span>角色描述</label>
+          <textarea class="form-control" [(ngModel)]="roleDetail"></textarea>
+        </div>
+      </div>
+      <div class="row" *ngIf="isNextStep === 1">
+        <div class="col-sm-12">
+          <label class="control-label">页面权限</label>
+          <div class="card card-block">
+            <fileTrees [treesItem]="menu"></fileTrees>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="isNextStep === 2">
+        <div class="col-sm-6">
+          <label class="control-label">权限分类</label>
+          <div class="card card-block">
+            <permission-menu [treesItem]="operationMenu"></permission-menu>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <label class="control-label">详细权限</label>
+          <div class="card card-block" *ngIf="pageDetail !== undefined">
+            <h5>{{pageDetail.resourceName}}</h5>
+            <label style="margin-bottom:10px" class="checkbox-inline custom-checkbox nowrap">
+              <input type="checkbox" name="total" [(ngModel)]="pageDetail.resourceAllCheck"  (click)="checkAll($event.target)"/>
+              <span>全部</span>
+            </label>
+            <label style="margin-bottom:10px" class="checkbox-inline custom-checkbox nowrap" *ngFor="let item of pageDetail.items">
+              <input type="checkbox" name="cbxDetail" [(ngModel)]="item.hasPermission" />
+              <span>{{item.operationName}}</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-default" (click)="closeModal()">关闭</button>
+      <button class="btn btn-primary" *ngIf="isNextStep>0" (click)="prevStep()">上一步</button>
+      <button class="btn btn-primary" [disabled]="roleName==''||roleDetail==''" *ngIf="isNextStep<2" (click)="nextStep(menu)">下一步</button>
+      <button class="btn btn-primary" *ngIf="isNextStep === 2" (click)="saveRole()">保存</button>
+    </div>
+  </div>
+</div>

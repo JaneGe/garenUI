@@ -1,0 +1,120 @@
+<div class="card card-block">
+  <div class="input-wrapper">
+    <ul>
+      <li>
+        <label class="list-label1">选择仓库：</label>
+        <div class="screen-box" style="font-size:25px; ">
+          <div class="screen-wrapper" style="min-width:50px;line-height:48px" *ngFor="let name of warehose;let i = index">
+            <input type="radio" id="{{name.name}}" name="state" class="regular-radio" (change)="OnWarehouseChange($event,name.wareHouseid)"
+              [checked]="i === 0" />
+            <label for="{{name.name}}">{{name.name}}</label>
+          </div>
+        </div>
+      </li>
+      <li>
+        <label class="list-label">任务批次编号：</label>
+        <input type="text" [disabled]="isLock" id="pickTaskNum" (click)="pickTaskNumClick($event.target)" class="form-control picking-id" placeholder="任务批次编号"
+          [(ngModel)]="taskNumber">
+        <div class="btn-group">
+          <button class="btn btn-danger" id="lockBtn" (click)="PickingEnter()">锁定</button>
+        </div>
+      </li>
+      <li>
+        <label class="list-label">商品条码：</label>
+        <input type="text" class="form-control sku-id" id="skuCode" placeholder="请扫描条码" [(ngModel)]="storeSearchKey" value={{storeSearchKey}}>
+        <div class="btn-group">
+          <button class="btn btn-primary" (click)="SkuEnter()">查询</button>
+        </div>
+      </li>
+    </ul>
+    <div class="total-wrapper clearfix" *ngIf="calculateResult">
+      <label>类　型：{{calculateResult.packageTypeDesc}}</label>
+      <label>总　量：{{calculateResult.packageCount}}</label>
+      <label>已打印：{{printCount}}</label>
+      <label>未打印：{{noPrintCount}}</label>
+    </div>
+    <button *ngIf="result" class="btn btn-warning btn-lg endPrint" (click)="clearPrint()">结束打印</button>
+    <!--<div class="total-wrapper clearfix" *ngIf="result">-->
+    <!--<label>单品多个</label>-->
+    <!--<div>-->
+    <!--<span>{{result.quantity}}</span>个</div>-->
+    <!--</div>-->
+    <!-- <div class="total-wrapper">
+      <label>SKU种类</label>
+      <div><span>{{calculateResult.totalCaleType}}</span>个</div>
+    </div>
+    <div class="total-wrapper">
+      <label>产品总数</label>
+      <div><span>{{calculateResult.totalCount}}</span>个</div>
+    </div>
+    <div class="total-wrapper">
+      <label>包裹数</label>
+      <div><span>{{calculateResult.packageCount}}</span>个</div>
+    </div>
+    <div class="total-wrapper">
+      <label>今日共扫描</label>
+      <div><span>{{searchCount}}</span>个</div>
+    </div>
+    <div class="total-wrapper">
+      <label>成功</label>
+      <div><span>{{searchSuccessCount}}</span>个</div>
+    </div>
+    <div class="total-wrapper">
+      <label>失败</label>
+      <div><span>{{searchFailedCount}}</span>个</div>
+    </div> -->
+  </div>
+  <div class="card card-block ">
+    <div class="info-wrapper" *ngIf="result">
+      <div class="sku-img">
+        <img class="img-thumbnail" src="{{result.skuImg}}" alt="SKU图片">
+      </div>
+      <ul class="info">
+        <li>
+          <label class="list-label">包裹号：</label>
+          <span class="detail">{{result.packageNumber}}</span>
+        </li>
+        <li>
+          <label class="list-label">订单号：</label>
+          <div class="detail-wrap">
+            <span class="detail" *ngFor="let item of result.orderNumbers">{{item}}</span>
+          </div>
+        </li>
+        <li>
+          <label class="list-label">SKU：</label>
+          <div class="detail-wrap">
+            <span class="detail" *ngFor="let item of result.skuList">{{item}}</span>
+          </div>
+        </li>
+        <li>
+          <label class="list-label">预估重量：</label>
+          <span class="detail">{{result.pWeight}} g</span>
+        </li>
+        <li>
+          <label class="list-label">是否异常：</label>
+          <span class="detail" *ngIf="result.isExcept">异常</span>
+          <span class="detail" *ngIf="!result.isExcept">无异常</span>
+        </li>
+        <li>
+          <label class="list-label">包裹状态：</label>
+          <span class="detail">{{result.packageStatusText}}</span>
+        </li>
+        <li>
+          <label class="list-label">跟踪号：</label>
+          <span class="detail">{{result.trackNumber}}</span>
+        </li>
+        <li>
+          <button class="btn btn-danger" *ngIf="result && result.type && result.type == 'SingleSkuMoreItem'" (click)="packingError()">标记拣货失败</button>
+        </li>
+      </ul>
+      <div class="needNum" *ngIf="result">
+        <h2>需包装</h2>
+        <div class="num"><span>{{result.quantity}}</span></div>
+        <div class="handPrint"><button class="btn btn-info btn-lg" (click)="ManualPrint(result.packageId,result.packageNumber)">手动打印</button></div>
+      </div>
+    </div>
+    <div class="error" *ngIf="!result&&search">
+      <h3 class="red-text">查询失败，请检查输入！</h3>
+    </div>
+  </div>
+</div>

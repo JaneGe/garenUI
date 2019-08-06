@@ -1,0 +1,95 @@
+//筛选项通用
+.select{margin-bottom: 10px;}
+.select:last-of-type{margin-bottom: 0;}
+.bdb{border-bottom: 1px solid white;}
+.bdb-gap{padding-bottom: 10px;}
+.part-wrap{display: inline-block;vertical-align: top;}
+.option-wrap{width:80%;display: inline-block;vertical-align: top;}
+.title{display: flex;align-items: center; width: 100px;}
+.option{display: inline-block;margin-right: 15px;margin-bottom: 8px;cursor: pointer;vertical-align: top;padding:3px;}
+.tag{background: white;color: dodgerblue;}
+.input{width: 400px;display: flex;margin-bottom: 0;}
+.input input{width: 50%;}
+
+.pagination-wrapper .pages{margin: 0;}
+.topage{border: 1px solid white;width: 40px;line-height:30px;height: 30px;margin-left: -2px;border-radius: 3px;}
+.topage .inputPage,.topage .inputPage p,.topage .inputPage p input{width: 100%;height: 100%;text-align: center;}
+.topage .inputPage p input{border: none;}
+.out{margin-left: 0;cursor: pointer;background: #38AFD7;border: 1px solid #38AFD7;}
+.pagination-wrapper{display: flex;justify-content: center;margin-top: 15px;}
+.pagination-wrapper .to{display: flex;}
+.pagination-wrapper .pages{margin: 0;}
+.my-pagination /deep/ .ngx-pagination{
+  border:1px solid #fff;
+  border-radius: 5px;
+  height: 30px;
+  line-height: 1.5;
+}
+
+//功能按钮
+.action{
+  display: flex;align-items: center;
+  margin-bottom: 15px;
+  button{
+    margin-right: 15px;
+  }
+}
+
+
+.hidden{visibility: hidden;}
+.show{visibility:visible;}
+.icon{margin-right: 8px;}
+.inline{display: inline-block;}
+.default-button{background: transparent;border: 1px solid white;border-radius: 5px;}
+.btnion{margin-right: 10px;}
+.tdbtn{position: relative;top:-2px;}
+
+
+//筛选搜索切换
+.toggle {
+  float: right;
+}
+//高级筛选切换
+.toggle-select {
+  position: absolute;
+  bottom: -16px;
+  width: 90px;
+  left: 50%;
+  margin-left: -45px;
+  display: flex;
+  justify-content: center;
+}
+
+.mysubtitle{
+
+  button{
+    margin-left: 20px;
+    a{
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      color: white;
+    }
+  }
+}
+table tbody tr td>p{
+  text-align: left;
+}
+table tbody tr td input[type='text']{text-align: center;}
+table tbody tr td input{border-radius: 5px;width: 50%;height:70%;}
+.icon-wraper{
+  display: inline-block;
+  background: #209e91;
+  padding:2px;
+  border-radius: 2px;
+  width: 22px;
+  height: 22px;
+  line-height: 22px;
+  cursor: pointer;
+}
+input.priority-input{
+  text-align: center;
+  background-color: rgba(0,0,0,.3);
+  color:white;
+  border: none;
+}

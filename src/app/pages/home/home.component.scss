@@ -1,0 +1,84 @@
+.home-wrap {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    ul {
+        margin: 0;
+        padding: 0;
+    }
+    .notice-list {
+        padding: 0 10px;
+        height: 25px;
+        line-height: 25px;
+        border-radius: 5px 0 0 5px;
+        a {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            color: #fff;
+            font-size: 12px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .order-type {
+            display: inline-block;
+            width: 20px;
+            margin-right: 10px;
+        }
+        .notice-title {
+            flex: 1;
+        }
+        .notice-time {
+            display: inline-block;
+            width: 120px;
+            text-align: right;
+        }
+    }
+    .note-wrap {
+        flex: 1;
+        margin: 0 30px;
+        .notice-list {
+            height: 42px;
+            line-height: 42px;
+            &:hover {
+                background: linear-gradient(to right, rgba(255, 255, 255, .5), transparent);
+                background: -webkit-linear-gradient(to right, rgba(255, 255, 255, .5), transparent);
+            }
+            a {
+                font-size: 14px;
+            }
+        }
+    }
+    .tips-wrap {
+        width: 400px;
+        img {
+            width: 357px;
+            height: 300px;
+            border-radius: 7px;
+        }
+        p,
+        span {
+            font-size: 12px;
+            margin: 10px 0;
+        }
+        .img-title {
+            padding: 0 10px;
+            width: 357px;
+            height: 25px;
+            line-height: 25px;
+            font-size: 12px;
+            text-align: right;
+            position: absolute;
+            top: 345px;
+            background: rgba(0, 0, 0, .7);
+            border-radius: 0 0 7px 7px;
+        }
+        ul {
+            margin-top: -20px;
+        }
+        .notice-list>a:hover {
+            color: #27d3c2;
+        }
+    }
+}

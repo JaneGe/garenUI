@@ -1,0 +1,14 @@
+<div class="card card-block">
+<div class="mypages bdb">
+  <div class="page inline" (click)="togglePage(0)">
+    SKU的供应商信息
+    <div class="line" *ngIf="togglepage==1"></div>
+  </div>
+  <div class="page inline" (click)="togglePage(1)">
+    供应商的供货信息
+    <div class="line" *ngIf="togglepage==0"></div>
+  </div>
+</div>
+  <sku-supply-info *ngIf="togglepage==1"></sku-supply-info>
+  <supplier-goods-info *ngIf="togglepage==0"></supplier-goods-info>
+</div>

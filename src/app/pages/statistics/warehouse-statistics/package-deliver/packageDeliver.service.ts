@@ -1,0 +1,29 @@
+export class PackageDeliverService{
+  lineData=[
+    {time:'2017/12/20',num:120},
+    {time:'2017/12/21',num:190},
+    {time:'2017/12/22',num:130},
+    {time:'2017/12/23',num:50},
+    {time:'2017/12/24',num:240},
+    {time:'2017/12/25',num:150},
+    {time:'2017/12/26',num:120},
+  ];
+  packageData=[
+    {time:'2017/12/20',num:120,name:'张三',group:'A',single:11,singlemore:29,more:34,special:45},
+    {time:'2017/12/21',num:190,name:'张三',group:'A',single:12,singlemore:21,more:31,special:45},
+    {time:'2017/12/22',num:130,name:'张三',group:'A',single:13,singlemore:22,more:36,special:41},
+    {time:'2017/12/23',num:50,name:'张三',group:'A',single:14,singlemore:26,more:38,special:49},
+    {time:'2017/12/24',num:240,name:'张三',group:'A',single:15,singlemore:20,more:39,special:40},
+    {time:'2017/12/25',num:150,name:'张三',group:'A',single:16,singlemore:24,more:30,special:43},
+    {time:'2017/12/26',num:120,name:'张三',group:'A',single:17,singlemore:21,more:32,special:44}
+  ];
+  tableData=[
+    {time:'2017/12/20',num:120,name:'张三',group:'A'},
+    {time:'2017/12/21',num:190,name:'张三',group:'A'},
+    {time:'2017/12/22',num:130,name:'张三',group:'A'},
+    {time:'2017/12/23',num:50,name:'张三',group:'A'},
+    {time:'2017/12/24',num:240,name:'张三',group:'A'},
+    {time:'2017/12/25',num:150,name:'张三',group:'A'},
+    {time:'2017/12/26',num:120,name:'张三',group:'A'}
+  ];
+}

@@ -1,0 +1,122 @@
+.pop-content {
+    width: 1500px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+.details-left {
+    section {
+        margin-top: 20px;
+        border: 1px solid #e5e5e5;
+        border-radius: 6px;
+        table {
+            margin-bottom: 10px;
+        }
+        p {
+            padding: 0 10px;
+            margin-bottom: 0;
+            height: 50px;
+            font-size: 16px;
+            background: #368;
+            line-height: 50px;
+            border-top-right-radius: 6px;
+            border-top-left-radius: 6px;
+            span {
+                float: right;
+                cursor: pointer;
+                height: 20px;
+                width: 20px;
+                background: red;
+                text-align: center;
+                line-height: 20px;
+                margin: 15px 0;
+            }
+        }
+    }
+}
+.col-md-4 {
+    section {
+        position: relative;      
+        height: 100%;
+        border: 1px solid #e5e5e5;
+        border-radius: 5px;
+        max-height: 805px;
+        overflow-y: scroll;
+        .info-container {
+            margin: 20px 20px 80px 20px;
+            cursor: pointer;
+            .data-li {
+                margin-top: -8px;
+                color: lightgoldenrodyellow;
+                font-size: 0.4rem;
+            }
+        }
+        p {
+            margin-bottom: 0px;
+        }
+        ul {
+            padding-left: 0;
+            li {
+                margin-bottom: 10px;
+            }
+        }
+        div {
+            span {
+                position: relative;
+                padding: 4px;
+                display: inline-block;
+                border: 1px solid #fff;
+                border-radius: 5px;
+                background-color: #fff;
+                color: black;
+                border-right: none; 
+            }
+        }
+        // 画三角形
+        span::before, span::after {
+            position: absolute;
+            top: 4px;
+            border: solid transparent;
+            content: ' ';
+            height: 0;
+            width: 0;
+            border-width: 6px;
+        }
+        div:nth-of-type(2n-1) {
+            span::before {
+                right: 100%;
+                border-right-color: #fff;               
+            }
+        }
+        div:nth-of-type(2n) {
+            span::after {
+                left: 100%;
+                border-left-color: #fff;
+            }
+        }
+        input {
+            position: fixed;
+            bottom: 61px;
+            right: 15px;
+            height: 30px;
+            outline: none;
+            border: 5px;
+            width: 470px;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;  
+        }
+    }
+}
+.bottom-raduis {
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+.text-right {
+    text-align: right
+}
+// 隐藏滚动条
+::-webkit-scrollbar {display:none}

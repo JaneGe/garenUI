@@ -1,0 +1,91 @@
+.search-wrapper {
+    .search-condition {
+        float: left;
+        height: auto;
+        padding: 0 5px;
+        margin-bottom: 0;
+        li {
+            width: 100%;
+            float: left;
+          margin-bottom: 5px;
+            .search-input {
+                display: inline-block;
+                width: 300px;
+                height: 30px;
+                margin-left: 0;
+            }
+            .margin-left {
+                float: left;
+                width: 90%;
+            }
+            .search-title {
+                width: 120px;
+                font-weight: bold;
+                float: left;
+                margin: 7px 0;
+            }
+            .input-group {
+                width: 400px;
+                height: 30px;
+                float: left;
+                .btn-group {
+                    .btn {
+                        border-radius: 0 3px 3px 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.datePick-wrap {
+    display: inline-block;
+}
+
+.datePick {
+    display: flex;
+}
+
+.btn-box {
+    width: 100%;
+    height: 50px;
+    .btn {
+        float: left;
+        padding: 7px;
+        margin: 0 10px 0 0;
+    }
+}
+
+.checkbox {
+    float: left;
+    margin: 5px 10px;
+    span {
+        float: left;
+        margin: 3px;
+    }
+}
+
+.datePick-wrap .datePick .input-group{
+  margin-bottom: 0;
+  input{
+    padding:0 8px;
+    height: 30px;
+    line-height: 30px;
+    width: 120px;
+  }
+  .input-group-addon{
+    padding:0;
+    width: 40px;
+    line-height: 30px;
+    height: 30px;
+    font-size: 1.4em;
+  }
+}
+.datePick /deep/ .ngb-tp-hour,.datePick /deep/ .ngb-tp-minute,.datePick /deep/ .ngb-tp-second{
+  button{
+    display: none;
+  }
+  input{
+    padding: 5px;
+  }
+}

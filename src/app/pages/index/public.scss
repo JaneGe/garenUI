@@ -1,0 +1,69 @@
+a{color: white;}
+a:hover{color: white;}
+.cirle{display: inline-block;width: 10px ;height: 10px;border: 2px solid white;border-radius: 50%;}
+.modal-content{border:1px solid rgba(0,0,0,0.5);}
+.gap{margin-bottom:15px;}
+table{text-align: center;color:white;}
+table thead tr th{text-align: center;}
+table tbody tr td button
+{background-color: transparent;border: 1px solid whitesmoke;color: white;}
+button span{padding-right: 10px;}
+
+.bg{background-color:#5798CF;}
+.head{background-color: #a4d6ff;}
+.mytitle{margin-bottom: 5px;}
+.modal-content{width: 100%;}
+.modal-body{color: white;}
+.submit{background-color: #c78100;border: 1px solid #c78100;color: whitesmoke;}
+.cancel{background-color: transparent;border: 1px solid whitesmoke;color: whitesmoke;}
+input[type='text']{border-radius: 5px;}
+input[type='text']:focus{background-color: lightblue;}
+
+.overview-part{display: flex;justify-content: center;flex-wrap: nowrap;text-align: center;}
+.contain{width: 100%;min-height: 350px;display:flex;justify-content: center;margin-bottom: 25px;}
+.contain .two-part{width: 100%;}
+.contain .two-part .card{height: 100%;}
+.contain .needgap{padding-right: 12px;}
+ .todolist ul{margin: 0;padding:0;}
+ .todolist ul li{height: 35px;line-height: 35px;border-radius: 5px;}
+ .todolist ul li:hover{background: linear-gradient(to right,rgba(255,255,255,.5),transparent);}
+ .todolist ul li a{display: inline-block;width: 90%;height:100%;}
+ .todolist ul li a span{margin:0 15px;}
+ .todolist ul li .ion-close-round{display: none;cursor: pointer}
+ .todolist ul li:hover>.ion-close-round{display: inline-block;}
+.title{text-align: center;font-size: 20px;}
+.timeTitle{
+  display: block;
+  width:100%;
+  height:20px;
+  line-height: 20px;
+  text-align: center;
+  margin:-10px 0 10px 0;
+}
+.overview{width: 25%;height:100px;border: 1px solid white;
+  border-radius: 5px;text-align: left;padding-left:60px;position: relative;
+  box-sizing: border-box;margin-right: 10px;
+  transition: all ease 0.3s;
+  }
+.overview:hover{border: 1px solid #252525;box-shadow: 0 0 7px 2px #363636;}
+.overview h3{line-height: 100px;color: white;}
+.overview i{font-size: 60px;position: absolute;right: 120px;top: 50%;margin-top: -30px;}
+.overview .i-money{margin-top: -40px;}
+.overview .account{position: absolute;right: 5px;top: 5px;}
+.overview h3>span{margin-left: 15px;animation: ro 1s ease infinite;}
+
+#bosschart thead tr th{width: 14%;}
+#bosschart tbody tr td{position: relative;}
+#bosschart tbody tr td span{position: absolute;left: 10%;font-size: 20px;}
+.notice-list a {white-space: nowrap;overflow: hidden;}
+.notice-list a span:last-of-type{float: right;}
+
+@media (max-width:1280px){ //Mac Pro 13英寸
+
+}
+@media (max-width:1440px){ //Mac Pro 15英寸
+
+}
+.contain.custom-container{
+  flex-wrap: wrap;
+}

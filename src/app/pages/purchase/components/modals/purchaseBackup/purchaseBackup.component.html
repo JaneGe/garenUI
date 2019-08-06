@@ -1,0 +1,76 @@
+<div class="pop-content animated fadeIn">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">添加备库计划
+        <button class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </h4>
+    </div>
+    <div class="modal-body">
+      <div class="card card-block">
+        <div>
+          <button class="btn btn-sm btn-primary" (click)="batchImport(content)">批量添加SKU</button>
+        </div>
+      </div>
+      <div class="content-wrap">
+        <div class="searchResult-wrap" style="max-height: 400px;">
+          <div class="add">
+            <p style="width:510px;"><span>SkuCode：</span>
+              <input type="text" [ngbTypeahead]="search" id="product"   (selectItem)="OnselectItem($event)" [inputFormatter]="disPlaySkuFormatter" [resultFormatter]="skuFormatter" class="form-control"></p>
+            <p>
+              <span>数量：</span>
+              <input type="number" id="number"  class="form-control" style="width: 80px;margin-right: 21px;" [(ngModel)]="num">
+              <button class="btn btn-danger" (click)="doAddSigleSku()">添加</button>
+            </p>
+          </div>
+          <div class="table-wrap">
+          <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+              <th style="width:520px;">SkuCode</th>
+              <th>数量</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of Data">
+              <td>{{item.skuCode}}</td>
+              <td>
+                 <div class="edit-wrap">
+                     <input class="priority-input" type="number" name="quantity" [(ngModel)]="item.quantity" />
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span>sku种类数:{{Data.length}}</span>
+      <button class="btn btn-sm btn-danger pull-right cancel" (click)="closeModal()">关闭</button>
+      <button class="btn btn-sm btn-primary pull-right" (click)="onSave()">保存</button>
+    </div>
+</div>
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="pop-content animated fadeIn">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">批量备库计划
+        <button class="close" aria-label="Close" (click)="d()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </h4>
+    </div>
+    <div class="modal-body">
+      <p>一行一个.格式: Sku编码 &nbsp;&nbsp;&nbsp;&nbsp; 购买数量</p>
+      <div class="card card-block">
+          <textarea name="" rows="10" autofocus [(ngModel)]="batchText" class="form-control mytextarea"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-sm btn-danger pull-right cancel" (click)="closeBatchModal(c)">关闭</button>
+      <button class="btn btn-sm btn-primary pull-right" (click)="confirmBatchImport(c)">确定</button>
+    </div>
+  </div>
+</ng-template>
+

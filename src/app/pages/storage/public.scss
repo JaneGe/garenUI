@@ -1,0 +1,209 @@
+.pop-content {
+    border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.gap {
+    margin-bottom: 15px;
+}
+
+table {
+    text-align: center;
+    color: white;
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+table thead tr th {
+    text-align: center;
+}
+
+table tbody tr td button {
+    text-align: center;
+    margin-bottom: 3px;
+}
+
+button.btn span {
+    padding-right: 10px;
+}
+
+@media screen and (max-width: 1551px) {
+    span.killgap {
+        padding-right: 5px!important;
+        margin-left: -5px;
+    }
+}
+
+@media screen and (max-width: 1410px) {
+    span.killgap {
+        padding-right: 0!important;
+        margin-left: -5px;
+    }
+}
+
+form {
+    font-size: 0;
+    display: flex;
+    justify-content: center;
+}
+
+form .options {
+    display: inline-block;
+    font-size: 16px;
+}
+
+form .options .input-group>span,
+form .options .input-group select {
+    background-color: transparent;
+    color: white;
+    height: 30px;
+}
+
+form .options .input-group>span {
+    border: 1px solid whitesmoke;
+}
+
+form .options .input-group select {
+    cursor: pointer;
+}
+
+form .pages {
+    display: inline-block;
+    font-size: 16px;
+}
+
+.head {
+    padding: 5px 0;
+    border-radius: 5px 5px 0 0;
+}
+
+.mytitle {
+    font-size: 16px;
+    margin: 0 15px;
+    border-bottom: 1px solid white;
+    color: white;
+}
+
+.pop-content {
+    width: 100%;
+}
+
+.modal-body {
+    color: white;
+}
+
+.submit {
+    background-color: #c78100;
+    border: 1px solid #c78100;
+    color: whitesmoke;
+}
+
+.cancel {
+    background-color: transparent;
+    border: 1px solid whitesmoke;
+    color: whitesmoke;
+}
+
+input[type='text'] {
+    background: rgba(255, 255, 255, .1);
+    border: 1px solid rgba(255, 255, 255, .5);
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.searchPart {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+}
+
+.title {
+    font-size: 14px;
+    margin-right: 15px;
+    height: 100%;
+}
+
+.searchPart .buttonpart {
+    display: inline-block;
+    width: calc(100% - 86px)
+}
+
+.searchPart .buttonpart span:nth-of-type(1) {
+    background: #fff;
+    color: darken(#209e91, 30%);
+}
+
+.tag {
+    font-size: 14px;
+    margin-right: 10px;
+    cursor: pointer;
+    padding: 3px;
+    margin-bottom: 10px;
+    display: inline-block;
+    &:hover {
+        background: #fff;
+        color: darken(#209e91, 30%);
+    }
+}
+
+.totalNum {
+    float: left;
+    border: 1px solid white;
+    width: 156px;
+    height: 30px;
+    border-radius: 5px 0 0 5px;
+    line-height: 30px;
+    font-size: 12px;
+}
+
+.totalNum p span {
+    display: inline-block;
+    width: 54px;
+    text-align: center;
+}
+
+.pagination-wrapper .pages {
+    margin: 0;
+}
+
+.my-pagination /deep/ .ngx-pagination {
+    border: 1px solid #fff;
+    border-radius: 5px;
+    height: 30px;
+    line-height: 1.5;
+}
+
+input:focus,
+textarea:focus {
+    background: inherit!important;
+    color: black;
+}
+.searchPart .buttonpart span.datePick-wrap{
+  background: transparent!important;
+  .datePick{
+    background: transparent!important;
+  }
+}
+.datePick-wrap .datePick .input-group{
+  margin-bottom: 0;
+  input{
+    padding:0 8px;
+    height: 30px;
+    line-height: 30px;
+    width: 120px;
+  }
+  .input-group-addon{
+    padding:0;
+    width: 40px;
+    line-height: 30px;
+    height: 30px;
+    font-size: 1.4em;
+  }
+}
+.datePick /deep/ .ngb-tp-hour,.datePick /deep/ .ngb-tp-minute,.datePick /deep/ .ngb-tp-second{
+  button{
+    display: none;
+  }
+  input{
+    padding: 5px;
+  }
+}

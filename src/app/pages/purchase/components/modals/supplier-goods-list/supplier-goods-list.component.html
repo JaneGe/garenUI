@@ -1,0 +1,81 @@
+<form id="form">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">{{modalHeader}}</h4>
+      <button class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="supplierGoodsInfo.length==0">
+        <h4 style="text-align: center;">无供货信息</h4>
+      </div>
+      <div *ngIf="supplierGoodsInfo.length>0">
+      <form class="pagination-wrapper">
+        <div class="form-group pages">
+          <pagination-controls class="my-pagination" id="pager"
+                               (pageChange)="pageChanged($event)"
+                               maxSize="9"
+                               directionLinks="true"
+                               autoHide="true"
+                               previousLabel="上一页"
+                               nextLabel="下一页"
+                               screenReaderPaginationLabel="Pagination"
+                               screenReaderPageLabel="page"
+                               screenReaderCurrentLabel="You're on page">
+          </pagination-controls>
+        </div>
+        <div class="form-group options pages">
+          <div class="input-group input-group-sm">
+            <select class="form-control" style="height: 31px;" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+              <option>1</option>
+              <option>5</option>
+              <option>10</option>
+              <option>20</option>
+              <option>50</option>
+              <option>100</option>
+              <option>200</option>
+            </select>
+            <span class="input-group-addon addon-right">条/页</span>
+            <span class="input-group-addon addon-right">共{{totalCount}}条数据</span>
+          </div>
+        </div>
+      </form>
+      <table class="table table-bordered table-hover">
+        <thead>
+        <tr class="black-muted-bg">
+          <th>SKU</th>
+          <th>商品名称</th>
+          <th>报价</th>
+          <th>最低采购量</th>
+          <th>交期</th>
+          <th>更新日期</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let I of supplierGoodsInfo|paginate: { id: 'pager',
+                                                      itemsPerPage:pageSize,
+                                                      currentPage:pageIndex,
+                                                      totalItems:totalCount}">
+          <td>{{I.sku}}</td>
+          <td>{{I.skuName}}</td>
+          <td>{{I.price}}</td>
+          <td>{{I.minPurchase}}</td>
+          <td>{{I.handInDate}}</td>
+          <td>{{I.updateTime}}</td>
+          <td>
+            <a href='javascript:;' (click)="del(I.id)">删除</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button  class="btn btn-sm btn-danger pull-right cancel" (click)="closeModal()">关闭</button>
+    </div>
+  </div>
+</form>
+
+

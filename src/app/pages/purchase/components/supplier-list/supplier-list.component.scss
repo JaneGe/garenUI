@@ -1,0 +1,4 @@
+table thead tr th:nth-of-type(1){width: 50px;}
+table tr label{width: 0;height: 0;border: none;display: inherit; }
+table tr label>span{vertical-align: middle;padding-left: 29px;}
+table thead tr th label>span{vertical-align: middle;padding-left: 25px;}

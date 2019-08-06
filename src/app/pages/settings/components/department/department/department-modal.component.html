@@ -1,0 +1,40 @@
+<div class="pop-content">
+  <div class="modal-header">
+    <h4 class="modal-title">部门设置</h4>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+      <div class="form-group row">
+        <label for="inputEmail3" class="col-sm-2 ">部门名称</label>
+        <div class="col-sm-10">
+          <input type="text" [formControl]="form.controls['departmentName']" class="form-control" id="inputEmail3" placeholder="部门名称">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="selectParentDepartment" class="col-sm-2">上级部门</label>
+        <div class="col-sm-10">
+          <select class="form-control" style="height: 38px;" [formControl]="form.controls['parentDeaprtment']" id="selectParentDepartment">
+            <option value="">请选择</option>
+            <option *ngFor="let pdpartment of allDepartments" value="{{pdpartment.id}}">{{pdpartment.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="departmentDescription" class="col-sm-2">部门描述</label>
+        <div class="col-sm-10">
+          <textarea placeholder="部门描述" [formControl]="form.controls['description']" class="form-control" id="departmentDescription"></textarea>
+        </div>
+      </div>
+      <div class="btn-wrapper">
+        <div class="btn-group">
+          <button class="btn btn-sm btn-danger" type="button" (click)="deleteDepartment()" *ngIf="departmentId">删除部门</button>
+          <button class="btn btn-sm btn-primary" type="submit" [disabled]="!form.valid || submitted">保存部门信息</button>
+          <button class="btn btn-sm btn-default" type="button" (click)="closeModal()">关闭</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

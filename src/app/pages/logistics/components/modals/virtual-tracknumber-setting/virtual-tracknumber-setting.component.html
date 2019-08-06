@@ -1,0 +1,71 @@
+<div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <span class="modal-title">虚拟跟踪号管理</span>
+    <button type="button" class="close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <!--<div class="card card-block search-wrapper">-->
+      <!--<ul class="search-condition">-->
+        <!--<li>-->
+          <!--&lt;!&ndash;<label class="search-title">是否过期：</label>&ndash;&gt;-->
+          <!--&lt;!&ndash;<div class="screen-wrapper" *ngFor="let item of limitTypes;let i = index">&ndash;&gt;-->
+            <!--&lt;!&ndash;<input type="radio" id="limitTypes{{item.Id}}" name="limitTypes" class="regular-radio" [checked]="i === 0" />&ndash;&gt;-->
+            <!--&lt;!&ndash;<label for="limitTypes{{item.Id}}" (click)="onSelect($event.target,item.Id)">{{item.Name}}</label>&ndash;&gt;-->
+          <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--</li>-->
+      <!--</ul>-->
+    <!--</div>-->
+    <form class="pagination-wrapper">
+      <div class="form-group pages">
+        <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="5" directionLinks="true"
+          autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+          screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
+      </div>
+      <div class="form-group options pages">
+        <div class="input-group input-group-sm">
+          <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="onQuery()">
+            <option>5</option>
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+            <option>200</option>
+          </select>
+          <span class="input-group-addon addon-right">条/页</span>
+          <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条</span>
+        </div>
+      </div>
+    </form>
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>国家中文名</th>
+          <th>转单号</th>
+          <th>跟踪号</th>
+          <th>发货时间</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of items | paginate: { id: 'pager', itemsPerPage:PageInfo.pageSize, currentPage:PageInfo.pageIndex,
+        totalItems:PageInfo.totalCount};let i = index">
+          <td>{{item.countryCnName}}</td>
+          <td>{{item.spPackageId}}</td>
+          <td>{{item.trackingNumber}}</td>
+          <td>{{item.shippedTime | amLocal  | amDateFormat: 'YYYY-MM-DD'}}</td>
+          <td>
+            <button class="btn btn-xs btn-danger" (click)="delete(item.id)">删除</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer clearfix">
+    <div class="btn-group">
+      <button class="btn btn-default" (click)="closeModal()">关闭</button>
+    </div>
+  </div>
+</div>

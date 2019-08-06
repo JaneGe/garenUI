@@ -1,0 +1,21 @@
+<div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <span class="modal-title">最新物流详情</span>
+    <button type="button" class="close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ul>
+      <li *ngFor="let list of items">
+        <span class="time">{{list.time| amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</span>
+        <p class="message">{{list.description}}</p>
+      </li>
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-default" type="button" (click)="closeModal()">关闭</button>
+    </div>
+  </div>
+</div>

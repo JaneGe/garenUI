@@ -1,0 +1,202 @@
+<form id="form">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">{{modalHeader}}
+        <button class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </h4>
+    </div>
+    <div class="modal-body">
+      <div class="card card-block">
+        <div class="select">
+          <div class="title">
+            <span class="tt">请选择SKU：</span>
+            <form class="pagination-wrapper">
+              <div class="form-group pages">
+                <pagination-controls class="my-pagination" id="pager"
+                                     (pageChange)="pageChanged($event)"
+                                     maxSize="9"
+                                     directionLinks="true"
+                                     autoHide="true"
+                                     previousLabel="上一页"
+                                     nextLabel="下一页"
+                                     screenReaderPaginationLabel="Pagination"
+                                     screenReaderPageLabel="page"
+                                     screenReaderCurrentLabel="You're on page">
+                </pagination-controls>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="content">
+          <span class="tag" *ngFor="let item of detail|paginate: { id: 'pager',
+                                                      itemsPerPage:pageSize,
+                                                      currentPage:pageIndex,
+                                                      totalItems:totalCount}">
+            <input type="radio" id="{{item.skuCode}}" name="skuname" [checked]="item.skuCode==checkedValue">
+            <label for="{{item.skuCode}}">
+            {{item.skuCode}}
+          </label>
+          </span>
+        </div>
+        <div class="search">
+          <span class="tt">搜索SKU：</span>
+          <select2  class="country-select" [data]="skuCodes"
+                    [value]="selectValue"
+                    (valueChanged)="onChangeCountryChanged($event)"></select2>
+        </div>
+        <ul class="search-condition">
+          <li>
+            <label class="search-title">搜索类型：</label>
+            <div class="screen-wrapper" *ngFor="let item of searchTypes;let i = index">
+              <input type="radio" id="searchTypes{{item.Id}}" name="searchTypes" class="regular-radio" [checked]="i === 0" />
+              <label for="searchTypes{{item.Id}}" (click)="onSelect($event.target,'searchTypes',item.Id)">{{item.Name}}</label>
+            </div>
+          </li>
+          <li>
+            <label class="search-title">搜索内容</label>
+            <div class="input-group">
+              <input type="text" class="form-control">
+              <div class="btn-group">
+                <button class="btn btn-primary">搜索</button>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card card-block mytable">
+        <table class="table table-bordered table-hover">
+          <thead>
+          <tr>
+            <th>供应商名称</th>
+            <th>当前采购价</th>
+            <th>运费</th>
+            <th>下单时间</th>
+            <th>消单人员</th>
+            <th>下单人员</th>
+            <th>采购数量</th>
+            <th>采购耗时</th>
+            <th>质检耗时</th>
+            <th>入库耗时</th>
+          </tr>
+          </thead>
+          <tbody class="table-body">
+          <tr>
+            <td colspan="10" class="black-muted-bg">最高采购价</td>
+          </tr>
+          <tr>
+            <td>北京永外天洋文具商贸中心
+              <a href="https://amos.alicdn.com/getcid.aw?v=3&uid=晶品新电&site=cnalichn&groupid=0&charset=UTF-8" target="_blank" class="alwangwang"></a>
+            </td>
+            <td class="font-lg">￥14.00</td>
+            <td class="font-lg">￥6.00</td>
+            <td>
+              <span class="block">2017-10-15</span>
+              <span class="block">16:09:36</span>
+            </td>
+            <td>张牛犇</td>
+            <td>李华</td>
+            <td>10</td>
+            <td>2小时</td>
+            <td>2小时</td>
+            <td>2小时</td>
+          </tr>
+          <tr>
+            <td colspan="10" class="black-muted-bg">最低采购价</td>
+          </tr>
+          <tr>
+            <td>北京永外天洋文具商贸中心
+              <a href="https://amos.alicdn.com/getcid.aw?v=3&uid=晶品新电&site=cnalichn&groupid=0&charset=UTF-8" target="_blank" class="alwangwang"></a>
+            </td>
+            <td class="font-lg">￥14.00</td>
+            <td class="font-lg">￥6.00</td>
+            <td>
+              <span class="block">2017-10-15</span>
+              <span class="block">16:09:36</span>
+            </td>
+            <td>张牛犇</td>
+            <td>李华</td>
+            <td>10</td>
+            <td>2小时</td>
+            <td>2小时</td>
+            <td>2小时</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <div class="title">历史采购价：
+          <form class="pagination-wrapper">
+            <div class="form-group pages">
+              <pagination-controls class="my-pagination" id="pager2"
+                                   (pageChange)="pageChanged2($event)"
+                                   maxSize="9"
+                                   directionLinks="true"
+                                   autoHide="true"
+                                   previousLabel="上一页"
+                                   nextLabel="下一页"
+                                   screenReaderPaginationLabel="Pagination"
+                                   screenReaderPageLabel="page"
+                                   screenReaderCurrentLabel="You're on page">
+              </pagination-controls>
+            </div>
+          </form>
+          <!--<div class="form-group options pages">-->
+            <!--<div class="input-group input-group-sm">-->
+              <!--<select class="form-control" name="pageChangedName" [(ngModel)]="pageSize2" (ngModelChange)="loadData2()">-->
+                <!--<option>1</option>-->
+                <!--<option>5</option>-->
+                <!--<option>10</option>-->
+                <!--<option>20</option>-->
+                <!--<option>50</option>-->
+                <!--<option>100</option>-->
+                <!--<option>200</option>-->
+              <!--</select>-->
+              <!--<span class="input-group-addon addon-right">条/页</span>-->
+              <!--<span class="input-group-addon addon-right">共{{totalCount2}}条数据</span>-->
+            <!--</div>-->
+          <!--</div>-->
+        </div>
+      </div>
+      <table class="table table-bordered table-hover">
+        <thead>
+        <tr class="black-muted-bg">
+          <th>供应商名称</th>
+          <th>采购价</th>
+          <th>运费</th>
+          <th>采购时间</th>
+          <th>销单人员</th>
+          <th>下单人员</th>
+          <th>采购数量</th>
+          <th>采购耗时</th>
+          <th>质检耗时</th>
+          <th>入库耗时</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let I of skuPurchaseHistory|paginate: { id: 'pager2',
+                                                      itemsPerPage:pageSize2,
+                                                      currentPage:pageIndex2,
+                                                      totalItems:totalCount2}">
+          <td>{{I.sipplierName}}</td>
+          <td>{{I.purchasePrice}}</td>
+          <td>{{I.freight}}</td>
+          <td>{{I.purchaseTime}}</td>
+          <td>{{I.saleMan}}</td>
+          <td>{{I.purchaseMan}}</td>
+          <td>{{I.Num}}</td>
+          <td>{{I.purchaseCSTime}}</td>
+          <td>{{I.checkCSTime}}</td>
+          <td>{{I.instockCSTime}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button  class="btn btn-sm btn-danger pull-right cancel" (click)="closeModal()">关闭</button>
+    </div>
+  </div>
+</form>

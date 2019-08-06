@@ -1,0 +1,44 @@
+.head {
+    background-color: #a4d6ff;
+    padding: 5px 0;
+    border-radius: 5px 5px 0 0;
+}
+
+.mytitle {
+    font-size: 16px;
+    padding-left: 15px;
+}
+
+.submit {
+    background-color: #c78100;
+    border: 1px solid #c78100;
+    color: whitesmoke;
+}
+
+.cancel {
+    background-color: transparent;
+    border: 1px solid whitesmoke;
+    color: whitesmoke;
+}
+
+.close {
+    margin-right: 10px;
+}
+
+.modal-dialog {
+    top: 50%
+}
+
+;
+.card {
+    margin: 0;
+}
+
+.remarks textarea {
+    width: 100%;
+    height: 200px;
+}
+
+.pop-content {
+    height: 410px;
+}

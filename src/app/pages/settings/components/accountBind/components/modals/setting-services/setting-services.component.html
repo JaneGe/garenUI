@@ -1,0 +1,29 @@
+<div class="pop-content">
+  <div class="modal-header">
+    <h4 class="modal-title">{{modalHeader}}</h4>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+      <ul>
+        <li>
+          <label>
+            <span class="must">必填</span>账号</label>
+          <input type="text" class="form-control" name="accountName" formControlName="accountName" [(ngModel)]="userName">
+        </li>
+        <li>
+          <label>
+            <span class="must">必填</span>密码</label>
+          <input type="password" class="form-control" name="password" formControlName="password" [(ngModel)]="userPassword">
+        </li>
+      </ul>
+      <div style="text-align: center">
+        <button class="btn btn-default" (click)="closeModal()">取消</button>
+        <button type="submit" [disabled]="!form.valid || submitted" class="btn btn-warning">设置</button>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer"></div>
+</div>

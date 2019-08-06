@@ -1,0 +1,173 @@
+<div class=".col-md-8 card card-block">
+  <div class=".col-md-8 card card-block search-wrapper">
+    <ul class="search-condition">
+      <li>
+        <label class="search-title">平台筛选：</label>
+        <div class="screen-wrapper" *ngFor="let item of platform;let i = index">
+          <input type="radio" id="platform{{item.Id}}" name="platform" class="regular-radio" [checked]="i === 0" />
+          <label for="platform{{item.Id}}" (click)="onSelect($event.target,'platform',item.Id)">{{item.Name}}</label>
+        </div>
+      </li>
+      <li>
+        <label class="search-title">启用状态：</label>
+        <div class="screen-wrapper" *ngFor="let item of statusInt;let i = index">
+          <input type="radio" id="statusInt{{item.Id}}" name="statusInt" class="regular-radio" [checked]="i === 0" />
+          <label for="statusInt{{item.Id}}" (click)="onSelect($event.target,'statusInt',item.Id)">{{item.Name}}</label>
+        </div>
+      </li>
+      <li>
+        <label class="search-title">语言筛选：</label>
+        <div class="screen-wrapper" *ngFor="let item of language;let i = index">
+          <input type="radio" id="language{{item.Id}}" name="language" class="regular-radio" [checked]="i === 0" />
+          <label for="language{{item.Id}}" (click)="onSelect($event.target,'language',item.Id)">{{item.Name}}</label>
+        </div>
+      </li>
+      <li>
+        <label class="search-title">时间筛选：</label>
+        <div class="screen-wrapper" *ngFor="let item of timeChoose;let i = index">
+          <input type="radio" id="timeChoose{{item.Id}}" name="timeChoose" class="regular-radio" [checked]="i === 0" />
+          <label for="timeChoose{{item.Id}}" (click)="onSelect($event.target,'timeChoose',item.Id)">{{item.Name}}</label>
+        </div>
+      </li>
+      <li>
+        <label class="search-title"></label>
+        <div class="screen-wrapper" *ngFor="let item of timeSpan;let i = index">
+          <input type="radio" id="timeSpan{{item.Id}}" name="timeSpan" class="regular-radio" [checked]="i === 0" />
+          <label for="timeSpan{{item.Id}}" (click)="onSelect($event.target,'timeSpan',item.Id)">{{item.Name}}</label>
+        </div>
+        <span *ngIf="isCustom">
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <ng-datepicker [(ngModel)]="timeSearchStart" [options]="DatepickerOptions"></ng-datepicker>
+            </span>
+          </span>
+          -
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <ng-datepicker [(ngModel)]="timeSearchEnd" [options]="DatepickerOptions"></ng-datepicker>
+              <button class="btn btn-sm btn-primary" (click)="doTimeSearch()">确定</button>
+            </span>
+          </span>
+        </span>
+      </li>
+      <li>
+        <label class="search-title">搜索类型：</label>
+        <div class="screen-wrapper" *ngFor="let item of searchTypes;let i = index">
+          <input type="radio" id="searchTypes{{item.Id}}" name="searchTypes" class="regular-radio" [checked]="i === 0" />
+          <label for="searchTypes{{item.Id}}" (click)="onSelect($event.target,'noReply',item.Id)">{{item.Name}}</label>
+        </div>
+      </li>
+      <li>
+        <label class="search-title">搜索内容：</label>
+        <div class="input-group">
+          <input type="text" class="form-control" [(ngModel)]="storeSearchKey">
+          <div class="btn-group">
+            <button class="btn btn-primary" (click)="onQuery()">搜索</button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="btn-box">
+    <button class="btn btn-sm btn-primary" (click)="openTemplateEditModal(null)">添加新模板</button>
+  </div>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="onQuery()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条数据</span>
+      </div>
+    </div>
+  </form>
+  <table class="table table-hover table-bordered">
+    <thead>
+      <tr>
+        <th>平台</th>
+        <th>账号</th>
+        <th width="300px">模板名称</th>
+        <th>语言分类</th>
+        <th>启用状态</th>
+        <th>时间</th>
+        <th>相关人员</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of data | paginate: { id: 'pager',
+          itemsPerPage:PageInfo.pageSize,
+          currentPage:PageInfo.pageIndex,
+          totalItems:PageInfo.totalCount};let i = index">
+        <td>
+          <i class="fa fa-amazon"></i>
+          {{item.channelTypeDesc}}</td>
+        <td>{{item.channelAccountName}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.languageDesc}}</td>
+        <td>
+          <span *ngIf="item.statusInt === 0">
+            <i class="ion-record green-text"></i>
+            启用</span>
+          <span *ngIf="item.statusInt === 1">
+            <i class="ion-record yellow-text"></i>
+            禁用</span>
+        </td>
+        <td>
+          <span class="display-block">添加时间：{{item.createdTimeDesc}}</span>
+          <span class="display-block">修改时间：{{item.updatedTimeDesc}}</span>
+        </td>
+        <td>
+          <span class="display-block">添加人员：{{item.createdPerson}}</span>
+          <span class="display-block">修改人员：{{item.updatePerson}}</span>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-primary" (click)="openTemplateEditModal(item.id)">编辑</button>
+          <!--<button class="btn btn-sm btn-warning" >停用</button>-->
+          <!--<button class="btn btn-sm btn-success">启用</button>-->
+          <button class="btn btn-sm btn-warning" *ngIf="item.statusInt === 0" (click)="enableTemplate(item.id,item.statusInt)">禁用</button>
+          <button class="btn btn-sm btn-success" *ngIf="item.statusInt === 1" (click)="enableTemplate(item.id,item.statusInt)">启用</button>
+          <button class="btn btn-sm btn-danger" (click)="deleteTemplate(item.id)">删除</button>
+          <!--<button class="btn btn-sm btn-primary" (click)="openTemplateEditModal(item.id)">编辑</button>-->
+          <!--<button class="btn btn-sm btn-danger" (click)="deleteTemplate(item.id)">删除</button>-->
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="onQuery()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条数据</span>
+      </div>
+    </div>
+  </form>
+</div>

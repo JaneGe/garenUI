@@ -1,0 +1,44 @@
+<div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <span class="modal-title">选择商品{{modalHeader}}原因</span>
+    <button type="button" class="close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <span class="explain">说明</span>
+    <p>选择商品{{modalHeader}}原因</p>
+    <div class="card card-block">
+      <div style="margin-bottom:20px;">
+        <label class="checkbox-inline custom-checkbox nowrap">
+          <input type="checkbox" [(ngModel)]="tort" (change)="onCheckReason()" [checked]="tort==true" >
+          <span>侵权</span>
+        </label>
+        <label class="checkbox-inline custom-checkbox nowrap">
+          <input type="checkbox" [(ngModel)]="meybeTort" (change)="onCheckReason()" [checked]="meybeTort==true">
+          <span>疑似侵权</span>
+        </label>
+        <label class="checkbox-inline custom-checkbox nowrap">
+          <input type="checkbox" [(ngModel)]="stopProduction" (change)="onCheckReason()" [checked]="stopProduction==true">
+          <span>停产</span>
+        </label>
+        <label class="checkbox-inline custom-checkbox nowrap">
+          <input type="checkbox" [(ngModel)]="halt" (change)="onCheckReason()" [checked]="halt==true">
+          <span>停售</span>
+        </label>
+      </div>
+      <div *ngIf="isTort">
+        <label>
+          <span class="must">注意</span>选择侵权平台</label>
+        <select2 [data]="shippmentTypes" [options]="options" [width]="360" [value]="value" (valueChanged)="onChanged($event)"></select2>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-default" (click)="closeModal()">取消</button>
+      <button class="btn btn-primary" *ngIf="modalHeader=='禁用'" (click)="disableSku()">确定</button>
+      <button class="btn btn-primary" *ngIf="modalHeader=='激活'" (click)="activateSku()">确定</button>
+    </div>
+  </div>
+</div>

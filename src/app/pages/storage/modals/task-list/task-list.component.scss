@@ -1,0 +1,28 @@
+.pop-content {
+    width: 800px;
+    height: auto;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+td table {
+    width: 100%;
+    tr {
+        width: 100%;
+        td {
+            padding:0;
+            border: none;
+            border-right: 1px solid rgba(255, 255, 255, .4);
+            border-top: 1px solid rgba(255, 255, 255, .4);
+            &:last-child {
+                border-right: none;
+            }
+        }
+        &:first-child {
+            td {
+                border-top: none;
+            }
+        }
+    }
+}

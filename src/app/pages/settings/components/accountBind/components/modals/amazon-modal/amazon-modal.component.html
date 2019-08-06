@@ -1,0 +1,39 @@
+<div class="pop-content">
+  <div class="modal-header">
+    <h4 class="modal-title">{{modalHeader}}</h4>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+      <ul>
+        <li> 
+          <label><span class="must">必填</span>Amazon账户名</label>
+          <input type="text" class="form-control" formControlName="accountName">
+        </li>
+        <li>
+          <label><span class="must">必填</span>Merchant ID</label>
+          <input type="text" class="form-control" formControlName="sellerId">
+        </li>
+        <li>
+          <label><span class="must">必填</span>Marketplace ID</label>
+          <input type="text" class="form-control" formControlName="marketId">
+        </li>
+        <li>
+          <label><span class="must">必填</span>AWS Access Key ID</label>
+          <input type="text" class="form-control" formControlName="accessKey">
+        </li>
+        <li>
+          <label><span class="must">必填</span>Secret Key</label>
+          <input type="text" class="form-control" formControlName="secretKey">
+        </li>
+      </ul>
+      <div style="text-align: center">
+        <button class="btn btn-default" (click)="closeModal()">取消</button>
+        <button type="submit" [disabled]="!form.valid || submitted" class="btn btn-warning">保存</button>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer"></div>
+</div>

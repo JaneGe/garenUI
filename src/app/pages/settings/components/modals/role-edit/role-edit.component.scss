@@ -1,0 +1,17 @@
+.pop-content {
+    width: 600px;
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    .modal-body {
+        .control-label {
+            display: block;
+        }
+        .detail-wrap {
+            .custom-checkbox {
+                display: block;
+            }
+        }
+    }
+}

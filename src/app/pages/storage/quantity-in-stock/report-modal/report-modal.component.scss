@@ -1,0 +1,13 @@
+.head{padding:5px 0;border-radius: 5px 5px 0 0;}
+.mytitle{font-size: 16px;margin:0 15px;border-bottom: 1px solid white;color: white;}
+.submit{background-color: #c78100;border: 1px solid #c78100;color: whitesmoke;}
+.cancel{background-color: transparent;border: 1px solid whitesmoke;color: whitesmoke;}
+.reason{display: flex;align-items: flex-start;flex:auto;}
+.reason textarea{width: 100%;}
+.reason p{width: 60px;}
+table thead tr th,table{text-align: center;color: white;vertical-align: middle;font-size: 14px;}
+table thead tr th{padding:8px;width: 16%}
+table tbody tr td input,table tbody tr select{border-radius: 5px;}
+table tbody tr td input{height: 23px;text-align: center;width: 60%;}
+input[type='text']{background:rgba(255,255,255,.1);color:white;border:1px solid rgba(255,255,255,.5);border-top-left-radius: 3px;border-bottom-left-radius: 3px;}
+input:focus{outline: #2389F2;}

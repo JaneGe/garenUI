@@ -1,0 +1,42 @@
+.search-wrapper {
+    .search-condition {
+        li {
+            //height: 30px;
+            margin: 5px 0;
+            line-height: 1em;
+            .search-input {
+                display: inline-block;
+                width: 300px;
+                height: 30px;
+                margin-left: 10px;
+            }
+            .country-select {
+                margin-left: 5px;
+            }
+        }
+    }
+}
+
+.datePick-wrap {
+    display: inline-block;
+}
+
+.datePick {
+    display: flex;
+}
+
+.mymodel {
+    top: 350px;
+}
+
+.icon {
+    margin-left: 8px;
+}
+
+.gap {
+    margin-left: -1px !important;
+}
+
+.datePick ::ng-deep .ngx-datepicker-calendar-container {
+    z-index: 1000;
+}

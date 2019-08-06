@@ -1,0 +1,72 @@
+<form id="form" (submit)="Onsubmit(name.value,contacts.value,contactNum.value,'',website.value,address.value,desciption.value)">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">{{modalHeader}}</h4>
+      <button class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <ngb-alert *ngIf="errorPage&&alertClose" [dismissible]="true" [type]="'danger'" (close)="closeAlert()">这些字段是必须的！
+      </ngb-alert>
+      <div class="card card-block">
+        <div class="content">
+          <div class="part">
+            <p class="p">
+              <span class="title">供应商名称：</span>
+              <span class="input">
+                <input type="text" (click)="check($event.target)" id="name" #name class="form-control" value={{info.name}}>
+              </span>
+            </p>
+            <p class="p">
+              <span class="title">联系人：</span>
+              <span class="input">
+                <input type="text" (click)="check($event.target)" id="contacts" #contacts class="form-control" value={{info.contactName}}>
+              </span>
+            </p>
+            <p class="p">
+              <span class="title">联系电话：</span>
+              <span class="input">
+                <input type="text" (click)="check($event.target)" id="contactNum" #contactNum class="form-control" value={{info.phone}}>
+              </span>
+            </p>
+
+          </div>
+          <div class="part">
+            <p class="p">
+              <span class="title">网址：</span>
+              <span class="input">
+                <input type="text" #website class="form-control" value={{info.url}}>
+              </span>
+            </p>
+            <p class="p">
+              <span class="title">地址：</span>
+              <span class="input">
+                <input type="text" #address class="form-control" value={{info.address}}>
+              </span>
+            </p>
+            <p class="p">
+              <span class="title">下单负责人：</span>
+              <span class="part-wrap input" *ngIf="allUsers.length>0">
+                <select2 class="country-select" [data]="allUsers" [value]="info.createOrderUserId" (valueChanged)="onChangePurchaseUserChanged($event)"></select2>
+              </span>
+            </p>
+          </div>
+        </div>
+        <div class="content">
+          <p class="p">
+          <span class="title">描述：</span>
+          <span class="input">
+            <textarea #desciption class="form-control" rows="8">{{info.note}}</textarea>
+          </span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <!--<button type="submit" class="btn btn-sm pull-right submit" *ngIf="info.id != null"  #id value={{info.id}}>保存</button>-->
+      <button type="submit" class="btn btn-sm pull-right submit">保存</button>
+      <a href="javascript:;" class="btn btn-sm pull-right cancel" (click)="closeModal()">取消</a>
+    </div>
+  </div>
+</form>

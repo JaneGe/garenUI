@@ -1,0 +1,33 @@
+<div *ngIf="notes.length==0">
+  <p>暂时没有日志信息</p>
+</div>
+<div class="slide-wrap">
+  <table class="table table-hover table-bordered gap" *ngIf="notes.length>0">
+    <thead>
+    <tr class="black-muted-bg">
+      <th style="width: 50px">序号</th>
+      <th style="width: 350px;">内容</th>
+      <th style="width:100px;">类型</th>
+      <th style="width:100px;">操作人</th>
+      <th style="width:150px;">时间</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of notes|paginate: { id: 'pager',
+                                                        itemsPerPage:pageSize,
+                                                        currentPage:currentPage,
+                                                        totalItems:totalItems};let i = index">
+      <td>{{i+1}}</td>
+      <td class="slide">
+        <div>
+          <p>{{item.content}}</p>
+        </div>
+      </td>
+      <td>{{item.noteTypeDesc}}</td>
+      <td>{{item.createdByUserName}}</td>
+      <td>{{item.createdTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+

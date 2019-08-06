@@ -1,0 +1,38 @@
+.modal-content{
+    margin:-5px;
+    border:1px solid rgba(0,0,0,0.1);
+    padding:5px;
+    .modal-header{
+        width:100%;
+        height:40px;
+        background: #4160AD;
+        padding:0;
+        .modal-title{
+            display: block;
+            width:100%;
+            height:40px;
+            line-height: 40px;
+            font-size: 20px;
+            text-align: center;
+            color:#fff;
+        }
+    }
+    .modal-body{
+        .notice-title{
+            display: block;
+            width:100%;
+            height:auto;
+            text-align: center;
+            font-size: 19px;
+            margin-bottom:20px;
+        }
+    }
+    .modal-footer{
+        .btn-group{
+            .btn{
+                background: #4160AD !important;
+                border:1px solid #4160AD !important;
+            }
+        }
+    }
+}

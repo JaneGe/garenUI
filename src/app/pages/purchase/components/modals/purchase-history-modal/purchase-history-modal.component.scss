@@ -1,0 +1,44 @@
+.pop-content{
+    width:1200px;
+    margin-left:-400px;
+    overflow: hidden;
+    .modal-body{
+        .history-price{
+            width:100%;
+            height:auto;
+            max-height:350px;
+            .history-title{
+                display: block;
+                width:100%;
+                height:25px;
+                line-height: 25px;
+                border-bottom:1px solid rgba(255,255,255,.4);
+                font-size: 15px;
+                font-weight: bold;
+            }
+            .table-wrapper{
+                width:100%;
+                height:auto;
+                max-height:200px;
+                overflow-y: scroll;
+            }
+            .block{
+                display: block;
+                text-align: center;
+            }
+            .alwangwang{
+                display: inline-block;
+                width:30px;
+                height:30px;
+                margin:0 auto;
+                background: url(/assets/img/wangwang.png);
+                background-size:100%;
+                position: relative;
+                top:10px;
+            }
+            .font-lg{
+                font-size: 20px;
+            }
+        }
+    }
+}

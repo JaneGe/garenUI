@@ -1,0 +1,121 @@
+<div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <span class="modal-title">选择商品</span>
+    <button type="button" class="close" (click)="closeModal()"><span aria-hidden="true">&times;</span></button>
+  </div>
+  <div class="modal-body">
+    <div class="card card-block">
+      <ul class="search-condition">
+        <li>
+          <label class="search-title">搜索类型：</label>
+          <div class="screen-wrapper" *ngFor="let type of types;let i = index">
+            <input type="radio" id="type-{{i}}" name="type" class="regular-radio" [checked]="i === 0"/>
+            <label for="type-{{i}}" (click)="onSearchTypeSelect($event.target,type.value)">{{type.name}}</label>
+          </div>
+        </li>
+        <li>
+          <label class="search-title">搜索内容：</label>
+          <div class="input-group search">
+            <input type="text" class="form-control with-primary-addon" name="searchText" [(ngModel)]="searchText"
+                   placeholder="搜索 ">
+            <span class="input-group-btn">
+                <button class="btn btn-primary" type="button" (click)="doSearch()">搜索</button>
+            </span>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <form class="pagination-wrapper">
+      <div class="form-group pages">
+        <pagination-controls class="my-pagination" id="pager"
+                             (pageChange)="pageChanged($event)"
+                             maxSize="9"
+                             directionLinks="true"
+                             autoHide="true"
+                             previousLabel="上一页"
+                             nextLabel="下一页"
+                             screenReaderPaginationLabel="Pagination"
+                             screenReaderPageLabel="page"
+                             screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
+      </div>
+      <div class="form-group options pages">
+        <div class="input-group input-group-sm">
+          <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+            <option>1</option>
+            <option>5</option>
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+            <option>200</option>
+          </select>
+          <span class="input-group-addon addon-right">条/页</span>
+        </div>
+      </div>
+    </form>
+    <table class="table table-hover table-bordered">
+      <thead>
+      <tr>
+        <th></th>
+        <th>SKU</th>
+        <th>商品名称</th>
+        <th>体积（长*宽*高）</th>
+        <th>重量</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of items | paginate: { id: 'pager',
+                                            itemsPerPage: pageSize,
+                                            currentPage: pageNumber,
+                                            totalItems: total}">
+        <td>
+          <label class="radio-inline custom-radio nowrap">
+            <input type="radio" name="checkSkuId" (click)="selectSku(item)">
+            <span></span>
+          </label>
+        </td>
+        <td>{{item.skuCode}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.length}}*{{item.width}}*{{item.height}}</td>
+        <td>{{item.weight}}</td>
+      </tr>
+      </tbody>
+    </table>
+    <form class="pagination-wrapper">
+      <div class="form-group pages">
+        <pagination-controls class="my-pagination" id="pager"
+                             (pageChange)="pageChanged($event)"
+                             maxSize="9"
+                             directionLinks="true"
+                             autoHide="true"
+                             previousLabel="上一页"
+                             nextLabel="下一页"
+                             screenReaderPaginationLabel="Pagination"
+                             screenReaderPageLabel="page"
+                             screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
+      </div>
+      <div class="form-group options pages">
+        <div class="input-group input-group-sm">
+          <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+            <option>1</option>
+            <option>5</option>
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+            <option>200</option>
+          </select>
+          <span class="input-group-addon addon-right">条/页</span>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="closeModal()">关闭</button>
+      <button class="btn btn-primary" (click)="confirm()">添加</button>
+    </div>
+  </div>
+</div>

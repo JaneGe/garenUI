@@ -1,0 +1,25 @@
+.pop-content {
+    width: 500px;
+    .modal-body {
+        .btn {
+            margin: 10px 0;
+        }
+        th,
+        td {
+            text-align: center;
+            input {
+                width: 60px;
+                height: 25px;
+                margin: 0 auto;
+                border: 1px solid #fff;
+                border-radius: 3px;
+                background: rgba(255, 255, 255, .1);
+                color: #fff;
+            }
+            a {
+                color: #fff;
+                text-decoration: underline !important;
+            }
+        }
+    }
+}

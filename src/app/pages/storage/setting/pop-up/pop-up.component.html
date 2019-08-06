@@ -1,0 +1,52 @@
+<div class="pop-content" id="form">
+  <div class="modal-header">
+    <span class="modal-title">打印货架位标签</span>
+    <button (click)="chooseBarType()">条形码</button>
+    <button (click)="chooseTwoBarType()">二维码</button>
+  </div>
+  <div class="modal-body">
+    <div class="print-body">
+      <div class="border" *ngIf="barType">
+        <table class="bar-type print-content">
+          <tr>
+            <td class="bar-type-img">
+              <div id="barCode"></div>
+            </td>
+            <td class="bar-type-up-img">
+              <img src="../../../../../assets/print/条码/up.png" alt="">
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" class="bar-last-td">
+              <span>{{code}}</span>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="border" *ngIf="twoBarType">
+        <table class="two-bar-type print-content">
+          <tr>
+            <td class="code-img">
+              <div id="qrcode"></div>
+              <p>{{code}}</p>
+            </td>
+            <td class="up-img">
+              <img src="../../../../../assets/print/条码/up.png" alt="">
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" class="last-td">
+              <span>{{code}}</span>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="closeModal()">取消</button>
+      <button class="btn btn-primary" (click)="printPDF()">打印面单</button>
+    </div>
+  </div>
+</div>

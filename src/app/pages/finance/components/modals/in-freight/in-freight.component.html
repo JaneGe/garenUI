@@ -1,0 +1,42 @@
+<div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <span class="modal-title">运费导入</span>
+    <button type="button" class="close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <label>&nbsp;跟踪号</label>
+    <input class="form-control" type="text" placeholder="跟踪号" [(ngModel)]="packageData.trackingNumber" disabled>
+    <label>&nbsp;转单号</label>
+    <input class="form-control" type="text" placeholder="转单号"  [(ngModel)]="packageData.spPackageId"  disabled>
+    <div class="row">
+      <div class="col-md-6">
+        <label>&nbsp;实际重量</label>
+        <input class="form-control" type="text" placeholder="物流重量"  [(ngModel)]="packageData.shipWeight" disabled>
+      </div>
+      <div class="col-md-6">
+        <label>
+          <span class="must">必填</span>&nbsp;物流对账重量(g)</label>
+        <input class="form-control" type="text" [(ngModel)]="spWeight" placeholder="重量">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label>&nbsp;实际运费</label>
+        <input class="form-control" type="text"  [(ngModel)]="packageData.shipShippingFee"  placeholder="物流运费" disabled>
+      </div>
+      <div class="col-md-6">
+        <label>
+          <span class="must">必填</span>&nbsp;物流对账运费</label>
+        <input class="form-control" type="text"  [(ngModel)]="spFeeAmount"  placeholder="运费">
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-default" (click)="closeModal()">关闭</button>
+      <button class="btn btn-primary" (click)="saveSpData()">保存</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <span class="modal-title">图片上传</span>
+    <button type="button" class="close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <label>
+      <span class="explain">说明</span>点击上传图片</label>
+    <ba-picture-uploader [picture]="profile.picture"
+                         [defaultPicture]="defaultPicture"
+                         (onUpload)="picUpload($event)"
+                         (onUploadCompleted)="picUploadCompleted($event)"
+                         [uploaderOptions]="uploaderOptions"></ba-picture-uploader>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-default" (click)="closeModal()">关闭</button>
+    </div>
+  </div>
+</div>

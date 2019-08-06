@@ -1,0 +1,8 @@
+<div class="tree">
+  <ul>
+    <li *ngFor="let item of treesItem">
+      <a href="javascript:;" (click)="openEditDepartmentModal(item.id)">{{item.name}}</a>
+      <tree-diagram *ngIf="item.children.length>0" [treesItem]="item.children" (_getTreesState)="getTreesState($event)"></tree-diagram>
+    </li>
+  </ul>
+</div>

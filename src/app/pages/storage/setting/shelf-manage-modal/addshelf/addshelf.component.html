@@ -1,0 +1,33 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">{{modalHeader}}
+        <button class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </h4>
+    </div>
+    <div class="modal-body">
+      <p>请选择货架类型：</p>
+      <select class="gap form-control" formControlName="locationType">
+        <option selected value="good">良品</option>
+        <option value="bad">次品</option>
+        <option value="exception">异常品</option>
+      </select>
+      <div class="card card-block">
+        <div>
+          <p>起始值:</p>
+          <p><input type="text" formControlName="start" id="start"/></p>
+        </div>
+        <div>
+          <p>结束值:</p>
+          <p><input type="text" formControlName="end" id="end"/></p>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-sm pull-right cancel" (click)="closeModal()">取消</button>
+      <button class="btn btn-primary submit" [disabled]="!form.valid || submitted">生成</button>
+    </div>
+  </div>
+</form>

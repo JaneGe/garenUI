@@ -1,0 +1,43 @@
+<div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <span class="modal-title">编辑回传信息</span>
+  </div>
+  <div class="modal-body">
+    <ul *ngFor="let info of item">
+      <li *ngIf="selectedCompleteSalesStatus!=null">
+        <label class="edit-title">回传失败原因</label>
+        <span>Code: {{info.failedReasonCode}} , Message:{{info.failedReasonMessage}}</span>
+      </li>
+      <li *ngIf="selectedCompleteSalesStatus==null">
+        <label class="edit-title">等待回传</label>
+      </li>
+      <li>
+        <label class="edit-title">订单号</label>
+        <span>{{info.orderNumber}}</span>
+      </li>
+      <li>
+        <label class="edit-title">物流方式</label>
+        <span>{{info.shippingService}}</span>
+      </li>
+      <li>
+        <label class="edit-title">跟踪号</label>
+        <input type="text" class="form-control"  [(ngModel)]="trackingNumber">
+      </li>
+      <li>
+        <label class="edit-title">平台物流方式</label>
+        <select2 [data]="logisticeData"  class="country-select"   [value]="info.carrierCode"
+                 (valueChanged)="onChangeLogisticeDataChanged($event)"></select2>
+      </li>
+      <li>
+        <label class="edit-title"></label>
+        <span>这是交易平台系统所能识别的物流方式，如果没有符合的，请选择Other。</span>
+      </li>
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="closeModal()">取消</button>
+      <button class="btn btn-primary" (click)="submit()">执行回传</button>
+    </div>
+  </div>
+</div>

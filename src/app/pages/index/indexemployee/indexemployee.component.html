@@ -1,0 +1,76 @@
+<div class="card card-block">
+  <div class="title gap"><h3>昨日成就</h3><hr/></div>
+  <div class="overview-part">
+    <div class="overview">
+      <h3>昨日订单数<span>50</span></h3>
+      <span class="account">Amazon-A001</span>
+    </div>
+    <div class="overview">
+      <h3>昨日销量 <span>500</span></h3>
+      <span class="account">Amazon-A001</span>
+    </div>
+    <div class="overview">
+      <h3>昨日订单量排名 <span>200</span></h3>
+      <span class="account">Amazon-A001</span>
+    </div>
+    <div class="overview">
+      <h3>订单金额排名 <span>30</span></h3>
+      <span class="account">Amazon-A001</span>
+    </div>
+  </div>
+</div>
+<div class="contain">
+  <div class="two-part needgap ">
+      <ba-card class="col-xlg-6 col-xl-6 col-lg-12 col-sm-12 col-12"
+               cardTitle="本月目标" baCardClass="traffic-panel medium-card">
+        <traffic-chart [doughnutData]="ChannelData" [TotalValue]="TargetValue"
+        [Character]="Character" [tableData]="tableData" [TableTitle]="TableTitle"></traffic-chart>
+      </ba-card>
+  </div>
+  <div class="two-part todolist">
+    <div class="card card-block">
+      <div>
+        <h2 class="card-title title">公告栏</h2>
+        <hr/>
+        <ul>
+          <li class="notice-list" *ngFor="let item of noticeList;let i = index" (click)="openNoticeModal(item.id)">
+            <a href="javascript:;">
+              <span class="cirle"></span>
+              <span class="notice-title">{{item.title}}</span>
+              <span class="notice-time">{{item.createTime | date: 'y年/MM月/d日/H:mm:ss'}}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="contain">
+    <div class="two-part needgap todolist">
+      <div class="card card-block">
+        <div>
+        <h2 class="card-title title">异常信息/待处理列表</h2>
+          <hr/>
+        <ul>
+        <li *ngFor="let item of todolist">
+          <a href=""><span class="cirle"></span>{{item}} </a>
+          <span class="ion-close-round pull-right" (click)="delete($event.target)"></span>
+        </li>
+        </ul>
+        </div>
+      </div>
+    </div>
+    <div class="two-part">
+      <div class="card card-block">
+        <div class="title gap"><h3>每日订单数量与平台分布日历</h3><hr/></div>
+        <ba-full-calendar [baFullCalendarConfiguration]="calendarConfiguration" baFullCalendarClass="blurCalendar"
+                          ></ba-full-calendar>
+      </div>
+    </div>
+</div>
+<div class="card card-block">
+  <div class="contain custom-container">
+    <div class="two-part lineChart1"><div id="container1"></div></div>
+    <div class="two-part"><div id="container"></div></div>
+  </div>
+</div>

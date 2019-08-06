@@ -1,0 +1,90 @@
+.pop-content {
+    width: 900px;
+    min-height: 900px;
+    margin-left: -250px;
+    .content-header {
+        width: 100%;
+        height: 40px;
+        font-weight: 700;
+        ul {
+            width: 90%;
+            height: 100%;
+            padding: 0 7px;
+            li {
+                list-style: none;
+                float: left;
+                width: auto;
+                height: 100%;
+                padding: 5px;
+                font-size: 1.1em;
+                color: #fff;
+                span {
+                    font-size: 0.9em;
+                    color: #fff;
+                }
+                .caption {
+                    margin-right: 5px;
+                }
+            }
+        }
+    }
+    .body-left,
+    .body-right {
+        width: 46%;
+        margin: 0 2%;
+        float: left;
+        .card {
+            padding: 15px;
+            .form-title {
+                display: block;
+                width: 100%;
+                height: 30px;
+                border-bottom: 1px solid rgba(255, 255, 255, .2);
+                a {
+                    display: block;
+                    width: auto;
+                    height: auto;
+                    padding: 1.5px;
+                    background: #209e91;
+                    float: right;
+                    border: 1px solid #209e91;
+                    border-radius: 3px;
+                    color: #fff;
+                }
+            }
+            ul {
+                padding: 0;
+                li {
+                    margin: 10px 0;
+                }
+            }
+            .table {
+                .btn-group {
+                    width: 40px;
+                    float: left;
+                    margin: 2px 0;
+                    i {
+                        font-size: 15px;
+                    }
+                }
+                .table-input {
+                    display: block;
+                    float: left;
+                    width: 80px;
+                    height: 30px;
+                    text-align: center;
+                    border: 1px solid #fff;
+                    background: rgba(255, 255, 255, .2);
+                    border-radius: 3px;
+                    color: #fff;
+                }
+                a {
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
+.country-select /deep/ .select2-container .select2-selection--single{
+  cursor: not-allowed;
+}

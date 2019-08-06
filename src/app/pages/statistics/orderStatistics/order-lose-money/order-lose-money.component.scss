@@ -1,0 +1,15 @@
+.left-group {
+    margin-bottom: 15px;
+    position: relative;
+    display: flex;
+    width: 100%;
+    select {
+        height: 20px;
+        line-height: 20px;
+        border: 1px solid #F2F6FC;
+        border-right: none;
+        color: #fff;
+        background-image: url(/assets/img/select.img);
+        background-repeat: no-repeat;
+    }
+}

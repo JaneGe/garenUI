@@ -1,0 +1,25 @@
+<div class=".col-md-8 card card-block search-wrapper">
+  <ul class="search-condition">
+    <li>
+      <label class="search-title">搜　　索：</label>
+      <div class="input-wrapper">
+        <input type="text" class="form-control" placeholder="输入品牌名称进行搜索" [(ngModel)]="searchText">
+        <div class="btn-group">
+          <button class="btn btn-primary" (click)="doSearch()">搜索</button>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+<label class="display-block">
+  <span class="explain">说明</span>
+  <span class="display-block">点击品牌logo进行编辑。</span>
+</label>
+<button class="btn btn-sm btn-primary" style="margin:10px 0;" (click)="openBrandEditModal()">新增品牌</button>
+
+<div class="brand-items-wrap">
+  <div class="brand-item card" *ngFor="let item of items;let i = index">
+    <img src="{{item.imageUrl}}" alt="{{item.name}}" class="brand-logo" (click)="editBrand(item.id)">
+    <span class="brand-name">{{item.name}}</span>
+  </div>
+</div>

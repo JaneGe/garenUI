@@ -1,0 +1,163 @@
+<div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <span class="modal-title">邮件详情</span>
+    <button type="button" class="close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <!-- 查看邮件详情 -->
+    <div class="row" *ngIf="!isReply&&emaildetail">
+      <h3 class="mail-theme">邮件主题：{{emaildetail.subject}}
+        <span class="label label-warning" *ngIf="emaildetail.operationType=='IsSign'">星标邮件</span>
+        <span class="label label-info" *ngIf="!emaildetail.isReplyed">未回复</span>
+      </h3>
+      <div class="col-md-4">
+
+        <!-- 邮件信息 -->
+        <div class="card card-block">
+          <label class="card-title">邮件信息</label>
+          <ul class="mail-info">
+            <li>发件人：{{emaildetail.sendPerson}}</li>
+            <li>账　号：{{emaildetail.sendMailAddress}}</li>
+            <li>站　点：{{emaildetail.siteCode}}</li>
+            <li>日　期：{{emaildetail.sendTimeDesc}}</li>
+          </ul>
+        </div>
+        <!-- 邮件相关订单信息 -->
+        <div class="card card-block order-info">
+          <label class="card-title">相关订单信息</label>
+          <ul class="mail-info">
+            <li *ngIf="emaildetail.orderNumber">订单号：<!-- 参数为orderInfo.id -->
+              <a href="javascript:;" title="点击查看订单详情" (click)="openOrderDetailModal(emaildetail.orderId)">{{emaildetail.orderNumber}}</a>
+            </li>
+            <li *ngIf="!emaildetail.orderNumber">订单号：无</li>
+            <li>包裹号：                                <!-- 参数为packageInfo.id,packageInfo.orderNumber,packageInfo.status -->
+              <a href="javascript:;" title="点击查看包裹详情" (click)="openPackageDetailModal(emaildetail.packageId,emaildetail.orderNumber,'Allocated')">{{emaildetail.packageNumber}}</a>
+            </li>
+            <li>订单状态：{{emaildetail.orderStatusDesc}}</li>
+            <li >发货重量：<span *ngIf="emaildetail.shipWeight">{{emaildetail.shipWeight}}g </span></li>
+            <li >预估重量：<span *ngIf="emaildetail.estimateWeight">{{emaildetail.estimateWeight}}g </span></li>
+            <li>发货时间：{{emaildetail.expressTimeDesc}}</li>
+            <li>付款时间：{{emaildetail.payTimeDesc}}</li>
+          </ul>
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>SKUCode</th>
+                <th>商品链接</th>
+                <th>商品图片</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let sku of emaildetail.skuDetails">
+                <td>
+                  <span>{{sku.skuCode}}</span>
+                </td>
+                <td>
+                  <a href="{{sku.productUrl}}" target="_blank">点击查看商品链接</a>
+                </td>
+                <td>
+                  <span *ngIf="!sku.productImgUrl">暂无商品图片</span>
+                  <div class="sku-img-wrap" *ngIf="sku.productImgUrl">
+                    <img src="{{sku.productImgUrl}}" alt="暂无商品图片">
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- 邮件归类备注设置 -->
+        <div class="card card-block">
+          <label>选择邮件归类：</label>
+          <select style="width:200px" class="form-control form-control-sm sm-select" [(ngModel)]="mailCate" (change)="mailCategory()">
+            <option value="2">订单售前咨询</option>
+            <option value="3">订单产品咨询</option>
+            <option value="4">订单物流咨询</option>
+            <option value="5">退款退货</option>
+            <option value="6">系统通知</option>
+            <option value="1">无需回复</option>
+            <option value="7">其他问题</option>
+          </select>
+          <label style="margin-top:10px">
+            <span class="must">必填</span>填写客服备注：</label>
+          <textarea class="form-control" [(ngModel)]="mailNote" placeholder="填写客服备注"></textarea>
+          <div class="btn-group tools">
+            <button class="btn btn-sm btn-default" (click)="SaveNoteCate(emaildetail.id)" title="保存邮件归类及备注">
+              <i class="ion-checkmark-round"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- 邮件内容详情 -->
+      <div class="col-md-8">
+        <div class="card card-block mail-content-wrap">
+          <label class="card-title">邮件内容：</label>
+          <div class="mail-content content-detail"></div>
+          <div class="btn-group tools">
+            <button class="btn btn-default" (click)="setEmailStar(emaildetail.id)" title="设为星标邮件">
+              <i class="ion-star"></i>
+            </button>
+            <button class="btn btn-default" (click)="setEmailException(emaildetail.id)" title="设为异常邮件">
+              <i class="ion-alert-circled"></i>
+            </button>
+            <a class="btn btn-default" href="http://fanyi.baidu.com" target="_blank" title="翻译邮件">
+              <i class="ion-arrow-swap"></i>
+            </a>
+          </div>
+        </div>
+        <div class="btn-group reply">
+          <button class="btn btn-sm btn-primary btn-with-icon reply-btn" *ngIf="emaildetail.businessType!='NoReply'" (click)="replyMail()">
+            <i class="ion-reply-all"></i>回复此邮件</button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 邮件回复 -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="theme-detail-wrap">
+          <div class="mail-content theme-detail"></div>
+        </div>
+      </div>
+      <div class="col-md-6" *ngIf="isReply">
+        <div class="tem-wrap">
+          <label>
+            主题：</label>
+          <input type="text" class="form-control" placeholder="主题" id="subject" name="subject" [(ngModel)]="subjectText" disabled>
+        </div>
+        <div class="tem-wrap">
+          <label>
+            收件人邮箱：</label>
+          <input type="text" class="form-control" placeholder="收件人邮箱" id="mailAddress" name="mailAddress" value="{{emaildetail.sendMailAddress}}"
+            disabled>
+        </div>
+        <textarea class="mail-editor form-control" [(ngModel)]="ckeditorContent"></textarea>
+       <!--  <ck-editor [(ngModel)]="ckeditorContent" [config]="config"></ck-editor> -->
+        <div class="tem-wrap-setting" style="margin-top:10px">
+          <label>
+            选择回复模板：</label>
+          <select2 [data]="shippmentTypes" [width]="420" [value]="value" (valueChanged)="onChanged($event)"></select2>
+        </div>
+        <div class="clearfix"></div>
+        <div>
+          <button class="btn btn-sm btn-warning btn-with-icon" (click)="openTemplateManagementModal()">
+            <i class="fa fa-list"></i>模板管理
+          </button>
+          <button class="btn btn-sm btn-primary btn-with-icon" (click)="sendMail()">
+            <i class="ion-paper-airplane"></i>确认发送</button>
+          <button class="btn btn-sm btn-default" (click)="enterReply()">取消</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="mailChange(true)" *ngIf="!isReply&&(presentId>0)">上一封</button>
+      <button class="btn btn-primary" (click)="mailChange(false)" *ngIf="!isReply&&(presentId<mailIdItem.length-1)">下一封</button>
+      <button class="btn btn-default" (click)="closeModal()">关闭邮件详情</button>
+    </div>
+  </div>
+</div>

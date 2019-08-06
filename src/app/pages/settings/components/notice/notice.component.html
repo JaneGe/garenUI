@@ -1,0 +1,117 @@
+<div class="card card-block">
+  <div class="screen" *ngIf="!modalShow">
+    <div class="screen-wrapper" *ngFor="let select of select;let i = index">
+      <input type="radio" id="{{select}}" name="select" class="regular-radio" [checked]="i === 0"/>
+      <label for="{{select}}" (click)="onSelect($event.target,i)">{{select}}</label>
+    </div>
+  </div>
+  <div class="btn-group add-btn" *ngIf="!modalShow">
+    <button class="btn btn-primary" (click)="addNotice()"><i class="ion-plus"></i> 添加新公告</button>
+  </div>
+  <div class="notice-list" *ngIf="!modalShow">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>标题</th>
+          <th>编辑人</th>
+          <th>添加时间</th>
+          <th>状态</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let list of noticeList | paginate: { id: 'pager',
+        itemsPerPage: pageSize,
+        currentPage: pageNumber,
+        totalItems: total};let i = index">
+          <td>{{list.title}}</td>
+          <td>张志伟</td>
+          <td>{{list.createTime | date: 'y年/MM月/d日/H:mm:ss'}}</td>
+          <td>
+            {{list.status === 'Show'?"已发布":"草稿"}}
+          </td>
+          <td>
+            <!-- <a href="javascript:;" class="edit-btn" (click)="editNotice(list.id)">
+              <i class="ion-compose"></i>
+              <span>编辑</span>
+            </a>
+            <a href="javascript:;" class="edit-btn" (click)="deletePage(list.id)">
+              <i class="ion-trash-b"></i>
+              <span>删除</span>
+            </a>
+            <a href="javascript:;" class="edit-btn" (click)="setStatus(list.id)" *ngIf="list.status === 'NoShow'">
+              <i class="ion-android-checkbox-outline"></i>
+              <span>发布此公告</span>
+            </a> -->
+            <div class="btn-group" ngbDropdown>
+              <button type="button" class="btn btn-default" ngbDropdownToggle>编辑</button>
+              <ul class="dropdown-menu">
+                <li class="dropdown-item">
+                  <a href="javascript:;" class="edit-btn" (click)="editNotice(list.id)">
+                    <i class="ion-compose"></i>
+                    <span>编辑</span>
+                  </a>
+                </li>
+                <li class="dropdown-item">
+                  <a href="javascript:;" class="edit-btn" (click)="deletePage(list.id)">
+                    <i class="ion-trash-b"></i>
+                    <span>删除</span>
+                  </a>
+                </li>
+                <li class="dropdown-item" *ngIf="list.status === 'NoShow'">
+                    <a href="javascript:;" class="edit-btn" (click)="setStatus(list.id)">
+                      <i class="ion-android-checkbox-outline"></i>
+                      <span>发布此公告</span>
+                    </a>
+                </li>
+                <li class="dropdown-divider"></li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <form class="pagination-wrapper">
+      <div class="form-group pages">
+        <pagination-controls class="my-pagination"
+                              id="pager"
+                              (pageChange)="pageChanged($event)"
+                              maxSize="9"
+                              directionLinks="true"
+                              autoHide="true"
+                              previousLabel="上一页"
+                              nextLabel="下一页"
+                              screenReaderPaginationLabel="Pagination"
+                              screenReaderPageLabel="page"
+                              screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
+      </div>
+      <div class="form-group options pages">
+        <div class="input-group input-group-sm">
+          <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+            <option>1</option>
+            <option>5</option>
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+            <option>200</option>
+          </select>
+          <span class="input-group-addon addon-right">条/页</span>
+          <span class="input-group-addon addon-right">共{{total}}条</span>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="edit-notice" *ngIf="modalShow">
+    <label class="notice-title"><span class="must">必填</span>公告标题</label>
+    <input type="text" class="form-control" placeholder="请输入公告标题" [(ngModel)]="noticeTitle">
+    <label class="notice-content"><span class="must">必填</span>公告内容</label>
+    <ck-editor [(ngModel)]="ckeditorContent" [config]="config"></ck-editor>
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="Cancel()">取消</button>
+      <button class="btn btn-primary" (click)="Release('NoShow')" *ngIf="!isEdit">存为草稿</button>
+      <button class="btn btn-primary" (click)="Release('Show')">{{isEdit?"更新公告":"发布公告"}}</button>
+    </div>
+  </div>
+</div>

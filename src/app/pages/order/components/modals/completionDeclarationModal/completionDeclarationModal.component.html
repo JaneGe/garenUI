@@ -1,0 +1,45 @@
+<div class="pop-content animated fadeIn">
+    <div class="modal-header">
+      <span class="modal-title">补全报关信息</span>
+      <button type="button" class="close" (click)="closeModal()"><span aria-hidden="true">&times;</span></button>
+    </div>
+    <div class="modal-body clearfix">
+      <ul>
+        <li>
+          <label class="list-label">Cust.L</label>
+          <span>{{orderLineTitle}}</span>
+        </li>
+        <li>
+          <label class="list-label">SKU</label>
+          <span>{{skuId>0? skuDetail.skuCode: '无'}}</span>
+        </li>
+        <li>
+          <label class="list-label">英文报关名称</label>
+          <input type="text" class="form-control" [(ngModel)]="declaration.englishName" />
+        </li>
+        <li>
+          <label class="list-label">中文报关名称</label>
+          <input type="text" class="form-control" [(ngModel)]="declaration.chineseName" />
+        </li>
+        <li>
+          <label class="list-label">申报价值</label>
+          <div class="input-group">
+            <input type="text" class="form-control with-primary-addon short-input"  [(ngModel)]="declaration.declaredValue"  />
+            <span class="input-group-addon addon-right input-group-addon-primary">USD</span>
+          </div>
+        </li>
+        <li>
+          <label class="list-label">海关编码</label>
+          <input type="text" class="form-control" [(ngModel)]="declaration.hsCode" />
+        </li>
+        <li></li>
+        <li></li>
+      </ul>
+    </div>
+    <div class="modal-footer">
+      <span>提交后，系统将自动检查含有本商品的订单，补全报关信息。</span>
+      <div class="btn-group">
+        <button class="btn btn-primary" (click)="saveDeclaration()">提交</button>
+      </div>
+    </div>
+  </div>

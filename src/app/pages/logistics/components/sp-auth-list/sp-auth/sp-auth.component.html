@@ -1,0 +1,42 @@
+<div class="pop-content">
+  <div class="modal-header">
+    <h4 class="modal-title">绑定物流商账户</h4>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body clearfix">
+    <form [formGroup]="form" (ngSubmit)="doSpAuth(form.value)" class="form-horizontal">
+      <ul class="form-list">
+        <li>
+          <label for="selectParentDepartment" class="form-title"><span class="must">必填</span>物流商</label>
+          <select class="form-control" formControlName="spId"  id="selectParentDepartment" (change)="onSpChanged()">
+            <option *ngFor="let sp of allSps"  value="{{sp.id}}" >{{sp.name}}</option>
+          </select>
+        </li>
+        <ng-container *ngIf="authType!='Oauth2'">
+          <li  *ngFor="let item of spAuthMetadata.fields">
+            <label for="{{item.fieldName}}" class="form-title"><span *ngIf="item.isRequired" class="must">必填</span>{{item.fieldDisplyName}}</label>
+            <input type="text"  formControlName="{{item.fieldName}}" class="form-control" id="{{item.fieldName}}"  placeholder="{{item.fieldDisplyName}}">
+          </li>
+          <li>
+            <button class="btn btn-default" (click)="closeModal()">关闭</button>
+            <button type="submit" [disabled]="!form.valid || submitted" class="btn btn-primary">保存</button>
+          </li>
+        </ng-container>
+        <ng-container *ngIf="authType=='Oauth2'">
+          <li *ngIf="isAuthroized">
+            <label class="form-title">已授权</label>
+            <button class="btn btn-default" (click)="closeModal()">关闭</button>
+            <button type="submit"  class="btn btn-primary">重新授权</button>
+          </li>
+          <li *ngIf="!isAuthroized">
+            <button class="btn btn-default" (click)="closeModal()">关闭</button>
+            <button type="submit" class="btn btn-primary">开始授权</button>
+          </li>
+        </ng-container>
+
+      </ul>
+    </form>
+  </div>
+</div>

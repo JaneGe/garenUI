@@ -1,0 +1,33 @@
+.pagination-wrapper .statistics-wrap{
+  position: absolute;
+  right: 0;
+  p{
+    margin-bottom: 0;
+    line-height: 30px;
+    span{
+      display: inline-block;
+      width: 120px;
+      text-align: left;
+    }
+    i{
+      display: inline-block;
+      font-weight: bold;
+      min-width: 100px;
+    }
+  }
+}
+.custom-nav-form{
+  min-height: 105px;
+  div.to{
+    position: relative;top:15px;
+  }
+  div.options{
+    top:15px;height: 31px;
+  }
+}
+.content-wrap{
+  min-height: 900px;
+}
+.customBtn{
+
+}

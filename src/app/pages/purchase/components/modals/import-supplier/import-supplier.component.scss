@@ -1,0 +1,42 @@
+.input {
+    position: relative;
+    border: 1px solid white;
+    padding: 5px;
+    border-radius: 5px;
+    height: 32px;
+}
+
+.inputfile,
+.input a,
+.input .text {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 30px;
+}
+
+.inputfile {
+    opacity: 0;
+    z-index: 100;
+    width: 260px
+}
+
+.input a {
+    z-index: 1;
+}
+
+p>a {
+    text-decoration: underline!important;
+}
+
+.input .text {
+    z-index: 1;
+    width: 190px;
+    left: 70px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 14px;
+    line-height: 30px;
+    padding-left: 15px;
+}

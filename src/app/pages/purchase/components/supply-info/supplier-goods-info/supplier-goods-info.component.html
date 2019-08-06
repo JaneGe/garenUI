@@ -1,0 +1,77 @@
+<app-supply-info-head
+  [status]="status"
+  [searchKind]="searchKind"
+  (eimtstatu)="selectStatu($event)"
+  (eimtsearchKind)="selectsearchKind($event)"
+></app-supply-info-head>
+
+<form class="pagination-wrapper">
+  <div class="form-group pages">
+    <pagination-controls class="my-pagination" id="pager"
+                         (pageChange)="pageChanged($event)"
+                         maxSize="9"
+                         directionLinks="true"
+                         autoHide="true"
+                         previousLabel="上一页"
+                         nextLabel="下一页"
+                         screenReaderPaginationLabel="Pagination"
+                         screenReaderPageLabel="page"
+                         screenReaderCurrentLabel="You're on page">
+    </pagination-controls>
+  </div>
+  <div class="to" *ngIf="totalCount>pageSize">
+    <div class="topage"><p>跳至</p></div>
+    <div class="topage" style="width: 60px;">
+      <div class="inputPage"><p><input type="search" class="form-control" name="to" #toPage
+                                       (keyup.enter)="topage(toPage.value)"></p></div>
+    </div>
+    <div class="topage"><p>页</p></div>
+    <div class="topage out" (click)="tolast()"><p>尾页</p></div>
+  </div>
+  <div class="form-group options pages">
+    <div class="input-group input-group-sm">
+      <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+        <option>1</option>
+        <option>5</option>
+        <option>10</option>
+        <option>20</option>
+        <option>50</option>
+        <option>100</option>
+        <option>200</option>
+      </select>
+      <span class="input-group-addon addon-right">条/页</span>
+      <span class="input-group-addon addon-right">共{{totalCount}}条数据</span>
+    </div>
+  </div>
+</form>
+
+
+<table class="table table-bordered table-hover">
+  <thead>
+  <tr class="black-muted-bg">
+    <th>供应商</th>
+    <th>供应数量(sku数量)</th>
+    <th>历史采购数</th>
+    <th>最近交易时间</th>
+    <th>状态</th>
+    <th>操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let I of supplierInfo|paginate: { id: 'pager',
+                                                      itemsPerPage:pageSize,
+                                                      currentPage:pageIndex,
+                                                      totalItems:totalCount}">
+    <td>{{I.supplierName}}</td>
+    <td>{{I.supplyNum}}</td>
+    <td>{{I.historyPurchase}}</td>
+    <td>{{I.recentDealTime}}</td>
+    <td [style.color]="I.status=='可用'?'#30ff44':'#ff3c48'">{{I.status}}</td>
+    <td>
+      <a href='javascript:;' (click)="openSupplierGoodsList(I.supplierName,I.id)">供应信息列表</a>
+      <a href='javascript:;' (click)="improtSupplierGoodsList()">导入供货信息</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+

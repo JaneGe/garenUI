@@ -1,0 +1,111 @@
+.pop-content {
+    margin-top: 220px;
+    width: 400px;
+    height: auto;
+    background: #fff;
+    color: #000;
+    font-size: 13px;
+    margin: -5px;
+    .modal-header,
+    .modal-footer {
+        height: 50px;
+        line-height: 50px;
+    }
+    .modal-header {
+        border-bottom: 1px solid rgba(0, 0, 0, .2) !important;
+        font-size: 20px;
+        font-weight: bold;
+        button {
+            height: 24px;
+            line-height: 2px;
+            text-align: center;
+            width: 100px;
+            font-size: 13px;
+            font-weight: 120;
+            border-radius: 3px;
+            outline: none;
+            border: 1px solid #fff;
+            color: #fff;
+            background-color: #149285;
+            cursor: pointer;
+        }
+        :nth-child(2) {
+            margin-right: 10px;
+        }
+    }
+    .modal-footer {
+        border-top: 1px solid rgba(0, 0, 0, .2);
+    }
+    .modal-body {
+        position: relative;
+        height: 300px;
+        .print-body {
+            max-height: 700px;
+            overflow-x: hidden;
+        }
+    }
+}
+.border {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid rgba(0, 0, 0, .2);
+}
+table {
+    width: 85mm;
+    height: 60mm;
+}
+.bar-type {
+    .bar-type-img img {
+        width: 70mm;
+        height: 20mm;
+    }
+    .bar-type-img img+p {
+        text-align: center;
+        font-size: 28px;
+        letter-spacing: 5px;
+    }
+    .bar-type-up-img img {
+        width: 23mm;
+        height: 25mm;
+    }
+    .bar-last-td {
+        width: 70mm;
+        height: 25mm;
+        font-size: 50px;
+        font-weight: 800;
+        letter-spacing: 5px;
+        text-align: center;
+    }
+}
+
+.two-bar-type {
+    .code-img {
+        padding: 5mm 10mm 0 10mm;
+        text-align: center;
+    }
+    .code-img p {
+        text-align: left;
+        font-size: 15px;
+        letter-spacing: .2em;
+        height: 5mm;
+    }
+    .up-img img {
+        margin-right: 6mm;
+        margin-top: -10px;
+        width: 23mm;
+        height: 100px;
+    }
+    .last-td {
+        width: 70mm;
+        height: 20mm;
+        text-align: left;
+        text-indent: 2em;
+        span {
+            font-size: 46px;
+            font-weight: 800;
+            letter-spacing: .2em;
+        }
+    }
+}

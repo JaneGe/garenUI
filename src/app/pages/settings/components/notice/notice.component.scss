@@ -1,0 +1,45 @@
+@import '../../../../theme/sass/conf/conf';
+
+/deep/.cke_source {
+  color: $dropdown-text!important;
+}
+
+.card{
+    .screen-wrapper{
+        width:auto;
+        float: left;
+    }
+    .add-btn{
+        margin:20px 0;
+    }
+    .notice-list{
+        .table{
+            th,td{
+                height:20px;
+                line-height: 40px;
+            }
+           
+        }
+    }
+    .edit-notice{
+        label{
+            display: block;
+            margin:10px 0;
+        }
+        input{
+            margin-bottom:20px;
+        }
+    }
+}
+.dropdown-menu{
+    padding:0;
+    .dropdown-item{
+        margin-top:10px;
+        &:hover{
+            background: #2A8DFF;
+            a{
+                color:#fff;
+            }
+        }
+    }
+}

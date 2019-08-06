@@ -1,0 +1,64 @@
+<div style="width:1000px;margin:0 auto;">
+  <ba-card cardTitle="个人信息管理" baCardClass="with-scroll">
+    <div class="card-content">
+      <div class="avatar-wrapper">
+        <label>点击图片修改您的头像</label>
+        <ba-picture-uploader [picture]="profile.picture" [defaultPicture]="defaultPicture"
+                             (onUpload)="picUpload($event)"
+                             (onUploadCompleted)="picUploadCompleted($event)"
+                             [uploaderOptions]="uploaderOptions"></ba-picture-uploader>
+      </div>
+      <form [formGroup]="userForm" (ngSubmit)="onUserSubmit(userForm.value)"  >
+        <!--new { enctype = "multipart/form-data", onsubmit = "return toVaild()" }  HttpPostedFileBase file-->
+        <ul>
+          <li>
+            <label class="list-label">工号：</label>
+            <input type="text" class="form-control" formControlName="workerNo" readonly >
+
+          </li>
+          <li>
+            <label class="list-label">姓名：</label>
+
+            <input type="text" class="form-control" formControlName="name" >
+          </li>
+          <li>
+            <label class="list-label">手机号：</label>
+
+            <input type="text" class="form-control" formControlName="tel" >
+          </li>
+        </ul>
+        <div class="btn-group">
+          <button type="submit" class="btn btn-primary"><i class="ion-checkmark-round"></i>保存个人信息</button>
+        </div>
+      </form>
+    </div>
+  </ba-card>
+  <ba-card cardTitle="修改密码" baCardClass="with-scroll">
+    <div class="card-content content-password">
+      <form [formGroup]="passwordForm" (ngSubmit)="onPasswordSubmit(passwordForm.value)">
+        <ul>
+          <li>
+            <span class="must">必填</span>
+            <label class="list-label">请输入原密码：</label>
+            <input type="password" class="form-control" formControlName="old">
+          </li>
+          <li>
+            <span class="must">必填</span>
+            <label class="list-label">请输入新密码：</label>
+            <input type="password" class="form-control" formControlName="new">
+            <span class="valid">密码长度8~16位</span>
+          </li>
+          <li>
+            <span class="must">必填</span>
+            <label class="list-label">请再次输入新密码：</label>
+            <input type="password" class="form-control" formControlName="repeat">
+            <span class="valid">密码长度8~16位</span>
+          </li>
+        </ul>
+        <div class="btn-group">
+          <button class="btn btn-primary"><i class="ion-checkmark-round"></i>修改密码</button>
+        </div>
+      </form>
+    </div>
+  </ba-card>
+</div>

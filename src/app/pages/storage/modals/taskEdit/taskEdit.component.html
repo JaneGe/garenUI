@@ -1,0 +1,15 @@
+<div class="pop-content" id="form">
+  <div class="modal-header">
+    <span class="modal-title">编辑拣货任务</span>
+  </div>
+  <div class="modal-body">
+    <label>指定拣货人：</label>
+    <select2 [data]="empName" [width]="200"  [value]="selectValue" (valueChanged)="onValueChanged($event)"></select2>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="Save()">保存</button>
+      <button class="btn btn-default" (click)="closeModal()">取消</button>
+    </div>
+  </div>
+</div>

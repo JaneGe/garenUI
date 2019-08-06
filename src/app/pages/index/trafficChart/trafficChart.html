@@ -1,0 +1,61 @@
+<div class="table-wrap gap">
+  <table class="table table-hover table-bordered gap" *ngIf="Character=='boss'" id="bosschart">
+    <thead >
+    <tr class="black-muted-bg" >
+      <td></td>
+      <th *ngFor="let p of PlatForms">{{p}}</th>
+    </tr>
+    </thead>
+    <tbody >
+    <tr>
+      <td>金额</td>
+      <td *ngFor="let m of Money">
+        <span *ngIf="m==bigMoney" class="ion-thumbsup text-primary icon"></span>
+        {{m}}</td>
+    </tr>
+    </tbody>
+  </table>
+  <table class="table table-hover table-bordered gap" *ngIf="Character=='employee'">
+    <thead >
+    <tr class="black-muted-bg" >
+      <th *ngFor="let T of TableTitle">{{T}}</th>
+    </tr>
+    </thead>
+    <tbody >
+    <tr>
+      <td>{{tableData.target}}</td>
+      <td>{{tableData.finished}}</td>
+      <td>{{tableData.profit}}</td>
+      <td>{{tableData.finishedpercentage}}%</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="channels-block">
+  <div class="chart-bg" ></div>
+  <div class="traffic-chart" id="trafficChart" >
+    <div class="canvas-holder">
+      <canvas class="chart-area" width="300px" height="300px"></canvas>
+      <div class="traffic-text">
+        {{TotalValue}}
+        <span translate *ngIf="Character=='boss'">总单量</span>
+        <span translate *ngIf="Character=='employee'">目标任务</span>
+      </div>
+    </div>
+    <div class="traffic-legend"></div>
+  </div>
+
+  <div class="channels-info">
+    <div>
+      <div class="channels-info-item" *ngFor="let item of doughnutData">
+        <div class="legend-color" [ngStyle]="{'background-color': item.color }"></div>
+        <p>{{ item.label }}<span class="channel-number">{{ item.percentage }}%</span></p>
+        <div class="progress progress-sm channel-progress">
+          <div class="progress-bar" role="progressbar"
+               [attr.aria-valuenow]="item.percentage" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{width: item.percentage + '%' }">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

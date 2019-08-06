@@ -1,0 +1,103 @@
+<div class="card card-block search-wrapper">
+  <ul class="search-condition">
+    <li>
+      <label class="search-title">选择仓库：</label>
+      <select2 class="country-select" [data]="warehouse" [options]="options" [width]="360" [value]="warehouseValue" (valueChanged)="onWarehouseChanged($event)"></select2>
+    </li>
+    <li>
+      <label class="search-title">选择货代：</label>
+      <select2 class="country-select" [data]="logisticsCompany" [options]="options" [width]="360" [value]="logisticsCompanyValue"
+        (valueChanged)="onSpChanged($event)"></select2>
+    </li>
+    <li>
+      <label class="search-title">选择物流：</label>
+      <select2 class="country-select" [data]="logisticsType" [options]="options" [width]="360" [value]="logisticsTypeValue" (valueChanged)="OnSsChanged($event)"></select2>
+    </li>
+    <li>
+      <label class="search-title">选择目的地：</label>
+      <select2 class="country-select" [data]="destination" [options]="options" [width]="360" [value]="selectCountry" (valueChanged)="onCountryChanged($event)"></select2>
+    </li>
+    <li>
+      <label class="search-title">输入重量：</label>
+      <div class="input-group">
+        <input type="text" class="form-control with-primary-addon" [(ngModel)]="currentWeight" />
+        <span class="input-group-addon addon-right input-group-addon-primary">g</span>
+        <button class="btn btn-sm btn-primary" (click)="OnSearch()">查询</button>
+      </div>
+    </li>
+  </ul>
+</div>
+<form class="pagination-wrapper">
+  <div class="form-group pages">
+    <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+      autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+      screenReaderCurrentLabel="You're on page">
+    </pagination-controls>
+  </div>
+  <div class="form-group options pages">
+    <div class="input-group input-group-sm">
+      <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="loadData()">
+        <option>1</option>
+        <option>5</option>
+        <option>10</option>
+        <option>20</option>
+        <option>50</option>
+        <option>100</option>
+        <option>200</option>
+      </select>
+      <span class="input-group-addon addon-right">条/页</span>
+      <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条</span>
+    </div>
+  </div>
+</form>
+<table class="table table-hover table-bordered">
+  <thead>
+    <tr>
+      <th>国家</th>
+      <th>物流方式</th>
+      <th>重量</th>
+      <th class="ship-fee" (click)="sortShip()" title="点击排序">运费金额
+        <i class="ion-ios-arrow-thin-up" *ngIf="shipSort === 0"></i>
+        <i class="ion-ios-arrow-thin-down" *ngIf="shipSort === 0"></i>
+        <i class="fa fa-sort-amount-asc" *ngIf="shipSort === 1"></i>
+        <i class="fa fa-sort-amount-desc" *ngIf="shipSort === 2"></i>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of items | paginate: { id: 'pager',
+            itemsPerPage:PageInfo.pageSize,
+            currentPage:PageInfo.pageIndex,
+            totalItems:total};let i = index">
+      <td>{{showSelectCountryName}}</td>
+      <td>{{item.shippingName}}</td>
+      <td>{{item.currentWeight}}g</td>
+      <td>
+        <span class="lg-text" *ngIf="item.shipFee">{{item.shipFee}}￥</span>
+        <span class="lg-text" *ngIf="!item.shipFee">-</span>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<form class="pagination-wrapper">
+  <div class="form-group pages">
+    <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+      autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+      screenReaderCurrentLabel="You're on page">
+    </pagination-controls>
+  </div>
+  <div class="form-group options pages">
+    <div class="input-group input-group-sm">
+      <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="loadData()">
+        <option>5</option>
+        <option>10</option>
+        <option>20</option>
+        <option>50</option>
+        <option>100</option>
+        <option>200</option>
+      </select>
+      <span class="input-group-addon addon-right">条/页</span>
+      <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条</span>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,30 @@
+.pop-content {
+    width: 800px;
+    padding: 5px;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    .modal-body {
+        input.form-control {
+            margin-bottom: 15px;
+        }
+        .tem-wrap-6 {
+            label {
+                margin-left: 5px;
+            }
+            width:50%;
+            float: left;
+        }
+        .tem-wrap-template {
+            margin-bottom: 15px;
+            label {
+                display: block;
+            }
+        }
+        .mail-editor {
+            height:500px;
+        }
+    }
+}

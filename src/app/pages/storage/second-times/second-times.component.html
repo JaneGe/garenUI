@@ -1,0 +1,154 @@
+<div class="card card-block">
+  <div class="input-wrapper">
+    <ul>
+      <li>
+        <label class="list-label">选择仓库</label>
+        <select class="select" [(ngModel)]="selectedWarehouseId" (change)="onSelectWarehouseChange()">
+          <option *ngFor="let warehouse of allWarehouses" [value]="warehouse.warehouseId">{{warehouse.name}}</option>
+        </select>
+      </li>
+      <li>
+        <label class="list-label">任务批次编号：</label>
+        <input type="text" class="form-control picking-id" name="PickingNumber" placeholder="任务批次编号" [(ngModel)]="inputPickingNumber"
+               [disabled]="isLock" (focus)="removeErrorstyle($event.target)" (keyup.enter)="onPickingEnter()">
+        <div class="btn-group">
+          <button class="btn btn-danger"  (click)="onPickingEnter()">{{isLock?'解锁':'锁定'}}</button>
+        </div>
+      </li>
+      <li>
+        <label class="list-label">SkuId：</label>
+        <input type="text" class="form-control sku-id" [(ngModel)]="inputSkuCode" name="skuid" placeholder="请输入SkuID"
+               [disabled]="pickingInfo == null || pickingInfo.isFinshed" (focus)="removeErrorstyle($event.target)" (keyup.enter)="onSkuEnter()" />
+        <div class="btn-group">
+          <button class="btn btn-primary" (click)="onSkuEnter()">确定</button>
+        </div>
+        <div style="visibility:hidden;">
+          <audio *ngIf="audioName != null" id="playLocation" src="{{url}}{{audioName}}.mp3" autoplay="autoplay"></audio>
+          <audio  id="audioPrintLabel" src="{{url}}print-label.mp3" preload="auto"></audio>
+          <audio  id="audioPickingFinished" src="{{url}}picking-finished.mp3"  preload="auto"></audio>
+        </div>
+      </li>
+    </ul>
+    <div class="display-box" id="show">
+      {{audioName}}
+    </div>
+  </div>
+  <div class="card card-block info-wrapper">
+    <div class="flex">
+      <span>状态：</span>
+      <span class="statu11"></span>
+      <span>未处理</span>
+      <span class="statu22"></span>
+      <span>扫描SKU中</span>
+      <span class="statu33"></span>
+      <span>包裹处理中</span>
+      <span class="statu55"></span>
+      <span>处理完成</span>
+      <span class="statu66"><i class='markError-oSm'></i><i class='markError-tSm'></i></span>
+      <span>拣货失败</span>
+      <button class="btn btn-lg" (click)="doHandleExceptionPackage()"
+              *ngIf="pickingInfo != null && !pickingInfo.isFinshed && !isStartHandlePickingFailed">处理异常包裹</button>
+    </div>
+    <div class="sepTable">
+      <div class="table-wrap">
+        <table class="table table-hover table-bordered">
+          <tbody>
+          <tr class="black-muted-bg">
+            <td colspan="6" class="tdRight">A</td>
+          </tr>
+          <tr>
+            <td id="A1"><span  (click)="openPackageDetailModal(basketStatus[0],$event.target)">A1<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td id="A2"><span  (click)="openPackageDetailModal(basketStatus[1],$event.target)">A2<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td id="A3"><span  (click)="openPackageDetailModal(basketStatus[2],$event.target)">A3<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td id="A4"><span  (click)="openPackageDetailModal(basketStatus[3],$event.target)">A4<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td id="A5"><span  (click)="openPackageDetailModal(basketStatus[4],$event.target)">A5<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td class="tdRight"><span  (click)="openPackageDetailModal(basketStatus[5],$event.target)">A6<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+          </tr>
+          <tr>
+            <td><span  (click)="openPackageDetailModal(basketStatus[6],$event.target)">A7<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[7],$event.target)">A8<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[8],$event.target)">A9<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[9],$event.target)">A10<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[10],$event.target)">A11<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td class="tdRight"><span  (click)="openPackageDetailModal(basketStatus[11],$event.target)">A12<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+          </tr>
+          <tr>
+            <td><span  (click)="openPackageDetailModal(basketStatus[12],$event.target)">A13<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[13],$event.target)">A14<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[14],$event.target)">A15<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[15],$event.target)">A16<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[16],$event.target)">A17<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td class="tdRight"><span  (click)="openPackageDetailModal(basketStatus[17],$event.target)">A18<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+          </tr>
+          <tr>
+            <td><span  (click)="openPackageDetailModal(basketStatus[18],$event.target)">A19<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[19],$event.target)">A20<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[20],$event.target)">A21<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[21],$event.target)">A22<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[22],$event.target)">A23<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td class="tdRight"><span  (click)="openPackageDetailModal(basketStatus[23],$event.target)">A24<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+          </tr>
+          <tr>
+            <td><span  (click)="openPackageDetailModal(basketStatus[24],$event.target)">A25<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[25],$event.target)">A26<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[26],$event.target)">A27<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[27],$event.target)">A28<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[28],$event.target)">A29<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td class="tdRight"><span  (click)="openPackageDetailModal(basketStatus[29],$event.target)">A30<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table class="table table-hover table-bordered">
+          <tbody>
+          <tr class="black-muted-bg">
+            <td colspan="6" class="tdLeft">B</td>
+          </tr>
+          <tr>
+            <td class="tdLeft"><span  (click)="openPackageDetailModal(basketStatus[30],$event.target)">B1<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[31],$event.target)">B2<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[32],$event.target)">B3<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[33],$event.target)">B4<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[34],$event.target)">B5<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[35],$event.target)">B6<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+          </tr>
+          <tr>
+            <td class="tdLeft"><span  (click)="openPackageDetailModal(basketStatus[36],$event.target)">B7<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[37],$event.target)">B8<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[38],$event.target)">B9<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[39],$event.target)">B10<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[40],$event.target)">B11<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[41],$event.target)">B12<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+          </tr>
+          <tr>
+            <td class="tdLeft"><span  (click)="openPackageDetailModal(basketStatus[42],$event.target)">B13<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[43],$event.target)">B14<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[44],$event.target)">B15<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[45],$event.target)">B16<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[46],$event.target)">B17<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[47],$event.target)">B18<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+          </tr>
+          <tr>
+            <td class="tdLeft"><span  (click)="openPackageDetailModal(basketStatus[48],$event.target)">B19<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[49],$event.target)">B20<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[50],$event.target)">B21<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[51],$event.target)">B22<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[52],$event.target)">B23<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[53],$event.target)">B24<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+          </tr>
+          <tr>
+            <td class="tdLeft"><span  (click)="openPackageDetailModal(basketStatus[54],$event.target)">B25<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[55],$event.target)">B26<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[56],$event.target)">B27<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[57],$event.target)">B28<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[58],$event.target)">B29<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+            <td><span  (click)="openPackageDetailModal(basketStatus[59],$event.target)">B30<i class="markError-o none"></i><i class="markError-t none"></i></span></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+

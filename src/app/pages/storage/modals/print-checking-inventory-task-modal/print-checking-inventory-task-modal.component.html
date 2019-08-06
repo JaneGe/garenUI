@@ -1,0 +1,97 @@
+<div class="pop-content" id="form">
+  <div class="modal-header">
+    <span class="modal-title">打印盘库任务</span>
+  </div>
+  <div class="modal-body">
+    <div class="print-body" *ngIf="taskData != null">
+      <div class="task-wrap">
+        <div class="task-header">
+          <h3>盘库任务</h3>
+          <div class="header-center">
+            <label>时间：{{taskData.createdTime|amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</label>
+            <label>仓库：{{taskData.warehouseName}}</label>
+            <label>任务编号：{{taskData.taskId}}</label>
+          </div>
+          <div class="header-bottom">
+            <label>SKU总数：{{taskData.skuTypeCount}}</label>
+            <label>包裹总数：{{taskData.packageCount}}</label>
+          </div>
+        </div>
+        <div class="task-body">
+          <div class="body-header">
+            <div class="location-code">库位</div>
+            <div class="sku">SKU</div>
+            <div class="sku-name">商品名</div>
+            <div class="number">缺少数量</div>
+            <div class="qrcode-wrap">二维码</div>
+          </div>
+          <div class="body-bottom" *ngFor="let data of taskData.items">
+            <div class="location-code">{{data.locationCode}}</div>
+            <div class="sku">{{data.skuCode}} {{data.isMoreLocation?"多":""}}</div>
+            <div class="sku-name">{{data.skuName}}</div>
+            <div class="number">{{data.lackQuantity}}</div>
+            <div class="qrcode-wrap">
+              <div class="qrcode" style="margin:0;padding:5px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <td colspan="8">
+              <h3>盘库任务</h3>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="8" class="border-bottom-none">
+              <label>时间：</label>
+              <span style="margin-right:40px;">{{taskData.createdTime|amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</span>
+              <label>仓库：</label>
+              <span style="margin-right:40px;">{{taskData.warehouseName}}</span>
+              <label>任务编号：</label>
+              <span>{{taskData.taskId}}</span>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="8" class="border-bottom-none">
+              <label>SKU总数：</label>
+              <span style="margin-right:40px;">{{taskData.skuTypeCount}}</span>
+              <label>包裹总数：</label>
+              <span>{{taskData.packageCount}}</span>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="8" style="padding:0">
+              <table class="table border-none">
+                <tbody>
+                  <tr>
+                    <td>库位</td>
+                    <td>SKU</td>
+                    <td>商品名</td>
+                    <td>缺少数量</td>
+                    <td style="width:50px">二维码</td>
+                  </tr>
+                  <tr *ngFor="let data of taskData.items">
+                    <td>{{data.locationCode}}</td>
+                    <td>{{data.skuCode}} {{data.isMoreLocation?"多":""}}</td>
+                    <td>{{data.skuName}}</td>
+                    <td>{{data.lackQuantity}}</td>
+                    <td>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table> -->
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="printPDF()">打印明细单</button>
+      <button class="btn btn-primary" (click)="closeModal()">关闭</button>
+    </div>
+  </div>
+</div>

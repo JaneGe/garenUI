@@ -1,0 +1,19 @@
+<div class="pop-content">
+  <div class="modal-header">
+    <span class="modal-title">选择支付账号</span>
+  </div>
+  <div class="modal-body">
+    <ul>
+      <li style="margin-bottom:10px;">
+        <label class="list-label"><span class="explain">1688</span>选择1688账号</label>
+        <select2 [data]="accounts" [width]="300"  (valueChanged)="onChangeAccountChanged($event)"></select2>
+      </li>
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-default" (click)="closeModal()">取消</button>
+      <button class="btn btn-primary" (click)="createOrder()">确定</button>
+    </div>
+  </div>
+</div>

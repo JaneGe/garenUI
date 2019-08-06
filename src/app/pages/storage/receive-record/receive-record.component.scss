@@ -1,0 +1,135 @@
+form {
+    height: 50px
+}
+
+table thead tr th {
+    padding: 8px 0;
+    width: 100px;
+}
+
+.gap {
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.inputbox {
+    height: 35px;
+    display: flex;
+    align-items: center;
+}
+
+.input {
+    border-radius: 5px 0 0 5px;
+    width: 520px;
+    font-size: 16px;
+    height: 35px;
+}
+
+.search {
+    margin-left: 0;
+    height: 35px;
+    border-radius: 0 5px 5px 0;
+}
+
+.bigbox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    >select.title {
+        width: 165px;
+        background-color: transparent;
+        color: white;
+        border: none;
+        outline: none;
+        margin-left: -5px;
+        &>option {
+            background-color: white;
+            color: black;
+        }
+    }
+}
+
+.big {
+    width: 520px;
+    height: 60px;
+    font-size: 40px;
+    color: #fff !important;
+}
+
+.big+.search {
+    height: 60px;
+}
+
+.title {
+    display: block;
+    width: 160px;
+    height: 36px;
+    overflow: hidden;
+    font-size: 25px;
+    line-height: 36px;
+}
+
+.tag {
+    font-size: 30px;
+    height: 36px;
+    line-height: 0.8;
+}
+
+.tag-nopd {
+    padding: 0;
+    margin: 0;
+    vertical-align: top;
+    >input {
+        position: relative;
+        height: 100%;
+    }
+    >button {
+        height: 100%;
+    }
+}
+
+.whiteSpace {
+    width: 20px;
+    height: 2px;
+    background: white;
+    position: relative;
+    top: -8px;
+    display: inline-block;
+}
+
+.searchPart .buttonpart {
+    width: calc(80% - 160px)
+}
+
+.search-wrapper {
+    .input-group {
+        width: 700px;
+    }
+}
+
+.searchToggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 20px;
+    display: flex;
+    span.fa {
+        padding-right: 0;
+        margin-left: 10px;
+    }
+}
+
+#search {
+    overflow: hidden;
+    margin: 0;
+}
+
+.btn-default-left {
+    border: 1px solid white;
+    border-right: none;
+}
+
+.btn-default-right {
+    border: 1px solid white;
+    border-left: none;
+}

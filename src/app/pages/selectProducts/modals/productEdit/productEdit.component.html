@@ -1,0 +1,71 @@
+<div class="pop-content">
+  <div class="modal-header">
+    <span class="modal-title">商品编辑</span>
+  </div>
+  <div class="modal-body">
+    <ul>
+      <li>
+        <span class="title">来源URL：</span>
+        <div class="input-group">
+          <input type="text" class="form-control" [(ngModel)]="Url">
+          <div class="input-group-addon">
+            <a class="addon" href="http://www.baidu.com" target="_blank">访问</a>
+          </div>
+        </div>
+      </li>
+      <li>
+        <span class="title">SKU：</span>
+        <input type="text" class="form-control" [(ngModel)]="sku">
+      </li>
+      <li>
+        <span class="title">产品标题：</span>
+        <div class="input-group">
+          <input type="text" class="form-control" [(ngModel)]="title">
+          <div class="input-group-addon">
+            <span class="addon" (click)="transfer()">T</span>
+          </div>
+        </div>
+      </li>
+      <li class="attr-wrap">
+       <span class="title">属性：<span class="money-text">(共{{Data.attrs.length}}个)</span></span>
+        <ul>
+          <li class="attrItem" *ngFor="let item of Data.attrs">
+            <i class="ion-close text-danger" (click)="delAttr(item.id)"></i>
+            {{item.text}}
+          </li>
+        </ul>
+      </li>
+      <li>
+        <div class="title-wrap">
+          <span>产品图片：</span>
+          <button class="btn btn-primary btn-sm">上传图片</button>
+        </div>
+        <div class="img-wrap">
+          <ul>
+            <li *ngFor="let item of Data.imgs">
+              <div class="img-box">
+                <img src={{item.src}} alt="商品图片" class="img-thumbnail" width="130" height="130">
+              </div>
+              <p>{{item.resolution}}</p>
+              <p>
+                <button class="btn btn-sm btn-default">
+                  <i class="ion-close text-danger"></i>
+                  移除
+                </button>
+                <button class="btn btn-sm btn-default">
+                  <i class="ion-edit" style="color:black"></i>
+                  编辑
+                </button>
+              </p>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="closeModal()">关闭</button>
+    </div>
+  </div>
+</div>

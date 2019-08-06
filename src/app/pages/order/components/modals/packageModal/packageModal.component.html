@@ -1,0 +1,136 @@
+<div class="pop-content animated fadeIn">
+  <ngx-loading [show]="loadingPackage" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  <div class="modal-header">
+    <span class="modal-title">
+      包裹详情
+      <a href="javascript:;" (click)="closeModal()">
+        <i class="ion-close-round"></i>
+      </a>
+    </span>
+  </div>
+  <div class="modal-body">
+    <div class="details card">
+      <ngx-loading [show]="loadingTrackingNumber" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+      <ul>
+        <li>
+          <span class="detail-title">包裹号：</span>
+          <span class="detail-content packageNumber-text">{{packageDetail.packageNumber}}</span>
+        </li>
+        <li>
+          <span class="detail-title">包裹状态：</span>
+          <span class="detail-content">{{packageDetail.statusDesc}}</span>
+
+        </li>
+        <li>
+          <span class="detail-title">物流跟踪号：</span>
+
+          <span class="traceNumber-text">{{getTrackingNumberDisplayText()}}</span>
+          <button type="button" class="btn btn-info btn-sm" *ngIf="(trackingNumberDisplayType == 1 || trackingNumberDisplayType == 4)&&(status!='Recalled')&&(checkChildAuthority(7))"
+                  (click)="onFetchTrackingNumber()">
+            获取跟踪号
+          </button>
+
+          <input type="text" name="fillTrackingNuber"  *ngIf="trackingNumberDisplayType == 2" [(ngModel)]="truckNumber" />
+          <button type="button" *ngIf="trackingNumberDisplayType ==2"
+          (click)="onManualEntryTrackingNumber()">确定</button>
+        </li>
+        <li>
+          <span class="detail-title">订单号：</span>
+          <span class="detail-content orderNumber-text">{{packageDetail.orderNumber}}</span>
+        </li>
+        <li>
+          <span class="detail-title">拣货任务：</span>
+          <span class="detail-content">{{packageDetail.pickingNumber == null? '未生成' : packageDetail.pickingNumber}}</span>
+        </li>
+        <li>
+          <span class="detail-title">物流方式：</span>
+          <span class="detail-content">{{packageDetail.shippingService}}</span>
+
+        </li>
+        <li>
+          <span class="detail-title">预估重量（g）：</span>
+          <span class="detail-content">{{packageDetail.estimateWeight}}</span>
+        </li>
+        <li>
+          <span class="detail-title">实际重量（g）：</span>
+          <span class="detail-content">{{packageDetail.shipWeight}}</span>
+        </li>
+        <li *ngIf="packageDetail.status=='Failed'">
+          <span class="detail-title">异常货架位：</span>
+          <span class="detail-content">{{packageDetail.exceptionLocation}}</span>
+        </li>
+      </ul>
+    </div>
+    <div class="journal card">
+
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>编号</th>
+            <th>日志信息</th>
+            <th width="100px">操作人</th>
+            <th width="85px">时间</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let packageLogItem of logs;let i = index">
+            <td>{{logs.length-i}}</td>
+            <td>{{packageLogItem.message}}</td>
+            <td>{{packageLogItem.userName}}</td>
+            <td>{{packageLogItem.createdTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>SKU</th>
+          <th>数量</th>
+          <th>货架位</th>
+          <th>货架类型</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let packageItem of packageDetail.packageItems">
+          <td>{{packageItem.skuCode}}</td>
+          <td>{{packageItem.quantity}}</td>
+          <td> {{packageItem.locationLable}}</td>
+          <td>{{packageItem.locationDesc}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <div>
+      <a *ngIf="(packageDetail.spPackageId &&packageDetail.spPackageId.length > 0)&&(checkChildAuthority(3))"  class="btn btn-info"  href="{{getDownloadLabelUrl()}}" target="_blank">打印面单</a>
+      <button *ngIf="secondPick&&(checkChildAuthority(2))" class="btn btn-danger" (click)="failedPick()">标记拣货失败</button>
+      <button class="btn btn-primary" *ngIf="(packageDetail.status!='Recalled')&&(checkChildAuthority(4))" (click)="openReallocateLogisticsModal()">重新分配</button>
+      <button class="btn btn-primary" *ngIf="(packageDetail.status!='Recalled')&&(checkChildAuthority(5))" (click)="canceled(cancelReasonModal)">作废</button>
+      <button class="btn btn-warning" *ngIf="(packageDetail.status=='Allocated'||packageDetail.status=='Printed'||packageDetail.status=='Failed')&&(isCanRefuse)&&(checkChildAuthority(6))" (click)="openSplitPackageModal()">拆分包裹</button>
+      <button class="btn btn-danger" style="margin-right: 0;" (click)="closeModal()">关闭</button>
+    </div>
+  </div>
+</div>
+
+<ng-template #cancelReasonModal let-c="close" let-d="dismiss">
+  <div class="pop-content animated fadeIn">
+    <div class="modal-header">
+    <span class="modal-title">
+      作废原因 <span class="badge-danger">必填</span>
+      <a href="javascript:;" (click)="c()">
+        <i class="ion-close-round"></i>
+      </a>
+    </span>
+    </div>
+  <div class="modal-body">
+    <textarea style="border:1px solid #209e91;" class="form-control" rows="5" name="reason" #reason></textarea>
+  </div>
+  <div class="modal-footer">
+    <div>
+    <button type="button" class="btn btn-primary right" (click)="confirmReason(reason.value)">确定</button>
+    <button type="button" class="btn default-btn right" (click)="c()">取消</button>
+    </div>
+  </div>
+  </div>
+</ng-template>

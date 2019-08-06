@@ -1,0 +1,205 @@
+<div class=".col-md-8 card card-block">
+  <div class=".col-md-8 card card-block search-wrapper">
+    <ul class="search-condition">
+      <li>
+        <label class="search-title">邮件类型：</label>
+        <div class="screen-wrapper" *ngFor="let item of mailDefaultTypes;let i = index">
+          <input type="radio" id="mailDefaultTypes{{item.Id}}" name="mailDefaultTypes" class="regular-radio" [checked]="i === 0" />
+          <label for="mailDefaultTypes{{item.Id}}" (click)="onSelect($event.target,'mailDefaultTypes',item.Id)">{{item.Name}}</label>
+        </div>
+      </li>
+      <li>
+        <label class="search-title">邮件状态：</label>
+        <div class="screen-wrapper" *ngFor="let item of mailTypes;let i = index">
+          <input type="radio" id="mailTypes{{item.Id}}" name="mailTypes" class="regular-radio" [checked]="i === 0" />
+          <label for="mailTypes{{item.Id}}" (click)="onSelect($event.target,'mailType',item.Id)">{{item.Name}}</label>
+        </div>
+      </li>
+      <li>
+        <label class="search-title">时间筛选：</label>
+        <div class="screen-wrapper" *ngFor="let item of timeSpan;let i = index">
+          <input type="radio" id="timeSpan{{item.Id}}" name="timeSpan" class="regular-radio" [checked]="i === 0" />
+          <label for="timeSpan{{item.Id}}" (click)="onSelect($event.target,'timeSpan',item.Id)">{{item.Name}}</label>
+        </div>
+        <span *ngIf="isCustom">
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <ng-datepicker [(ngModel)]="timeSearchStart" [options]="DatepickerOptions"></ng-datepicker>
+            </span>
+          </span>
+          -
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <ng-datepicker [(ngModel)]="timeSearchEnd" [options]="DatepickerOptions"></ng-datepicker>
+              <button class="btn btn-sm btn-primary" (click)="doTimeSearch()">确定</button>
+            </span>
+          </span>
+        </span>
+      </li>
+      <li>
+        <label class="search-title">未回复统计：</label>
+        <div class="screen-wrapper" *ngFor="let item of undoneStatistics;let i = index">
+          <input type="radio" id="undoneStatistics{{item.Id}}" name="undoneStatistics" class="regular-radio" [checked]="i === 0" />
+          <label for="undoneStatistics{{item.Id}}" (click)="onSelect($event.target,'noReply',item.Id)">{{item.Name}}</label>
+          <span *ngIf="item.Id" class="bubble">{{item.Count}}</span>
+        </div>
+      </li>
+      <li>
+        <label class="search-title">当天回复统计：</label>
+        <div class="screen-wrapper" *ngFor="let item of todayReStatistics;let i = index">
+          <input type="radio" id="todayReStatistics{{item.Id}}" name="todayReStatistics" class="regular-radio" [checked]="i === 0"
+          />
+          <label for="todayReStatistics{{item.Id}}" (click)="onSelect($event.target,'Reply',item.Id)">{{item.Name}}</label>
+          <span *ngIf="item.Id" class="bubble">{{item.Count}}</span>
+        </div>
+      </li>
+      <li>
+        <label class="search-title">搜索类型：</label>
+        <div class="screen-wrapper" *ngFor="let item of searchTypes;let i = index">
+          <input type="radio" id="searchTypes{{item.Id}}" name="searchTypes" class="regular-radio" [checked]="i === 0" />
+          <label for="searchTypes{{item.Id}}" (click)="onSelect($event.target,'searchType',item.Id)">{{item.Name}}</label>
+        </div>
+      </li>
+      <li>
+        <label class="search-title">搜索内容：</label>
+        <div class="input-group">
+          <input type="text" class="form-control" [(ngModel)]="storeSearchKey">
+          <div class="btn-group">
+            <button class="btn btn-primary" (click)="onQuery()">搜索</button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="btn-box">
+    <button class="btn btn-sm btn-primary" (click)="SetEmailReadByIds()">设为已读</button>
+    <button class="btn btn-sm btn-primary" (click)="openTemplateManagementModal()">回复模板管理</button>
+  </div>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="onQuery()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条数据</span>
+      </div>
+    </div>
+  </form>
+  <table class="table table-hover table-bordered">
+    <thead>
+      <tr>
+        <th>
+          <label class="checkbox-inline custom-checkbox nowrap">
+            <input type="checkbox" (change)="changeAllBox($event)">
+            <span></span>
+          </label>
+        </th>
+        <th>主题/客户邮箱</th>
+        <th>平台账号</th>
+        <th>订单号</th>
+        <th>时间</th>
+        <th>类型</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of data | paginate: { id: 'pager',
+          itemsPerPage:PageInfo.pageSize,
+          currentPage:PageInfo.pageIndex,
+          totalItems:PageInfo.totalCount};let i = index">
+        <td>
+          <label class="checkbox-inline custom-checkbox nowrap">
+            <input type="checkbox" [(ngModel)]="item.isCheck">
+            <span></span>
+          </label>
+        </td>
+        <td class="subject" width="400px" (click)="openMailDetailModal(item.id)" title="点击查看信件详情">
+          <span class="lg-text">{{item.subject}}</span>
+          <span class="yellow-text">{{item.sendMailAddress}}</span>
+        </td>
+        <td>
+          <span class="country-code">
+            <img src="assets/country/{{item.siteCode}}.svg">{{item.siteCode}}</span>
+          <span class="display-block site">{{item.displayName}}</span>
+        </td>
+        <td>{{item.orderStr===null?'暂无订单号':item.orderStr}}</td>
+        <td>
+          <span class="display-block yellow-text">{{item.currentTimeDesc}}</span>{{item.sendTimeDesc}}</td>
+        <td class="type">
+          <div class="types" *ngIf="!item.isReply">
+            <span class="mail-types" *ngIf="item.operationType === 'NoSeen'">
+              <i class="ion-android-mail"></i>未查看</span>
+            <span class="mail-types" *ngIf="item.operationType === 'Seen'">
+              <i class="ion-android-drafts"></i>已查看</span>
+            <span class="mail-types" *ngIf="item.operationType === 'IsSign'">
+              <i class="ion-star"></i>星标邮件</span>
+            <span class="mail-types" *ngIf="item.operationType === 'Exception'">
+              <i class="ion-android-alert"></i>异常邮件</span>
+          </div>
+          <div class="types" *ngIf="item.isReply">
+            <span class="mail-types">
+              <i class="ion-flag"></i>已回复</span>
+          </div>
+        </td>
+        <td>
+          <div class="btn-group" ngbDropdown>
+            <button type="button" class="btn btn-sm btn-warning" ngbDropdownToggle>
+              标记
+            </button>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item">
+                <a href="javascript:;" (click)="setEmailStar(item.id)">设为星标邮件</a>
+              </li>
+              <li class="dropdown-item">
+                <a href="javascript:;" (click)="setEmailException(item.id)">设为异常邮件</a>
+              </li>
+              <li class="dropdown-item">
+                <a href="javascript:;" (click)="SetEmailNoSeen(item.id)">设为未读邮件</a>
+              </li>
+              <li class="dropdown-item">
+                <a href="javascript:;" (click)="setEmailRead(item.id)">设为已读邮件</a>
+              </li>
+            </ul>
+          </div>
+          <button class="btn btn-sm btn-primary" (click)="openMailDetailModal(item.id)">查看信件详情</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="onQuery()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条数据</span>
+      </div>
+    </div>
+  </form>
+</div>

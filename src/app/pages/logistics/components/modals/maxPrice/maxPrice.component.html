@@ -1,0 +1,33 @@
+<div class="pop-content">
+  <div class="modal-header">
+    <h3 class="modal-title">设置最高报关价</h3>
+  </div>
+  <div class="modal-body clearfix">
+    <form [formGroup]="formModel" class="form animated fadeIn" (submit)="onSubmit()">
+      <ul>
+        <li>
+          <span class="title">
+            <span class="must">必填</span>国家</span>
+          <select *ngIf="!editCountry" class="form-control" (change)="chooseCountry(model)" formControlName="country">
+            <option *ngFor="let item of country;let i = index" [value]="item.country">{{item.country}}</option>
+          </select>
+          <input type="text" class="form-control" disabled [value]="editCountry.country" *ngIf="editCountry">
+        </li>
+        <li>
+          <span class="title">
+            <span class="must">必填</span>最高报关价</span>
+          <div class="input-group">
+            <input type="text" class="form-control with-primary-addon" aria-label="Amount (to the nearest dollar)" formControlName="amount">
+            <span class="input-group-addon addon-right input-group-addon-primary" [innerHtml]="editCountry?editCountry.declarationAmount.currencyCode:coin"></span>
+          </div>
+        </li>
+        <li>
+          <div class="btn-group">
+            <button type="button" class="btn btn-default" (click)="closeModal()">取消</button>
+            <button type="submit" class="btn btn-primary">添加最高报关价</button>
+          </div>
+        </li>
+      </ul>
+    </form>
+  </div>
+</div>

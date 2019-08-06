@@ -1,0 +1,39 @@
+<div class="card card-block">
+  <h3>最后更新时间：2017/12/22 下午 13:58</h3>
+  <div class="card card-block select-part">
+    <div class="select">
+      <div class="part-wrap">
+        <span class="title">发货时间：</span>
+      </div>
+      <div class="option-wrap">
+        <span class="option" *ngFor="let item of deliverTime" (click)="selecteddeliverTime=item.id"
+              [ngClass]="{'tag':item.id==selecteddeliverTime}">{{item.text}}</span>
+        <span class="option option-nobot" *ngIf="selecteddeliverTime==4">
+                <ng-datepicker   [(ngModel)]="timedeliverStart"
+                                 [options]="DatepickerOptions"></ng-datepicker>
+              </span>
+        <span class="option timegap option-nobot" *ngIf="selecteddeliverTime==4">~</span>
+        <span class="option option-nobot" [ngClass]="{'unvisible':selecteddeliverTime!=4}">
+                <ng-datepicker  [(ngModel)]="timedeliverEnd"
+                                [options]="DatepickerOptions"></ng-datepicker>
+              </span>
+        <span class="option option-nobot">
+                <button *ngIf="selecteddeliverTime==4" class="btn btn-primary"
+                >确定</button>
+              </span>
+      </div>
+    </div>
+    <div class="select">
+      <div class="part-wrap">
+        <span class="title">物流方式：</span>
+      </div>
+      <div class="option-wrap">
+        <span class="option" *ngFor="let item of logisticsWay" (click)="selectedlogisticsWay=item.id"
+              [ngClass]="{'tag':item.id==selectedlogisticsWay}">{{item.text}}</span>
+      </div>
+    </div>
+  </div>
+  <app-table-pie-chart [title]="title" [ChannelData]="ChannelData" [tableinfo]="tableinfo" [TotalValue]="TotalValue">
+
+  </app-table-pie-chart>
+</div>

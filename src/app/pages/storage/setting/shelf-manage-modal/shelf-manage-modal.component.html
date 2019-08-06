@@ -1,0 +1,133 @@
+<div class="pop-content">
+  <div class="modal-header head">
+    <h4 class="modal-title mytitle">{{modalHeader}}
+      <button class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </h4>
+  </div>
+  <div class="modal-body">
+    <div class="smtitle gap" style="margin-bottom:10px;">
+      <button style="margin-right: 15px;" class="btn btn-sm btn-primary" (click)="openaddShelfModal()">
+        <span class="ion-plus-round icon-gap"></span>
+        新增货架位
+      </button>
+      <!--<button class="btn btn-sm btn-warning" (click)="openaddShelfModal()">-->
+        <!--<span class="ion-printer icon-gap"></span>-->
+        <!--区间批量打印-->
+      <!--</button>-->
+    </div>
+    <div class="card card-block">
+      <ul>
+        <li>
+          <label class="list-label">货架位类型筛选：</label>
+          <div class="screen-wrapper" *ngFor="let item of locationTypes;let i = index">
+            <input type="radio" id="conditionChoose{{item.Id}}" name="conditionChoose" class="regular-radio" [checked]="i === 0" />
+            <label for="conditionChoose{{item.Id}}" (click)="onselectLocationType(item.Id)">{{item.Name}}</label>
+          </div>
+        </li>
+        <li>
+          <label class="list-label">是否使用中：</label>
+          <div class="screen-wrapper" *ngFor="let item of isUsing;let i = index">
+            <input type="radio" id="isUsing{{item.Id}}" name="isUsing" class="regular-radio" [checked]="i === 0" />
+            <label for="isUsing{{item.Id}}" (click)="onselectIsUsing(item.Id)">{{item.Name}}</label>
+          </div>
+        </li>
+        <li>
+          <label class="list-label">货架位区域筛选：</label>
+          <div class="screen-wrapper">
+            <input type="radio" id="all" name="screenItem" class="regular-radio" [checked]="areacode==null?true:null"/>
+            <label for="all" (click)="onSelectArea(null)">全部</label>
+          </div>
+          <div class="screen-wrapper" *ngFor="let item of areas;let index = index">
+            <input type="radio" id="{{item.code}}" name="screenItem" class="regular-radio" [checked]="areacode==item.code"/>
+            <label for="{{item.code}}" (click)="onSelectArea(item.code)">{{item.code}}区</label>
+          </div>
+        </li>
+        <li>
+          <label class="list-label">货架位搜索：</label>
+          <div class="input-group search-group">
+            <input type="text" class="form-control" (keyup.enter)="doSearch()" [(ngModel)]="searchText" placeholder="请输入货架位...">
+            <div class="btn-group">
+              <button class="btn btn-sm btn-primary" (click)="doSearch()">搜索货架位</button>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div>
+        <!--<label class="checkbox-inline custom-checkbox nowrap">-->
+          <!--<input type="checkbox" [checked]="isCheckAllPages" (change)="onCheckAllPageChanged($event.target.checked)">-->
+          <!--<span></span>-->
+        <!--</label>-->
+        <button class="btn btn-sm btn-warning" (click)="printLocations()">
+          <span class="ion-printer icon-gap"></span>批量打印
+        </button>
+      </div>
+      <form class="pagination-wrapper">
+        <div class="form-group pages">
+          <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+            autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+            screenReaderCurrentLabel="You're on page">
+          </pagination-controls>
+        </div>
+        <div class="form-group options pages">
+          <div class="input-group input-group-sm">
+            <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+              <option>1</option>
+              <option>5</option>
+              <option>10</option>
+              <option>20</option>
+              <option>50</option>
+              <option>100</option>
+              <option>200</option>
+            </select>
+            <span class="input-group-addon addon-right">条/页</span>
+            <span class="input-group-addon addon-right">共{{total}}条</span>
+          </div>
+        </div>
+      </form>
+      <table class="table table-hover table-bordered gap" id="table">
+        <thead>
+          <tr class="black-muted-bg">
+            <th>
+              <label class="checkbox-inline custom-checkbox nowrap">
+                <input type="checkbox" [checked]="selectedShelfIds.length === items.length && items.length > 0" (change)="onCheckAllShelfChanged($event.target.checked)">
+                <span></span>
+              </label>
+            </th>
+            <th>货架位</th>
+            <th>是否使用</th>
+            <th>类型</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of items| paginate: { id: 'pager',
+                                                      itemsPerPage: pageSize,
+                                                      currentPage: pageNumber,
+                                                      totalItems: total}">
+            <td>
+              <label class="checkbox-inline custom-checkbox nowrap">
+                <input type="checkbox" [checked]="selectedShelfIds.indexOf(item.id) >= 0" (change)="onCheckShelfChanged($event.target.checked, item.id)">
+                <span></span>
+              </label>
+            </td>
+            <td>{{item.code}}</td>
+            <td>{{item.isUsing?"是":"否"}}</td>
+            <td>{{item.locationTypeDesc}}</td>
+            <!--<td>{{item.locationTypes == "Good"?"良品":'次品'}}</td>-->
+            <td>
+              <button *ngIf="!item.isLocked" (click)="lockLocation(item.id)" class="btn btn-xs btn-warning">锁定</button>
+              <button *ngIf="item.isLocked" (click)="unlockLocation(item.id)" class="btn btn-xs btn-info">解锁</button>
+              <button class="btn btn-xs btn-primary" (click)="printLocation(item.code)">打印</button>
+              <button *ngIf="!item.isUsing" class="btn btn-xs btn-danger" (click)="deleteLocationCode(item.id)">删除</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-sm btn-primary" (click)="closeModal()">取消</button>
+  </div>
+</div>

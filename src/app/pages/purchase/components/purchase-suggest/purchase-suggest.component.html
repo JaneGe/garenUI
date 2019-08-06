@@ -1,0 +1,330 @@
+<div class="wrapper-header">
+  <h3 class="page-desc">【编号：{{taskId}}】</h3>
+  <div class="btn-group return-list-btn">
+    <button class="btn btn-primary btn-sm" [routerLink]="['/pages/purchase/purchasePond']">
+      <i class="ion-reply"></i> 返回采购建议列表</button>
+  </div>
+</div>
+<div class=".col-md-8 card card-block">
+  <div class=".col-md-8 card card-block search-wrapper">
+    <ul class="search-condition">
+      <li *ngFor="let item of screen;let index = index">
+        <label class="search-title">{{item.title}}：</label>
+        <div class="screen-wrapper" *ngFor="let subitem of item.items;let i = index">
+          <input type="radio" id="{{index}}{{subitem.Name}}" name="{{index}}" class="regular-radio" [checked]="i === 0" />
+          <label for="{{index}}{{subitem.Name}}" (click)="onSelect($event.target,item.type,subitem.Id)">{{subitem.Name}}</label>
+        </div>
+      </li>
+      <li style="margin-bottom:10px;">
+        <label class="search-title">商品属性：</label>
+        <label class="checkbox-inline custom-checkbox nowrap">
+          <input type="checkbox" (click)="checkForAttr($event.target,1)">
+          <span>带电</span>
+        </label>
+        <label class="checkbox-inline custom-checkbox nowrap">
+          <input type="checkbox" (click)="checkForAttr($event.target,2)">
+          <span>仿品</span>
+        </label>
+        <label class="checkbox-inline custom-checkbox nowrap">
+          <input type="checkbox" (click)="checkForAttr($event.target,4)">
+          <span>液体</span>
+        </label>
+        <label class="checkbox-inline custom-checkbox nowrap">
+          <input type="checkbox" (click)="checkForAttr($event.target,3)">
+          <span>违禁品</span>
+        </label>
+        <label class="checkbox-inline custom-checkbox nowrap">
+          <input type="checkbox" (click)="checkForAttr($event.target,5)">
+          <span>普货</span>
+        </label>
+      </li>
+      <li style="margin-bottom:10px;">
+        <label class="search-title">供应商筛选：</label>
+        <select2 [value]="selectValue" [width]="300" [data]="providers" (valueChanged)="onChangeSupplierChanged($event)"></select2>
+      </li>
+      <li>
+        <label class="search-title">SKU搜索：</label>
+        <div class="input-group">
+          <input type="text" class="form-control" [(ngModel)]="storeSearchKey">
+          <div class="btn-group">
+            <button class="btn btn-primary" (click)="onQuery()">搜索</button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="action">
+
+<!--     <label class="checkbox-inline custom-checkbox nowrap" style="margin-right:20px;">
+      <input type="checkbox" [checked]="isCheckAllPages" (change)="onCheclAllPageChange($event.target.checked)">
+      <span>选中所有页</span>
+    </label> -->
+
+    <button class="btn btn-sm btn-warning item-margin" (click)="GenterOrderModal()">批量生成采购单</button>
+
+    <button class="btn btn-sm btn-primary" (click)="addAllGenter()" *ngIf="isStockQuantity">添加当前页所有欠票</button>
+  </div>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="onQuery()">
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条数据</span>
+      </div>
+    </div>
+  </form>
+  <table class="table table-hover table-bordered">
+    <thead>
+      <tr>
+        <th width="30px">
+          <label class="checkbox-inline custom-checkbox nowrap">
+            <input type="checkbox" [checked]="selectPackageIds.length === detailData.length && detailData.length > 0" (change)="onCheckAllPackageChanged($event.target.checked)">
+            <span></span>
+          </label>
+        </th>
+
+        <th *ngFor="let item of thead_item" [ngStyle]="item?.style">
+          <ul class="thead">
+            <li *ngFor="let th of item.th">
+              <a href="javascript:;" class="order-btn" *ngIf="item.isOrder">
+                <i class="ion-arrow-up-a"></i>
+              </a>
+              <span>{{th}}</span>
+              <a href="javascript:;" class="order-btn" *ngIf="item.isOrder">
+                <i class="ion-arrow-down-a"></i>
+              </a>
+            </li>
+          </ul>
+        </th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of detailData | paginate: { id: 'pager',
+        itemsPerPage:PageInfo.pageSize,
+        currentPage:PageInfo.pageIndex,
+        totalItems:PageInfo.totalCount};let i = index">
+        <td>
+          <label class="checkbox-inline custom-checkbox nowrap">
+            <input type="checkbox" [checked]="selectPackageIds.indexOf(data.id) >= 0" (change)="onCheckPackageChanged($event.target.checked, data.id)">
+            <span></span>
+          </label>
+        </td>
+        <td width="20px">{{data.id}}</td>
+        <td width="200px">
+          <div class="sku-info">
+            <a [href]="data.skuImg" class="img" target="_blank" title="点击查看大图">
+              <img [src]="data.skuImg" alt="该SKU无图片信息">
+            </a>
+            <span *ngIf="data.skuUrls.length>0"><a (click)="openUrl(data.skuUrls[0].url)" style="text-decoration: underline!important;">{{data.skuName}}</a></span>
+            <span *ngIf="data.skuUrls.length==0">{{data.skuName}}</span>
+          </div>
+          <ul class="info-wrapper">
+            <li class="info-list">
+              <label class="list-title">SKU：</label>
+              <span><a href="javascript:;" style="color:white;" (click)="editProdutInfoModal(data.skuId)">{{data.skuCode}}</a></span>
+            </li>
+            <li class="info-list">
+              <label class="list-title">采购人员：</label>
+              <span>{{data.purchaseUser}}</span>
+            </li>
+            <!--<li class="info-list">-->
+            <!--<label class="list-title">开发人员：</label>-->
+            <!--<span>占芳源</span>-->
+            <!--</li>-->
+            <li class="info-list">
+              <label class="list-title">仓库：</label>
+              <span>{{data.warehouseName}}</span>
+            </li>
+          </ul>
+        </td>
+        <td width="150px">
+          <ul class="info-wrapper" *ngFor="let sku of data.skuUrls;let i = index">
+            <li class="info-list">
+              <label class="list-title" title="{{sku.supplier}}">{{sku.supplier}}</label>
+              <a *ngIf="sku.loginId!=null" href="https://amos.alicdn.com/getcid.aw?v=3&uid=晶品新电&site=cnalichn&groupid=0&charset=UTF-8"
+                target="_blank" class="alwangwang"></a>
+              <a style="color:rgb(0, 212, 89);" href="javascript:;" title="点击查看采购历史" (click)="openPurchaseHistoryModal(sku.supplierId,sku.skuId)">￥{{sku.purchasePrice}}</a>
+              <!-- 点击进入采购历史 -->
+            </li>
+            <!--<li class="info-list">-->
+            <!--<label class="list-title" title="供应商供应商供应商供应商">供应商供应商：</label>-->
+            <!--<a href="" title="点击查看采购历史">8.99</a>-->
+            <!--&lt;!&ndash; 点击进入采购历史 &ndash;&gt;-->
+            <!--</li>-->
+            <!--<li class="info-list">-->
+            <!--<label class="list-title" title="供应商供应商供应商供应商">供应商供应商：</label>-->
+            <!--<a href="" title="点击查看采购历史">8.99</a>-->
+            <!--&lt;!&ndash; 点击进入采购历史 &ndash;&gt;-->
+            <!--</li>-->
+          </ul>
+        </td>
+        <td width="220px">
+          <ul class="info-wrapper">
+            <li class="info-list">
+              <label class="list-title">当前库存：</label>
+              <span class="yellow-text lg-text">{{data.currentInventory}}</span>
+            </li>
+            <li class="info-list">
+              <label class="list-title">可用库存：</label>
+              <span class="yellow-text lg-text">{{data.availableInventory}}</span>
+            </li>
+            <li class="info-list">
+              <label class="list-title">在途库存：</label>
+              <span class="yellow-text lg-text">{{data.waitReceiveQuantity}} ({{data.waitReceiveQuantityExtra}})</span>
+            </li>
+            <li class="info-list">
+              <label class="list-title">库存预计销售天数：</label>
+              <span class="yellow-text lg-text">{{data.avaiableSaleDays}}</span>
+            </li>
+            <li class="info-list">
+              <label class="list-title">采购中：</label>
+              <span class="yellow-text lg-text">{{data.purchasingQuantity}} ({{data.purchasingQuantityExtra}})</span>
+            </li>
+            <li class="info-list">
+              <a style="color:rgb(0, 212, 89);" href="javascript:;" (click)="openInventoryHistoryModal(data.skuId)">库存日志</a>
+            </li>
+            <!--<li class="info-list">-->
+            <!--<label class="list-title">库存总价值：</label>-->
+            <!--<span>￥{{data.outOfStockQuantity}}</span>-->
+            <!--</li>-->
+          </ul>
+        </td>
+        <td width="130px">
+          <ul class="info-wrapper">
+            <li class="info-list">
+              <label class="list-title">欠票：</label>
+              <span class="red-text lg-text">{{data.outOfStockQuantity}}</span>
+            </li>
+            <li class="info-list">
+              <label class="list-title">采购建议数量：</label>
+              <span class="green-text lg-text">{{data.forecastInNumber}}</span>
+            </li>
+          </ul>
+        </td>
+        <td width="100px" class="detail-sales">
+          <div class="mark" (mouseover)="checkModal(i,1)" (mouseout)="checkModal(i,0)"></div>
+          <!-- detail-modal  -->
+          <div class="detail-modal-body" style="display:none;">
+            <div class="mark" (mouseover)="checkModal(i,1)" (mouseout)="checkModal(i,0)"></div>
+            <div class="detail-modal-content">
+              <div class="date-detail" *ngFor="let calitem of data.calculateStorges">
+                <span class="sales-week">{{calitem.week}}</span>
+                <label class="sales-date">{{calitem.dateShow}}</label>
+                <span class="sales-detail">
+                  <span class="sales-number">{{calitem.quantity}}</span>
+                  <span class="platform">{{calitem.typeShow}}</span>
+                </span>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+          <ul class="info-wrapper">
+            <li class="info-list" *ngFor="let  attrItem of data.totalSkuAttr">
+              <span class="btn btn-xs btn-warning">{{attrItem}}</span>
+            </li>
+            <li class="info-list" *ngIf="data.isFire">
+              <i class="ion-heart fire"></i>
+              <span *ngIf="data.isHot" class="fire">爆款</span>
+            </li>
+            <li class="info-list">
+              <label class="list-title">平均销量：</label>
+              <span class="blue-text lg-text">{{data.avgPerDaySaleQuantity | number: '1.0-2'}}</span>
+            </li>
+            <li class="info-list">
+              <i class="ion-ios-search-strong check-detail-btn"></i>
+              <span>查看详情</span>
+            </li>
+          </ul>
+        </td>
+        <td width="100px">
+          <ul class="info-wrapper">
+            <li class="info-list">
+              <label class="list-title">7天：</label>
+              <span class="yellow-text lg-text">{{data.last7DaySaleQuantity}}</span>
+            </li>
+            <li class="info-list">
+              <label class="list-title">15天：</label>
+              <span class="yellow-text lg-text">{{data.last15DaySaleQuantity}}</span>
+            </li>
+            <li class="info-list">
+              <label class="list-title">30天：</label>
+              <span class="yellow-text lg-text">{{data.last30DaySaleQuantity}}</span>
+            </li>
+            <li class="info-list">
+              <label class="list-title">90天：</label>
+              <span class="yellow-text lg-text">{{data.last90DaySaleQuantity}}</span>
+            </li>
+          </ul>
+        </td>
+        <td width="100px">
+          <ul class="info-wrapper" *ngIf="data.statusShow!='已生成'">
+            <li class="info-list">
+              <input type="search" *ngIf="data.statusShow !== '已忽略'" class="edit-num form-control with-danger-addon" (keyup.enter)="Enter(data,i)"
+                [(ngModel)]="data.actualNumberShow">
+            </li>
+            <li class="info-list">
+              <button class="edit-num-btn" *ngIf="data.statusShow !== '已忽略'" (click)="Enter(data,i)">确定</button>
+            </li>
+          </ul>
+          <ul class="info-wrapper" *ngIf="data.statusShow=='已生成'||data.statusShow === '已忽略'">
+            <li class="info-list">
+              <span class="max-text red-text">{{data.actualNumberShow}}</span>
+            </li>
+          </ul>
+        </td>
+        <td width="80px">
+          <ul class="info-wrapper">
+            <li class="info-list" *ngIf="data.actualNumberShow">
+              <span>数量：</span>
+              <span class="blue-text lg-text">{{data.actualNumberShow}}</span>
+            </li>
+            <li class="info-list">
+              <span>{{data.statusShow}}</span>
+            </li>
+            <li class="info-list">
+              <button class="btn btn-sm btn-danger" *ngIf="data.statusShow !== '已忽略' && data.statusShow !== '已生成'" (click)="ignore(data)">忽略</button>
+              <button class="btn btn-sm btn-danger" *ngIf="data.statusShow == '已忽略' && data.statusShow !== '已生成'" (click)="activa(data)">激活</button>
+            </li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="onQuery()">
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条数据</span>
+      </div>
+    </div>
+  </form>
+</div>

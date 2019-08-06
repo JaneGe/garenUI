@@ -1,0 +1,17 @@
+<app-search-head></app-search-head>
+<div class="btn-box" >
+  <div class="checkbox">
+    <label class="checkbox-inline custom-checkbox nowrap">
+      <input type="checkbox"><span>选中所有页</span>
+    </label>
+  </div>
+  <div class="searchPart gap">
+    <div class="buttonpart">
+      <button class="btn btn-primary" (click)="addClass1($event.target)">作废</button>
+      <button class="btn btn-primary" (click)="addClass1($event.target)">编辑订单详情</button>
+      <button class="btn btn-primary" (click)="addClass1($event.target)">锁定</button>
+      <button class="btn btn-primary" (click)="addClass1($event.target)">标记退款</button>
+    </div>
+  </div>
+</div>
+<app-table></app-table>

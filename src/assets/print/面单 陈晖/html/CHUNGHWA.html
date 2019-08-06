@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../font-awesome.css">
+    <link rel="stylesheet" href="../public.css">
+</head>
+<style>
+    .icon-square {
+        display: inline-block;
+        width: 11px;
+        height: 11px;
+        border: 1px solid black;
+    }
+
+    * {
+        font-size: 9px;
+    }
+
+
+    .print-wrap {
+        display: inline-block;
+        padding: 1mm 5mm;
+        margin: 0;
+    }
+
+    .part-top {
+        display: flex;
+        width: 500px;
+        margin-bottom: 5px;
+    }
+
+    .part-top-left {
+        border: 2px solid black;
+        width: 35%;
+    }
+
+    .part-top-left p {
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 4px;
+    }
+
+    .part-top-left p:first-of-type {
+        margin-top: 18px;
+    }
+
+    .part-top-right {
+        margin-top: 4px;
+        width: 65%;
+    }
+
+    .part-top-right .line1 {
+        display: flex;
+        margin-bottom: 5px;
+    }
+
+    .part-top-right .line1 .img-wrap {
+        margin-left: 20px;
+    }
+
+    .part-top-right .line1 .title1,
+    .part-top-right .line1 .title2 {
+        display: flex;
+        align-items: center;
+    }
+
+    .part-top-right .line1 .title1 p {
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .part-top-right .line1 .title2 p {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .part-top-right .line2 img {
+        display: block;
+        margin-left: 5px;
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .part-top-right .line3 {
+        height: 20px;
+    }
+
+    .part-top-right .line3 p {
+        line-height: 20px;
+        font-size: 15px;
+        text-align: center;
+    }
+
+
+    .part-bottom {
+        width: 500px;
+    }
+
+    .part-bottom .line1 {
+        display: flex;
+        font-weight: bold;
+    }
+
+    .part-bottom .line1 .line1-left {
+        width: 45%;
+        border: 2px solid black;
+        border-right: none;
+        padding: 3px;
+    }
+
+    .part-bottom .line1 .line1-right {
+        width: 55%;
+        border: 2px solid black;
+        padding: 3px;
+    }
+
+    .part-bottom .line1 .line1-left p:first-of-type {
+        margin-bottom: 5px;
+    }
+
+    .part-bottom .line1 .line1-left p:nth-of-type(4) {
+        margin: 10px 0;
+    }
+
+    .part-bottom .line1 .line1-right p:nth-of-type(3) {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .part-bottom .line1 .line1-right p:nth-of-type(3) i:last-of-type {
+        margin-right: 8px;
+    }
+
+    .part-bottom .line1 .line1-right p:last-of-type {
+        margin-top: 10px;
+    }
+
+    .part-bottom .line2 {
+        padding: 2px 0;
+        text-align: center;
+        font-weight: bold;
+        border: 2px solid black;
+        border-top: none;
+    }
+
+    .part-bottom .line2 span {
+        margin-right: 10px;
+    }
+
+    .part-bottom .line2 span i {
+        position: relative;
+        top: 1px;
+    }
+
+    .part-bottom .line3 {
+        display: flex;
+    }
+
+    .part-bottom .line3 div p {
+        text-align: center;
+        padding: 1px 0;
+        min-height: 16px;
+        font-weight: bold;
+    }
+
+    .part-bottom .line3 .box1 {
+        width: 60%;
+        border: 2px solid black;
+        border-top: none;
+    }
+
+    .part-bottom .line3 .box2,
+    .part-bottom .line3 .box3 {
+        width: 20%;
+        border: 2px solid black;
+        border-top: none;
+    }
+
+    .part-bottom .line3 .box1,
+    .part-bottom .line3 .box2 {
+        border-right: none;
+    }
+
+    .part-bottom .line4 {
+        border: 2px solid black;
+        border-top: none;
+        padding: 2px 5px;
+    }
+
+    .part-bottom .line4 p {
+        font-weight: bold;
+    }
+
+    .part-bottom .line4 p:nth-of-type(2) {
+        margin: 15px 0 10px 0;
+    }
+</style>
+
+<body>
+    <div class="print-wrap">
+        <div class="part-top">
+            <div class="part-top-left">
+                <p>TAIPEI&nbsp;(TP)&nbsp;TAIWAN</p>
+                <p>R.O.C.</p>
+                <p>POSTAGE&nbsp;PAID</p>
+                <p>LICENCE&nbsp;NO&nbsp;TP6663</p>
+            </div>
+            <div class="part-top-right">
+                <div class="line1">
+                    <div class="img-wrap">
+                        <img width="60" height="60" src="../img/CHUNGWA.png" alt="icon">
+                    </div>
+                    <div class="title1">
+                        <p>CHUNGHWA&nbsp;POST&nbsp;CQ,LTD.</p>
+                    </div>
+                    <div class="title2">
+                        <p>CN&nbsp;22</p>
+                    </div>
+                </div>
+                <div class="line2">
+                    <img src="../img/barCHUNGWA.png" alt="code">
+                </div>
+                <div class="line3">
+                    <p>PBAA127342633</p>
+                </div>
+            </div>
+        </div>
+        <div class="part-bottom">
+            <div class="line1">
+                <div class="line1-left">
+                    <p>From:</p>
+                    <p>P. O. BOX 100561-003001 TAIPEI</p>
+                    <p>TAIWAN (R.O.C.)</p>
+                    <p>Tel:886-3-3833100</p>
+                    <p>This Parcel Transit in Taipei Free Zone</p>
+                </div>
+                <div class="line1-right">
+                    <p>consignee:William P. Moroski II</p>
+                    <p>telephone:2486283458</p>
+                    <p>
+                        <i>address:3415</i>
+                        <i>Davison</i>
+                        <i>Lake</i>
+                    </p>
+                    <p>Road,48462-9523,ORTONVILLE,MI,US</p>
+                    <p>FP2070-1515659585</p>
+                </div>
+            </div>
+            <div class="line2">
+                <span>
+                    <i class="fa fa-check"></i>&nbsp;Gift
+                </span>
+                <span>
+                    <i class="icon-square"></i>&nbsp;Sample
+                </span>
+                <span>
+                    <i class="icon-square"></i>&nbsp;Printed
+                </span>
+                <span>
+                    <i class="icon-square"></i>&nbsp;Other
+                </span>
+            </div>
+            <div class="line3">
+                <div class="box1">
+                    <p>Quantity&nbsp;and&nbsp;detailed&nbsp;description&nbsp;of&nbsp;contents</p>
+                </div>
+                <div class="box2">
+                    <p>Weight(Kg)</p>
+                </div>
+                <div class="box3">
+                    <p>Value(USD)</p>
+                </div>
+            </div>
+            <div class="line3">
+                <div class="box1">
+                    <p>1510440a*1</p>
+                </div>
+                <div class="box2">
+                    <p>0.100</p>
+                </div>
+                <div class="box3">
+                    <p>1.00</p>
+                </div>
+            </div>
+            <div class="line3">
+                <div class="box1">
+                    <p>For commercial itmes only if konwn,HS tariff number and country of orgin of goods.</p>
+                </div>
+                <div class="box2">
+                    <p>Total Weight</p>
+                </div>
+                <div class="box3">
+                    <p>Total Value</p>
+                </div>
+            </div>
+            <div class="line3">
+                <div class="box1">
+                    <p></p>
+                </div>
+                <div class="box2">
+                    <p>0.100</p>
+                </div>
+                <div class="box3">
+                    <p>1.00</p>
+                </div>
+            </div>
+            <div class="line4">
+                <p>I,the undersigned,whose name and address are given on the item,certify that the particulars given ir declaration
+                    are correct and that this itme does not contain any dangerous article or articles prohibited legislation
+                    or by postal or customs regulations.
+                </p>
+                <p>Data and senders signature:</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,131 @@
+<div class="card card-block">
+  <h3 class="mysubtitle">当前选择的平台：{{plateFormDisplayName}}
+    <button class="btn btn-primary"><a href="javascript:;" [routerLink]="'../selectPlateform'">&lt;&lt;&nbsp;返回平台选择</a>
+    </button>
+  </h3>
+  <div class="card card-block select-part">
+    <div class="select">
+      <div class="select bdb">
+        <div class="part-wrap">
+          <span class="title">仓库：</span>
+        </div>
+        <div class="option-wrap">
+          <span class="option" *ngFor="let item of warehouses" (click)="selectWarehouse(item.warehouseId)"
+                [ngClass]="{'tag':item.warehouseId==selectedWarehouseId}">{{item.name}}</span>
+        </div>
+        <div class="toggle">
+          <div class="btn-group">
+            <button class="btn btn-sm" (click)="toggle(1)"
+                    [ngClass]="{'btn-primary':clicktop==0,'btn-default':clicktop==1}">筛选
+            </button>
+            <button class="btn btn-sm" (click)="toggle(0)"
+                    [ngClass]="{'btn-primary':clicktop==1,'btn-default':clicktop==0}">搜索
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="clickbottom==1&&clicktop==0">
+
+        <div class="select">
+          <div class="part-wrap">
+            <span class="title">是否激活：</span>
+          </div>
+          <div class="option-wrap">
+            <span class="option" *ngFor="let item of isActiveOptions" (click)="selectifActive(item.value)"
+                  [ngClass]="{'tag':item.value==selectedIsActive}">{{item.text}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="clicktop==1">
+
+      <div class="select">
+        <div class="part-wrap">
+          <span class="title">搜索类型：</span>
+        </div>
+        <div class="option-wrap">
+          <span class="option" *ngFor="let item of searchKind" (click)="selectsearchKind(item.id)"
+                [ngClass]="{'tag':item.id==selectedsearchKind}">{{item.text}}</span>
+        </div>
+      </div>
+
+      <div class="select bdb bdb-gap">
+        <div class="part-wrap">
+          <span class="title">搜索内容：</span>
+        </div>
+        <div class="part-wrap">
+          <div class="input-group  input">
+            <input type="search" class="form-control" [(ngModel)]="searchText">
+            <span class="input-group-btn">
+                <button class="btn btn-sm btn-danger" (click)="OnQuery()">搜索</button>
+              </span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="toggle-select">
+      <button *ngIf="clickbottom==0&&clicktop==0" class="btn btn-primary btn-sm" (click)="toggle1(0)">
+        <span class="icon ion-arrow-down-b"></span>高级筛选
+      </button>
+
+      <button *ngIf="clickbottom==1&&clicktop==0" class="btn btn-primary btn-sm" (click)="toggle1(1)">
+        <span class="icon ion-arrow-up-b"></span>收起
+      </button>
+    </div>
+  </div>
+
+  <div class="action">
+    <button class="btn btn-sm btn-primary" (click)="addRules()">添加规则</button>
+  </div>
+
+
+  <div class="table-wrap">
+    <table class="table table-hover table-bordered gap">
+      <thead>
+      <tr class="black-muted-bg">
+        <th style="width: 120px;">优先级</th>
+        <th>是否激活</th>
+        <th>规则名称</th>
+        <th>发货时间</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of rules">
+        <!--<td>{{item.priority}}</td>-->
+        <td>
+          <div class="show-wrap">
+            <span class="icon-wraper" (click)="doEditPriority($event.target)"><i class="fa fa-edit"></i></span>
+            <span>{{item.priority}}</span>
+          </div>
+          <div class="edit-wrap" style="display: none">
+            <input class="priority-input" type="number" name="priority" value=''
+                   (keyup.enter)="changePriority($event.target,item.id)" (blur)="cancelEdit($event.target)">
+          </div>
+        </td>
+        <td><i
+          [ngClass]="{'ion-close-round red-text':!item.isActive,'ion-checkmark-round green-text':item.isActive}"></i>
+        </td>
+        <td>{{item.name}}</td>
+        <td>
+          <p *ngIf="item.shippedTimeType=='Shipped'">发货后标记发货</p>
+          <p *ngIf="item.shippedTimeType=='PaiedAfter'">在订单的支付时间加<span class="green-text fa-2x" style="margin:0 10px;">{{item.hours}}</span>小时后标记发货</p>
+          <p *ngIf="item.shippedTimeType=='ChannelRequiredTimeBefore'">在订单的最后标记发货时间剩余<span class="green-text fa-2x" style="margin:0 10px;">{{item.hours}}</span>小时后标记发货</p>
+        </td>
+        <td>
+          <button class="btn default-btn tdbtn" (click)="editRules(item.id)"><i class="btnion ion-edit"></i>编辑</button>
+          <button class="btn default-btn tdbtn" (click)="deleteRule(item.id)"><i class="btnion ion-trash-a"></i>删除
+          </button>
+          <button *ngIf="!item.isActive" (click)="enableRule(item.id)" class="btn btn-warning tdbtn">激活</button>
+          <button *ngIf="item.isActive" (click)="disableRule(item.id)" class="btn btn-danger tdbtn">禁用</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+
+  </div>
+
+</div>

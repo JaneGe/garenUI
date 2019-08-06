@@ -1,0 +1,436 @@
+<div class="wrapper .col-md-8 card card-block">
+  <div class="card card-block">
+    <form class="goods-search-form">
+      <ul>
+        <!--<li>-->
+        <!--<span class="screen-title">销售渠道：</span>-->
+        <!--&lt;!&ndash;<div class="screen-wrapper" *ngFor="let type of plateforms;let i = index">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="radio" id="palteform{{i}}" name="palteform" class="regular-radio" [checked]="i === 0" />&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="palteform{{i}}" (click)="onplateformselect(type.id)">{{type.text}}</label>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--<div class="screen-wrapper" *ngFor="let channel of supportChannelTypes;let i = index">-->
+        <!--<input type="radio" id="channel-{{channel.code}}" name="channel" class="regular-radio" [checked]="i === 0" />-->
+        <!--<label for="channel-{{channel.code}}" (click)="onSelectChannelType(channel.code)">{{channel.displayName}}</label>-->
+        <!--</div>-->
+        <!--</li>-->
+        <!--<li>-->
+        <!--<span class="screen-title">帐号选择：</span>-->
+        <!--<select2 [data]="accounts"  [width]="400"  [value]="selectedaccountsid" (valueChanged)="onselectaccount($event)" ></select2>-->
+        <!--</li>-->
+        <li>
+          <span class="screen-title">销售渠道：</span>
+          <div class="screen-wrapper" *ngFor="let channel of supportChannelTypes;let i = index">
+            <input type="radio" id="channel-{{channel.code}}" name="channel" class="regular-radio" [checked]="i === 0" />
+            <label for="channel-{{channel.code}}" (click)="onSelectChannelType(channel.code)">{{channel.displayName}}</label>
+          </div>
+        </li>
+        <li *ngIf="isShowChannelAccount('Amazon')">
+          <span class="screen-title">Amazon账号：</span>
+          <div class="screen-wrapper">
+            <input type="radio" id="amazon-all" name="amazon" class="regular-radio" checked/>
+            <label for="amazon-all" (click)="onSelectChannelId('')">所有</label>
+          </div>
+          <div class="screen-wrapper" *ngFor="let amazon of amazonAccounts;">
+            <input type="radio" id="amazon-{{amazon.channelId}}" name="amazon" class="regular-radio" />
+            <label for="amazon-{{amazon.channelId}}" (click)="onSelectChannelId(amazon.channelId)">{{amazon.displayName}}</label>
+          </div>
+        </li>
+        <li>
+          <span class="screen-title">搜索类型：</span>
+          <div class="screen-wrapper" *ngFor="let searchType of suppprtSearchTypes;let i = index">
+            <input type="radio" id="searchType-{{searchType.value}}" name="searchType" class="regular-radio" [checked]="i === 0" />
+            <label for="searchType-{{searchType.value}}" (click)="onSelectSearchType(searchType.value)">{{searchType.text}}</label>
+          </div>
+        </li>
+        <li>
+          <span class="screen-title">搜索内容：</span>
+          <div class="input-group search" style="width: 450px;">
+            <input type="text" class="form-control with-primary-addon" name="searchText" #s="ngModel" [(ngModel)]="searchText" placeholder="搜索 "
+              (keyup.enter)="doSearch()">
+            <span class="ion-close-circled clean" *ngIf="s.value!=''" (click)="cleanSearchText()"></span>
+            <span class="input-group-btn">
+              <button class="btn btn-primary" type="button" (click)="doSearch()">搜索</button>
+            </span>
+          </div>
+        </li>
+      </ul>
+    </form>
+  </div>
+  <div class="btn-box">
+    <div class="checkbox">
+      <label class="checkbox-inline custom-checkbox nowrap">
+        <input type="checkbox" [checked]="isCheckAllPages" (change)="onCheclAllPageChange($event.target.checked)">
+        <span>选中所有页</span>
+      </label>
+    </div>
+    <button type="button" class="btn btn-primary" *ngIf="getCurrentAuthoritiy('Add')" (click)="openAddLogisticsSkuModal(addLogisticsSKU)">添加渠道SKU</button>
+    <button type="button" class="btn btn-primary" *ngIf="getCurrentAuthoritiy('Import')" (click)="openImportLogisticsSkuModal(importSKU)">导入渠道SKU</button>
+    <button type="button" class="btn btn-primary" *ngIf="getCurrentAuthoritiy('Export')" (click)="openOutputLogisticsSkuModal()">导出渠道SKU</button>
+  </div>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+          <option>1</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{total}}条数据</span>
+      </div>
+    </div>
+  </form>
+  <div class="table-box">
+    <table class="table table-hover table-bordered">
+      <thead>
+        <tr>
+          <th>
+            <label class="checkbox-inline custom-checkbox nowrap">
+              <input type="checkbox" [checked]="selectLogisticsSkuIds.length == items.length && items.length > 0" (change)="onCheckAllOrderChanged($event.target.checked)">
+              <span></span>
+            </label>
+          </th>
+          <th width="220px">基础信息</th>
+          <th>UPC/EAN</th>
+          <th>ASIN</th>
+          <th>相关人员</th>
+          <th>销售类型</th>
+          <th>时间</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let info of items | paginate: { id: 'pager',
+        itemsPerPage: pageSize,
+        currentPage: pageNumber,
+        totalItems: total};let i = index">
+          <td>
+            <label class="checkbox-inline custom-checkbox nowrap">
+              <input type="checkbox" [checked]="selectLogisticsSkuIds.indexOf(info.id) >= 0" (change)="onCheckOrderChanged($event.target.checked, info.id)"
+              />
+              <span></span>
+            </label>
+          </td>
+          <td>
+            <span class="alone-info">渠道来源：{{info.channelAccount}}</span>
+            <span class="alone-info">渠道SKU：{{info.channelSkuCode}}</span>
+            <span class="alone-info">SKU类型：{{info.skuTypeDesc}}</span>
+            <span class="alone-info">SKUCode：{{info.skuCode}}</span>
+          </td>
+          <td>
+            <span class="alone-info">{{info.upc}}/{{info.ean}}</span>
+          </td>
+          <td>
+            <span class="alone-info">{{info.asin}}</span>
+          </td>
+          <td>
+            <span class="alone-info">添加人员：{{info.createdName}}</span>
+            <!-- <span>开发人员：{{member.development}}</span>-->
+            <span class="alone-info" *ngIf="info.lastModifiedName != null">修改人员：{{info.lastModifiedName}}</span>
+          </td>
+          <td>
+            <span class="alone-info" style="text-align:center">{{info.sellTypeDesc}}</span>
+          </td>
+
+          <td>
+            <span>添加时间：{{info.createdTime| amDateFormat: 'YYYY-MM-DD HH:mm'}}</span>
+            <span *ngIf="info.lastModifiedName != null">修改时间：{{info.lastModifiedTime| amDateFormat: 'YYYY-MM-DD HH:mm'}}</span>
+          </td>
+          <td>
+            <button class="btn btn-sm btn-primary" *ngIf="getCurrentAuthoritiy('Update')" (click)="openAddLogisticsSkuModal(addLogisticsSKU,info.id)">编辑</button>
+            <button class="btn btn-sm btn-danger" (click)="deleteChannelSku(info.id)">删除</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{total}}条数据</span>
+      </div>
+    </div>
+  </form>
+</div>
+
+<ng-template #addLogisticsSKU let-c="close">
+  <div class="pop-content">
+    <div class="modal-header">
+      <span class="modal-title">{{logisticsSkuModalTitle}}</span>
+
+      <button type="button" class="close" (click)="c()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group myoption">
+        <label>平台选择：</label>
+        <!--<select [(ngModel)]="selectedChannelId" class="form-control">-->
+        <!--<option *ngFor="let item of Channels" value={{item.id}}>{{item.text}}</option>-->
+        <!--</select>-->
+        <span class="tag inline" (click)="addClass($event.target)" [ngStyle]="{'background':'Amazon'==item?'#fff':'none',
+                'color':'Amazon'==item?'#061f1c':'white'}" *ngFor="let item of Platforms">{{item}}
+        </span>
+      </div>
+      <div class="form-group myoption">
+        <label>账号选择：
+          <span class="badge-danger">必填</span>
+        </label>
+        <!--<select [(ngModel)]="selectedChannelId" class="form-control">-->
+        <!--<option *ngFor="let item of Channels" value={{item.id}}>{{item.text}}</option>-->
+        <!--</select>-->
+        <select2 [data]="accountList" [width]="400" [value]="selectedChannelId" (valueChanged)="choose($event)"></select2>
+      </div>
+
+      <div class="form-group myoption">
+        <label>销售类型：
+          <span class="badge-danger">必填</span>
+        </label>
+        <select [(ngModel)]="selectedSellTypeId" class="form-control">
+          <option *ngFor="let item of SellTypes" value={{item.value}}>{{item.name}}</option>
+        </select>
+      </div>
+      <div class="form-group myoption">
+        <label class="form-title">渠道Sku：
+          <span class="badge-danger">必填</span>
+        </label>
+        <input type="text" class="form-control" name="logisticsSku" [(ngModel)]="logisticsSku" />
+      </div>
+      <div class="form-group myoption">
+        <label class="form-title">EAN：</label>
+        <input type="text" class="form-control" name="logisticsSku" [(ngModel)]="EAN" />
+      </div>
+      <div class="form-group myoption">
+        <label class="form-title">UPC：</label>
+        <input type="text" class="form-control" name="logisticsSku" [(ngModel)]="UPC" />
+      </div>
+      <div class="form-group myoption">
+        <label class="form-title">ASIN：</label>
+        <input type="text" class="form-control" name="logisticsSku" [(ngModel)]="ASIN" />
+      </div>
+      <div class="form-group myoption">
+        <label class="form-title">商品链接：</label>
+        <input type="text" class="form-control" name="logisticsSku" [(ngModel)]="ListingUrl" />
+      </div>
+
+
+      <button class="btn btn-primary mb15" *ngIf=" this.addlogisticsSkus.length==0" id="add" (click)="openSelectModal(addsku)">添加SKU</button>
+      <table class="table table-hover table-bordered">
+        <thead>
+          <tr>
+            <th *ngIf="SKUType == 'StockSku'">库存SKU</th>
+            <th *ngIf="SKUType == 'VirtualSku'">虚拟SKU</th>
+            <th style="width: 100px;">删除</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let info of addlogisticsSkus">
+            <td>
+              <span>{{info.skuCode}}</span>
+            </td>
+            <!--<td>-->
+            <!--<input class="text-center form-control myinput-bg" type="text" [(ngModel)]="info.quantity"/>-->
+            <!--</td>-->
+            <td>
+              <a href="javascript:;" *ngIf="getCurrentAuthoritiy('Delete')" (click)="deleteItem(info.skuId)">删除</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <div class="btn-group">
+        <button class="btn btn-primary" (click)="c()">关闭</button>
+        <button class="btn btn-primary" (click)="doSave(c)">保存</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #addsku let-c="close">
+  <div class="pop-content">
+    <div class="modal-header">
+      <span class="modal-title">选择商品</span>
+      <button type="button" class="close" (click)="c()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="card card-block mycard">
+        <div class="wrapper mywrapper">
+          <form class="goods-search-form">
+            <ul class="search-condition">
+              <li>
+                <span class="screen-title">Sku类型：</span>
+                <div class="screen-wrapper" *ngFor="let type of skuTypes;let i = index">
+                  <input type="radio" id="skutype{{i}}" name="skutype" class="regular-radio" [checked]="i === 0" />
+                  <label for="skutype{{i}}" (click)="onSkuSelecteType($event.target,type.value)">{{type.name}}</label>
+                </div>
+              </li>
+              <li *ngIf="SKUType == 'StockSku'">
+                <span class="screen-title">搜索类型：</span>
+                <div class="screen-wrapper" *ngFor="let type of selectTypes;let i = index">
+                  <input type="radio" id="type{{i}}" name="type" class="regular-radio" [checked]="i === 0" />
+                  <label for="type{{i}}" (click)="onSkuSelecteSearch($event.target,type.value)">{{type.name}}</label>
+                </div>
+              </li>
+              <li *ngIf="SKUType == 'VirtualSku'">
+                <span class="screen-title">搜索类型：</span>
+                <div class="screen-wrapper" *ngFor="let type of virtualSkuselectTypes;let i = index">
+                  <input type="radio" id="ByVirtualSkutype{{i}}" name="ByVirtualSkutype" class="regular-radio" [checked]="i === 0" />
+                  <label for="ByVirtualSkutype{{i}}" (click)="onSkuSelecteSearch($event.target,type.value)">{{type.name}}</label>
+                </div>
+              </li>
+              <li>
+                <span class="screen-title">搜索内容：</span>
+                <div class="input-group search">
+                  <input type="text" class="form-control with-primary-addon" name="searchText" #s="ngModel" [(ngModel)]="SKUsearchText" placeholder="搜索 "
+                    (keyup.enter)="doSkuOrVirtualSkuListLoadDataSearch()">
+                  <span class="input-group-btn">
+                    <button class="btn btn-primary" type="button" (click)="doSkuOrVirtualSkuListLoadDataSearch()">搜索</button>
+                  </span>
+                </div>
+              </li>
+            </ul>
+          </form>
+        </div>
+      </div>
+      <table class="table table-hover table-bordered">
+        <thead>
+          <tr *ngIf="SKUType == 'StockSku'">
+            <th></th>
+            <th>SKU</th>
+            <th>商品名称</th>
+            <th>体积（长*宽*高）</th>
+            <th>重量</th>
+          </tr>
+          <tr *ngIf="SKUType == 'VirtualSku'">
+            <th></th>
+            <th>虚拟SKU</th>
+            <th>商品Sku组合</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of skuOrVirtualSkuListItems | paginate: { id: 'pager1',
+                                            itemsPerPage: skuPageInfo.pageSize,
+                                            currentPage: skuPageInfo.pageNumber,
+                                            totalItems: skuPageInfo.total}">
+            <td>
+              <div class="deliverTime-wrap">
+                <span class="item">
+                  <!--<div class="customRadio-wrap" (click)="selectedSku=item.id"  >-->
+                  <div class="customRadio-wrap" (click)="selectSkuOrVirtualSku(item.id,item.code)">
+                    <div class="customRadio">
+                      <span [ngClass]="{'none':selectedSku !=item.id}"></span>
+                    </div>
+                  </div>
+                </span>
+              </div>
+            </td>
+            <td *ngIf="SKUType == 'StockSku'">{{item.code}}</td>
+            <td *ngIf="SKUType == 'StockSku'">{{item.name}}</td>
+            <td *ngIf="SKUType == 'StockSku'">{{item.length}}*{{item.width}}*{{item.height}}</td>
+            <td *ngIf="SKUType == 'StockSku'">{{item.weight}}</td>
+
+            <td *ngIf="SKUType == 'VirtualSku'">{{item.code}}</td>
+            <td *ngIf="SKUType == 'VirtualSku'">
+              <span *ngFor="let skucom of item.items;let i = index" class="skucom">
+                <span *ngIf="i != 0" class="skucom"> &nbsp;+&nbsp; </span>
+                {{skucom.skuCode}} *{{skucom.quantity}}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <form class="pagination-wrapper" style="padding-top:20px;margin-bottom: -15px;">
+        <div class="form-group pages">
+          <pagination-controls class="my-pagination" id="pager1" (pageChange)="skupageChanged($event)" maxSize="7" directionLinks="true"
+            autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+            screenReaderCurrentLabel="You're on page">
+          </pagination-controls>
+        </div>
+        <div class="form-group options pages">
+          <div class="input-group input-group-sm">
+            <select class="form-control" name="pageChangedName" [(ngModel)]="skuPageInfo.pageSize" (ngModelChange)="SkuOrVirtualSkuListLoadData()">
+              <option>5</option>
+              <option>10</option>
+              <option>20</option>
+              <option>50</option>
+              <option>100</option>
+            </select>
+            <span class="input-group-addon addon-right">条/页</span>
+            <span class="input-group-addon addon-right">共{{skuPageInfo.total}}条</span>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <div class="btn-group">
+        <button class="btn btn-primary" (click)="c()">关闭</button>
+        <button class="btn btn-primary" [disabled]="!isSkuChoose" (click)="confirmSku(c)">添加</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #importSKU let-c="close">
+  <div class="pop-content animated fadeIn">
+    <div class="modal-header">
+      <span class="modal-title">导入渠道SKU</span>
+      <button type="button" class="close" (click)="c()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <span class="explain">说明</span>
+      <p>请下载提供的渠道商品导入模版，填写好后上传模版
+        <a href="/assets/download/templates/渠道Sku导入模板.xlsx" download="渠道Sku导入模板.xlsx">下载</a>
+      </p>
+      <div class="card card-block">
+        <div class="form-group myoption">
+          <label>平台选择：</label>
+          <span class="tag inline" (click)="addClass($event.target)" [ngStyle]="{'background':'Amazon'==item?'#fff':'none',
+                'color':'Amazon'==item?'#2389F2':'white'}" *ngFor="let item of Platforms">{{item}}
+          </span>
+        </div>
+        <div class="form-group myoption">
+          <label>账号选择：
+            <span class="badge-danger">必填</span>
+          </label>
+          <select2 [data]="accountList" [width]="400" [value]="fileUpSelectedChannelId" (valueChanged)="fileUpChoose($event)"></select2>
+        </div>
+      </div>
+      <div class="card card-block">
+        <ba-file-uploader [fileUploaderOptions]="fileUploaderOptions" (onFileUploadCompleted)="uploadCompleted($event,c)"></ba-file-uploader>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="btn-group">
+        <button class="btn btn-default" (click)="c()">取消</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

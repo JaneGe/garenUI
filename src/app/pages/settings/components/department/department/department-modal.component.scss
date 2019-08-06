@@ -1,0 +1,18 @@
+.pop-content{
+    width:600px;
+    margin:100px 0 0 150px;
+    padding:5px;
+    overflow: hidden;
+    .modal-body{
+        .btn-wrapper{
+            width:100%;
+            border-top:1px solid rgba(#fff,.2);
+            float: right;
+            .btn-group{
+                margin:10px 0;
+                float: right;
+            }
+        }
+    }
+}
+

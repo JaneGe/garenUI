@@ -1,0 +1,77 @@
+<div class="card card-block">
+  <div class="home-wrap">
+    <div class="note-wrap">
+      <div class="card card-block">
+        <div class="todolist">
+          <h2 class="card-title title">通知公告</h2>
+          <hr/>
+          <ul>
+            <li class="notice-list" *ngFor="let item of noticeList;let i = index" (click)="openNoticeModal(item.id)">
+              <a href="javascript:;">
+                <span class="order-type">{{i+1}}.</span>
+                <span class="notice-title">{{item.title}}</span>
+                <span class="notice-time">{{item.createTime | date: 'yy-MM-d H:mm:ss'}}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="tips-wrap">
+      <div class="card card-block">
+        <div class="todolist">
+          <h2 class="card-title title">每日一句</h2>
+          <hr/>
+          <img src="{{homeData.picture2}}" alt="{{homeData.content}}">
+          <div class="img-title">{{homeData.dateline}}</div>
+          <p>{{homeData.content}}</p>
+          <span>{{homeData.note}}</span>
+        </div>
+      </div>
+      <div class="card card-block">
+        <div class="todolist">
+          <h2 class="card-title title">常见问题</h2>
+          <hr/>
+          <ul>
+            <li class="notice-list">
+              <a href="javascript:;">
+                <span class="order-type">1.</span>
+                <span class="notice-title">有问题请关机重启</span>
+              </a>
+            </li>
+            <li class="notice-list">
+              <a href="javascript:;">
+                <span class="order-type">2.</span>
+                <span class="notice-title">有问题请关机重启</span>
+              </a>
+            </li>
+            <li class="notice-list">
+              <a href="javascript:;">
+                <span class="order-type">3.</span>
+                <span class="notice-title">有问题请关机重启</span>
+              </a>
+            </li>
+            <li class="notice-list">
+              <a href="javascript:;">
+                <span class="order-type">4.</span>
+                <span class="notice-title">有问题请关机重启</span>
+              </a>
+            </li>
+            <li class="notice-list">
+              <a href="javascript:;">
+                <span class="order-type">5.</span>
+                <span class="notice-title">有问题请关机重启</span>
+              </a>
+            </li>
+            <li class="notice-list">
+              <a href="javascript:;">
+                <span class="order-type">6.</span>
+                <span class="notice-title">有问题请关机重启</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

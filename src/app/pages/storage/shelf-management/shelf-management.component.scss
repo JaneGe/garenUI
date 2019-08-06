@@ -1,0 +1,33 @@
+.smtitle {
+    color: black;
+}
+form .options .input-group select {
+    height: 32px;
+}
+
+.search:focus {
+    background: transparent;
+}
+
+.card {
+    ul {
+        width: 100%;
+        padding: 0;
+        li {
+            width: 100%;
+            height: 40px;
+            float: left;
+        }
+    }
+    .list-label {
+        display: block;
+        float: left;
+        width: 100px;
+        height: auto;
+        line-height: 40px;
+    }
+    .search-group {
+        width: 400px;
+        float: left;
+    }
+}

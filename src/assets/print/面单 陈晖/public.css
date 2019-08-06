@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    color: black;
+}
+
+.font-bold {
+    font-weight: bold;
+}
+
+i {
+    font-style: normal;
+}
+
+.none {
+    display: none;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mb5 {
+    margin-bottom: 5px;
+}
+.mb2 {
+    margin-bottom: 2px;
+}

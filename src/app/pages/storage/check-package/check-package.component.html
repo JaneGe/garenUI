@@ -1,0 +1,58 @@
+<div class="card card-block">
+<div class="card card-block">
+  <div class="input-wrapper">
+    <ul>
+      <li>
+        <label class="list-label">包裹号/物流跟踪号：</label>
+        <input type="text" id="search"  class="form-control picking-id" (keyup.enter)="CalePackageBySearchCode()" [(ngModel)]="storeSearchKey"
+               value={{storeSearchKey}}>
+        <div class="btn-group">
+          <button class="btn btn-primary" (click)="CalePackageBySearchCode()">查询</button>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+  <div class="table-wrap gap" *ngIf="checkpackageModel.warehouseName">
+    <table class="table table-hover table-bordered gap" id="table">
+      <thead>
+      <tr class="black-muted-bg">
+        <th>仓库</th>
+        <th>物流</th>
+        <th>跟踪号</th>
+        <th>产品总数</th>
+        <th>SKU种类</th>
+        <th>预估重量(g)</th>
+        <th>包裹号码</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>{{checkpackageModel.warehouseName}}</td>
+        <td>{{checkpackageModel.logistics}}</td>
+        <td>{{checkpackageModel.trackingNumber}}</td>
+        <td>{{checkpackageModel.productCount}}</td>
+        <td>{{checkpackageModel.skuCategory}}</td>
+        <td>{{checkpackageModel.weight}}</td>
+        <td>{{checkpackageModel.packageNumber}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card card-block">
+    <div class="item-wrap">
+      <div class="item" *ngFor="let item of SkuInfo">
+        <div class="img-wrap">
+          <img class="img-responsive thumbnail" width="250" height="250" src={{item.img}} alt="sku">
+        </div>
+        <div class="des">
+          <p class="info"><span class="title">skuName：</span><span class="messages">{{item.skuName}}</span></p>
+          <p class="info"><span class="title">skuCode：</span><span class="messages">{{item.skuCode}}</span></p>
+          <p class="info"><span class="title">数量：</span><span class="messages">{{item.num}}</span></p>
+          <p class="info"><span class="title">规格：</span><span class="messages">{{item.standard}}</span></p>
+          <p class="info"><span class="title">货架位：</span><span class="messages">{{item.shelf}}</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

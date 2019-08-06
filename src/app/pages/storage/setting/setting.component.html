@@ -1,0 +1,46 @@
+<div class="card card-block">
+  <div class="gap">
+    <button class="btn btn-sm btn-primary" *ngIf="checkAuthority(1)" (click)="openCreateModal()">
+      <span class="ion-plus-round icon-gap"></span>新增仓库
+    </button>
+  </div>
+  <table class="table table-hover table-bordered gap" id="table">
+    <thead>
+      <tr class="black-muted-bg">
+        <th>仓库名称</th>
+        <th>状态</th>
+        <th>库区货架管理</th>
+        <th>批次管理</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of items">
+        <td>{{item.name}}</td>
+        <td [ngStyle]="{color:item.isActive?'#0aee64':'#f0b800'}">{{item.isActive?"正常":"停用"}}</td>
+        <td>
+          <button class="btn btn-sm btn-primary" *ngIf="checkAuthority(2)" (click)="openShelfManageModal(item.id)">
+            <span class="ion-settings killgap"></span>货架位管理</button>
+          <button class="btn btn-sm btn-warning" *ngIf="checkAuthority(3)" [routerLink]="['/pages/storage/area-management',item.id]">区域管理</button>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-primary" *ngIf="checkAuthority(4)" (click)="openBatchManageModal(item.id)">
+            <span class="ion-wrench"></span>设置
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-primary" *ngIf="checkAuthority(5)" (click)="openEditModal(item.id)">
+            <span class="ion-edit"></span>编辑
+          </button>
+          <button class="btn btn-sm btn-danger" (click)="setStatusDisable(item.id)" *ngIf="item.isActive&&checkAuthority(6)">
+            <span class="ion-close-round"></span>禁用
+          </button>
+          <button class="btn btn-sm btn-warning" (click)="setStatusOnable(item.id)" *ngIf="(!item.isActive)&&checkAuthority(6)">
+            <span class="ion-checkmark"></span>启用
+          </button>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot></tfoot>
+  </table>
+</div>

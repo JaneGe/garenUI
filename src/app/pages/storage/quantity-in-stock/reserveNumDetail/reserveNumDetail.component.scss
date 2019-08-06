@@ -1,0 +1,20 @@
+.customform{
+  width: 1000px;
+  position: relative;
+  left:50%;
+  transform:translateX(-50%);
+}
+.title{
+  line-height: 23px;
+}
+.customInput{
+  color:white;
+  &:focus {
+    color: white;
+  }
+}
+span.input-group-addon{
+  background-color: #e85656;
+  cursor: pointer;
+  color: white;
+}

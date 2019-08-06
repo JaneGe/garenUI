@@ -1,0 +1,78 @@
+<form (submit)="OnSubmit(num.value,transfer[0].Shelf)">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">{{modalHeader}}
+        <button class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </h4>
+    </div>
+    <div class="modal-body">
+      <div class="card card-block">
+        <div class="transfer">
+          <div class="table-wrap">
+            <table class="table table-hover table-bordered gap" id="transfer1">
+              <thead>
+              <tr class="black-muted-bg">
+                <th colspan="2">被转移</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>货架位</td>
+                <td>{{transfer[0].Shelf}}</td>
+              </tr>
+              <tr>
+                <td>SKU</td>
+                <td>{{transfer[0].SKU}}</td>
+              </tr>
+              <tr>
+                <td>数量</td>
+                <td>{{transfer[0].available}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="arrow">
+
+          </div>
+          <div class="table-wrap">
+            <table class="table table-hover table-bordered gap" id="transfer2">
+              <thead>
+              <tr class="black-muted-bg">
+                <th colspan="2">接受转移</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>货架位</td>
+                <!--<td><input type="text"></td>-->
+                <td>
+                <ng2-completer
+                  [ngModelOptions]="{standalone: true}"
+                  [(ngModel)]="shelf"
+                  [datasource]="shelList"
+                  [minSearchLength]="0"
+                ></ng2-completer>
+                </td>
+              </tr>
+              <tr>
+                <td>SKU</td>
+                <td>{{transfer[0].SKU}}</td>
+              </tr>
+              <tr>
+                <td>数量</td>
+                <td><input type="text" name="num" #num></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-sm pull-right submit">确定</button>
+      <button class="btn btn-sm pull-right cancel" (click)="closeModal()">取消</button>
+    </div>
+  </div>
+</form>

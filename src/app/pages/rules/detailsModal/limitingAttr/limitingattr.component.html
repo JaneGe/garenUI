@@ -1,0 +1,33 @@
+<form class="smmodal" (submit)="OnSubmit()">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">{{modalHeader}}
+        <span class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </span>
+      </h4>
+    </div>
+    <div class="modal-body height">
+      <div class="card card-block">
+
+        <div class="input-select">
+          <span class="tag">属性：</span>
+          <span class="tag inline" *ngFor="let item of Attrs" [ngClass]="{'tag-selected':selectedAttrs.indexOf(item)>-1}"
+          (click)="selectAttr(item)">{{item.text}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="select">
+      <h4>已选属性：</h4>
+      <p class="inline box">
+          <span class="result" *ngFor="let item of selectedAttrs"  (click)="selectAttr(item)">
+            ({{item.text}})
+          </span>
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-sm pull-right submit">确定</button>
+      <button class="btn btn-sm pull-right cancel" (click)="closeModal()">取消</button>
+    </div>
+  </div>
+</form>

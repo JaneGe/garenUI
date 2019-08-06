@@ -1,0 +1,139 @@
+<div class="card card-block">
+  <div class="title gap"><span class="timeTitle">更新时间：{{yesterdayAchievement[0].updateTime}}</span><h3>订单汇总</h3><hr/></div>
+  <div class="contain">
+    <div class="overview">
+      <h3>今日订单数<span>{{yesterdayAchievement[0].totalOrders}}</span></h3>
+      <i class="ion-clipboard"></i>
+    </div>
+    <div class="overview">
+      <h3>历史缺货订单数<span>{{yesterdayAchievement[0].totalMoney}}</span></h3>
+      <i class="i-money"></i>
+    </div>
+  </div>
+</div>
+<div class="card card-block">
+  <div class="gap"><h3 class="title">昨日工作情况</h3><hr/></div>
+  <div class="table-wrap gap">
+    <table class="table table-hover table-bordered gap">
+      <thead>
+      <tr class="black-muted-bg">
+        <th>昨日收包</th>
+        <th>昨日拆包</th>
+        <th>昨日捡货</th>
+        <th>昨日包装</th>
+        <th>昨日称重</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of storageWork">
+        <td>{{item.getPackage}}</td>
+        <td>{{item.openPackage}}</td>
+        <td>{{item.pickPackage}}</td>
+        <td>{{item.pickUp}}</td>
+        <td>{{item.weighPackage}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="gap"><h3 class="title"><span class="updateTime">更新时间：{{storageWork[1].updateTime}}</span>今日工作情况</h3><hr/></div>
+  <div class="table-wrap gap">
+    <table class="table table-hover table-bordered gap">
+      <thead>
+      <tr class="black-muted-bg">
+        <th>今日收包</th>
+        <th>今日拆包</th>
+        <th>今日捡货</th>
+        <th>今日包装</th>
+        <th>今日称重</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of storageWork">
+        <td>{{item.getPackage}}</td>
+        <td>{{item.openPackage}}</td>
+        <td>{{item.pickPackage}}</td>
+        <td>{{item.pickUp}}</td>
+        <td>{{item.weighPackage}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="card card-block">
+  <div class="gap"><span class="timeTitle">更新时间：{{Time}}</span><h3 class="title">拆包数量统计</h3><hr/></div>
+  <div class="table-wrap gap">
+    <table class="table table-hover table-bordered gap">
+      <tbody>
+      <tr>
+        <td class="black-muted-bg">组员</td>
+        <td *ngFor="let item of storagePeopleData ">{{item.name}}</td>
+      </tr>
+      <tr>
+        <td class="black-muted-bg">拆包数</td>
+        <td *ngFor="let item of storagePeopleData ">{{item.num}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="card card-block">
+  <div class="gap"><span class="timeTitle">更新时间：{{Time}}</span><h3 class="title">捡货数量统计</h3><hr/></div>
+  <div class="table-wrap gap">
+    <table class="table table-hover table-bordered gap">
+      <thead>
+      <tr class="black-muted-bg">
+        <th>组员</th>
+        <th>单品单个</th>
+        <th>单品多个</th>
+        <th>多品</th>
+        <th>特殊</th>
+        <th>总计</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of pickUp">
+        <td>{{item.name}}</td>
+        <td>{{item.singleS}}</td>
+        <td>{{item.singleM}}</td>
+        <td>{{item.Multiple}}</td>
+        <td>{{item.special}}</td>
+        <td>{{(item.singleS+item.singleM+item.Multiple+item.special)}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="card card-block">
+  <div class="gap"><span class="timeTitle">更新时间：{{Time}}</span><h3 class="title">包装数量统计</h3><hr/></div>
+  <div class="table-wrap gap">
+    <table class="table table-hover table-bordered gap">
+      <tbody>
+      <tr>
+        <td class="black-muted-bg">组员</td>
+        <td *ngFor="let item of storagePeopleData ">{{item.name}}</td>
+      </tr>
+      <tr>
+        <td class="black-muted-bg">包装数</td>
+        <td *ngFor="let item of storagePeopleData ">{{item.num}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="card card-block">
+  <div class="gap"><span class="timeTitle">更新时间：{{Time}}</span><h3 class="title">称重量统计</h3><hr/></div>
+  <div class="table-wrap gap">
+    <table class="table table-hover table-bordered gap">
+      <tbody>
+      <tr>
+        <td class="black-muted-bg">组员</td>
+        <td *ngFor="let item of storagePeopleData ">{{item.name}}</td>
+      </tr>
+      <tr>
+        <td class="black-muted-bg">拆包数</td>
+        <td *ngFor="let item of storagePeopleData ">{{item.num}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

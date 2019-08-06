@@ -1,0 +1,17 @@
+.search-wrapper {
+    .search-condition {
+        li {
+            height: 30px;
+            margin: 5px 0;
+            line-height: 1em;
+            .input-group {
+                width: 400px;
+                height: 30px;
+            }
+            .search-input {
+                display: inline-block;
+                margin-left: 0;
+            }
+        }
+    }
+}

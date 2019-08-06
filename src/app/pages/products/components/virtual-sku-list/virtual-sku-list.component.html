@@ -1,0 +1,150 @@
+<div class="wrapper card card-block">
+  <div class="card card-block">
+    <form class="goods-search-form">
+      <ul>
+        <li>
+          <span class="screen-title">搜索类型：</span>
+          <div class="screen-wrapper" *ngFor="let type of types;let i = index">
+            <input type="radio" id="{{type}}" name="type" class="regular-radio" [checked]="i === 0"/>
+            <label for="type-{{i}}" (click)="onSearchTypeSelect($event.target,type.value)">{{type.name}}</label>
+          </div>
+        </li>
+        <li>
+          <span class="screen-title">搜索内容：</span>
+          <div class="input-group search">
+            <input type="text" class="form-control with-primary-addon" name="searchText" [(ngModel)]="searchText" placeholder="搜索 ">
+            <span class="input-group-btn">
+                <button class="btn btn-primary" type="button" (click)="doSearch()">搜索</button>
+            </span>
+          </div>
+        </li>
+      </ul>
+    </form>
+  </div>
+  <div class="btn-box">
+    <div class="checkbox">
+      <label class="checkbox-inline custom-checkbox nowrap">
+        <input type="checkbox" [checked]="isCheckAllPages" (change)="onCheclAllPageChange($event.target.checked)">
+        <span>选中所有页</span>
+      </label>
+    </div>
+    <button type="button" class="btn btn-primary" *ngIf="getCurrentAuthoritiy('Add')" (click)="openModal()">添加商品</button>
+    <button type="button" class="btn btn-primary" *ngIf="getCurrentAuthoritiy('Import')" (click)="openInVirtualSKUModal()">导入商品</button>
+    <button type="button" class="btn btn-primary" *ngIf="getCurrentAuthoritiy('Export')" (click)="openOutputModal()">导出商品</button>
+  </div>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager"
+                           (pageChange)="pageChanged($event)"
+                           maxSize="9"
+                           directionLinks="true"
+                           autoHide="true"
+                           previousLabel="上一页"
+                           nextLabel="下一页"
+                           screenReaderPaginationLabel="Pagination"
+                           screenReaderPageLabel="page"
+                           screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{total}}条数据</span>
+      </div>
+    </div>
+  </form>
+  <div class="table-box">
+    <table class="table table-hover table-bordered">
+      <thead>
+      <tr>
+        <th>
+          <label class="checkbox-inline custom-checkbox nowrap">
+            <input type="checkbox" [checked]="selectVirtualSkuIds.length == items.length && items.length > 0" (change)="onCheckAllOrderChanged($event.target.checked)">
+            <span></span>
+          </label>
+        </th>
+        <th>虚拟Sku</th>
+        <th>商品Sku组合</th>
+        <th>相关操作人员</th>
+        <th>时间</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let info of items | paginate: { id: 'pager',
+        itemsPerPage: pageSize,
+        currentPage: pageNumber,
+        totalItems: total};let i = index">
+        <td>
+          <label class="checkbox-inline custom-checkbox nowrap">
+            <input type="checkbox" [checked]="selectVirtualSkuIds.indexOf(info.id) >= 0" (change)="onCheckOrderChanged($event.target.checked, info.id)"
+            />
+            <span></span>
+          </label>
+        </td>
+        <td>
+          <span class="alone-info">{{info.code}}</span>
+        </td>
+        <td class="sku-com">
+            <span *ngFor="let skucom of info.items;let i = index" class="skucom">
+              <span *ngIf="i != 0" class="skucom"> &nbsp;+&nbsp; </span>
+              {{skucom.skuCode}} *{{skucom.quantity}}
+            </span>
+        </td>
+        <td>
+          <span>添加人员：{{info.createdUserName}}</span>
+         <!-- <span>开发人员：{{member.development}}</span>-->
+          <span *ngIf="info.lastModifiedUserName != null">修改人员：{{info.lastModifiedUserName}}</span>
+        </td>
+        <td >
+          <span>添加时间：{{info.createdTime| amDateFormat: 'YYYY-MM-DD HH:mm'}}</span>
+          <span *ngIf="info.lastModifiedUserName != null">修改时间：{{info.lastModifiedTime| amDateFormat: 'YYYY-MM-DD HH:mm'}}</span>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-primary" *ngIf="getCurrentAuthoritiy('Update')" (click)="openEditVirtualSkuModal(info.id)">编辑</button>
+          <button class="btn btn-sm btn-danger" *ngIf="getCurrentAuthoritiy('Delete')" (click)="deleteVirtualSku(info.id)">删除</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager"
+                           (pageChange)="pageChanged($event)"
+                           maxSize="9"
+                           directionLinks="true"
+                           autoHide="true"
+                           previousLabel="上一页"
+                           nextLabel="下一页"
+                           screenReaderPaginationLabel="Pagination"
+                           screenReaderPageLabel="page"
+                           screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{total}}条数据</span>
+      </div>
+    </div>
+  </form>
+</div>

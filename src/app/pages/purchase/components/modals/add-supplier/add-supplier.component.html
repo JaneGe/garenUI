@@ -1,0 +1,90 @@
+<form id="form">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">{{modalHeader}}</h4>
+      <button class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="card card-block">
+        <div class="select">
+          <div class="part-wrap">
+            <span class="title">搜索类型：</span>
+          </div>
+          <div class="option-wrap">
+            <span class="option" *ngFor="let item of searchKind" (click)="selectsearchKind(item)" [ngClass]="{'tag':item==selectedsearchKind}">{{item}}</span>
+          </div>
+        </div>
+        <div class="select bdb bdb-gap">
+          <div class="part-wrap">
+            <span class="title">搜索内容：</span>
+          </div>
+          <div class="part-wrap">
+            <div class="input-group  input">
+              <input type="search" class="form-control">
+              <span class="input-group-btn">
+                <button class="btn btn-sm btn-danger">搜索</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <form class="pagination-wrapper">
+        <div class="form-group pages">
+          <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+            autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+            screenReaderCurrentLabel="You're on page">
+          </pagination-controls>
+        </div>
+        <div class="form-group options pages">
+          <div class="input-group input-group-sm">
+            <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+              <option>1</option>
+              <option>5</option>
+              <option>10</option>
+              <option>20</option>
+              <option>50</option>
+              <option>100</option>
+              <option>200</option>
+            </select>
+            <span class="input-group-addon addon-right">条/页</span>
+            <span class="input-group-addon addon-right">共{{totalCount}}条数据</span>
+          </div>
+        </div>
+      </form>
+
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr class="black-muted-bg">
+            <th>单选</th>
+            <th>供应商</th>
+            <th>联系人</th>
+            <th>地址</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let I of supplierInfo|paginate: { id: 'pager',
+                                                      itemsPerPage:pageSize,
+                                                      currentPage:pageIndex,
+                                                      totalItems:totalCount}">
+            <td>
+              <label for="supplier{{I.id}}" (click)="selectSiglefirstID(I.id)">
+                <span class="myicon" [ngClass]="{'hidden':I.id!==selectedSupplierID,'show':I.id==selectedSupplierID}"></span>
+              </label>
+              <input type="checkbox" id="supplier{{I.id}}">
+            </td>
+            <td>{{I.supplierName}}</td>
+            <td>{{I.contacter}}</td>
+            <td>{{I.address}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-sm  pull-right submit" (click)="submit()">添加</button>
+      <a href="javascript:;" class="btn btn-sm  pull-right cancel" (click)="closeModal()">关闭</a>
+    </div>
+  </div>
+</form>

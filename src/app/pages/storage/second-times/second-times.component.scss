@@ -1,0 +1,207 @@
+table {
+    height: 500px;
+}
+
+table tbody .black-muted-bg {
+    height: 40px;
+}
+
+table tbody tr td {
+    text-align: center;
+    font-size: 20px;
+    width: 16%;
+}
+
+.sepTable {
+    display: flex;
+}
+
+.sepTable .table-wrap {
+    width: 100%;
+}
+
+.sepTable .table-wrap:nth-of-type(1) {
+    margin-right: 40px;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+    padding-bottom: 8px;
+    font-size: 16px;
+    border-bottom: 1px solid white;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.flex span {
+    margin-right: 15px;
+}
+
+.flex .btn {
+    position: absolute;
+    right: 0;
+}
+
+.statu11,
+.statu22,
+.statu33,
+.statu55,
+.statu66 {
+    display: inline-block;
+    border-radius: 5px;
+    border: 1px solid white;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    position: relative;
+}
+
+.statu1,
+.statu2,
+.statu3,
+.statu5,
+.statu6 {
+    display: inline-block;
+    border-radius: 5px;
+    border: 1px solid white;
+    height: 60px;
+    width: 65px;
+    margin: auto;
+    cursor: pointer;
+    position: relative;
+}
+
+.statu1,
+.statu11 {
+    background: grey;
+}
+
+.statu2,
+.statu22 {
+    background: red;
+    animation: blink 0.5s ease infinite;
+}
+
+.statu3,
+.statu33 {
+    background: red;
+}
+
+.statu5,
+.statu55 {
+    background: green;
+}
+
+.statu6,
+.statu66 {
+    background: dodgerblue;
+}
+
+.markError {
+    position: absolute;
+    width: 80px;
+    height: 2px;
+    left: -7px;
+    bottom: 28px;
+    background-color: red;
+}
+
+.markError-o {
+    @extend .markError;
+    transform: rotate(45deg);
+}
+
+.markError-t {
+    @extend .markError;
+    transform: rotate(-45deg);
+}
+
+.markError-sm {
+    position: absolute;
+    width: 30px;
+    height: 2px;
+    bottom: 12px;
+    background-color: red;
+}
+
+.markError-oSm {
+    @extend .markError-sm;
+    transform: rotate(45deg);
+}
+
+.markError-tSm {
+    @extend .markError-sm;
+    transform: rotate(-45deg);
+}
+
+.none {
+    display: none!important;
+}
+
+table tbody tr td span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+table tbody tr td {
+    vertical-align: middle;
+}
+
+.tdRight {
+    border-right: 2px solid white;
+}
+
+.tdLeft {
+    border-left: 2px solid white;
+}
+
+@keyframes blink {
+    0% {
+        background: red;
+    }
+    100% {
+        background: yellow;
+    }
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper .display-box {
+    position: absolute;
+    border: 1px solid white;
+    border-radius: 8px;
+    width: 30%;
+    height: 220px;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 200px;
+}
+
+.input-wrapper ul li .btn-group .btn {
+    display: flex;
+    justify-content: center;
+}
+
+.select {
+    height: 100%;
+    width: 60%;
+    font-size: 30px;
+    border: none;
+    background: rgba(0, 0, 0, 0.15);
+    color: white;
+}
+
+.select option {
+    border: 1px solid white;
+    color: black;
+}
+
+.has-error {
+    background-color: rgba(248, 68, 113, 0.7);
+}

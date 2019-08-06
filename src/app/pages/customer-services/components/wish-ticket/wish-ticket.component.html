@@ -1,0 +1,161 @@
+<div class=".col-md-8 card card-block">
+  <div class=".col-md-8 card card-block search-wrapper">
+    <ul class="search-condition">
+      <li>
+        <label class="search-title">账号筛选：</label>
+        <select2 class="country-select" [data]="accountItems" [options]="options" [width]="300" [value]="value" #accountSelect (valueChanged)="onChanged($event,accountSelect)"></select2>
+      </li>
+      <li>
+        <label class="search-title">搜索类型：</label>
+        <div *ngFor="let state of allOrderSearchStatus;let i = index">
+          <div class="screen-wrapper" *ngIf="i<4">
+            <input type="radio" id="type-{{state.value}}" name="type" class="regular-radio" [checked]="i === 0" />
+            <label for="type-{{state.value}}" (click)="onSelectOrderStatus(state.value)">{{state.text}}</label>
+          </div>
+        </div>
+      </li>
+      <li>
+        <label class="search-title">时间搜索</label>
+        <div class="screen-wrapper" *ngFor="let time of suppprtTimeValueTypes;let i = index">
+          <input type="radio" id="search-time{{time.value}}" name="time" class="regular-radio" [checked]="i === 0" />
+          <label for="search-time{{time.value}}" (click)="onSelect($event.target,'timeSpan',time.value)">{{time.text}}</label>
+        </div>
+        <span *ngIf="isCustom">
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <div class="input-group" style="width: auto;">
+                <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="ngTimeSearchStart" ngbDatepicker #start="ngbDatepicker">
+                <div class="input-group-addon" (click)="start.toggle()">
+                  <i class="ion-android-calendar"></i>
+                </div>
+              </div>
+            </span>
+          </span>
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <ngb-timepicker [(ngModel)]="ngShortTimeStart" [seconds]="'true'"></ngb-timepicker>
+            </span>
+          </span>
+          -
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <div class="input-group" style="width: auto;">
+                <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="ngTimeSearchEnd" ngbDatepicker #end="ngbDatepicker">
+                <div class="input-group-addon" (click)="end.toggle()">
+                  <i class="ion-android-calendar"></i>
+                </div>
+              </div>
+            </span>
+          </span>
+
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <ngb-timepicker [(ngModel)]="ngShortTimeEnd" [seconds]="'true'"></ngb-timepicker>
+            </span>
+          </span>
+
+          <button class="btn btn-sm btn-primary" (click)="doTimeSearch()">确定</button>
+        </span>
+      </li>
+      <li>
+        <label class="search-title">状态筛选：</label>
+        <div *ngFor="let state of stateSellect;let i = index">
+          <div class="screen-wrapper" *ngIf="i<4">
+            <input type="radio" id="state-{{state.value}}" name="state" class="regular-radio" [checked]="i === 0" />
+            <label for="state-{{state.value}}" (click)="onSelectState(state.value)">{{state.text}}</label>
+          </div>
+        </div>
+      </li>
+      <li>
+        <label class="search-title">标签筛选: </label>
+        <select2 class="country-select" [data]="accountTags" [options]="options2" [width]="300" [value]="value" #accountSelect (valueChanged)="onChanged($event,accountSelect)"></select2>
+      </li>
+    </ul>
+  </div>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="onQuery()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条数据</span>
+      </div>
+    </div>
+  </form>
+  <table class="table table-hover table-bordered">
+    <thead>
+      <tr>
+        <th>
+          <label class="checkbox-inline custom-checkbox nowrap">
+            <input type="checkbox" (change)="changeAllBox($event)">
+            <span></span>
+          </label>
+        </th>
+        <th>站内信编号</th>
+        <th>创建日期</th>
+        <th>账号（Seller）</th>
+        <th>买家账号</th>
+        <th>商品属性</th>
+        <th>标签</th>
+        <th>最近更新日期</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of data | paginate: { id: 'pager',
+          itemsPerPage:PageInfo.pageSize,
+          currentPage:PageInfo.pageIndex,
+          totalItems:PageInfo.totalCount};let i = index">
+        <td>
+          <label class="checkbox-inline custom-checkbox nowrap">
+            <input type="checkbox" [(ngModel)]="item.isCheck">
+            <span></span>
+          </label>
+        </td>
+        <td class="blue-text">{{item.number}}</td>
+        <td>{{item.setUpData}}</td>
+        <td>{{item.updataData}}</td>
+        <td class="blue-text">{{item.user}}</td>
+        <td><span class="label label-warning">{{item.tag}}</span></td>
+        <td>{{item.state}}</td>
+        <td><button class="btn btn-primary" (click)="openWishDetails(item)">查看</button></td>
+      </tr>
+    </tbody>
+  </table>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="onQuery()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条数据</span>
+      </div>
+    </div>
+  </form>
+</div>

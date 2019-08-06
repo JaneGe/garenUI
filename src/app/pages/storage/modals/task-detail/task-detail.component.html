@@ -1,0 +1,111 @@
+<form id="form">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">{{modalHeader}}
+        <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </h4>
+    </div>
+    <div class="modal-body">
+      <ul class="search-condition">
+        <li>
+          <label class="search-title">条件筛选：</label>
+          <div class="screen-wrapper" *ngFor="let item of searchTypes;let i = index">
+            <input type="radio" id="conditionChoose{{item.Id}}" name="conditionChoose" class="regular-radio" [checked]="i === 0" />
+            <label for="conditionChoose{{item.Id}}" (click)="onSelectSearchTypes(item.Id)">{{item.Name}}</label>
+          </div>
+        </li>
+        <li>
+          <label class="search-title">打印状态：</label>
+          <div class="screen-wrapper" *ngFor="let item of printState;let i = index">
+            <input type="radio" id="printState{{item.Id}}" name="printState" class="regular-radio" [checked]="i === 0" />
+            <label for="printState{{item.Id}}" (click)="onSelectPrintState(item.Id)">{{item.Name}}</label>
+          </div>
+        </li>
+        <li>
+          <label class="search-title">发货状态：</label>
+          <div class="screen-wrapper" *ngFor="let item of deliverState;let i = index">
+            <input type="radio" id="deliverState{{item.Id}}" name="deliverState" class="regular-radio" [checked]="i === 0" />
+            <label for="deliverState{{item.Id}}" (click)="onSelectDeliverState(item.Id)">{{item.Name}}</label>
+          </div>
+        </li>
+        <li>
+          <label class="search-title">搜索内容：</label>
+          <div class="input-group">
+            <input type="text" class="form-control" style="color: white;" [(ngModel)]="searchText" name="searchText" (keyup.enter)="doSearch()">
+            <div class="btn-group">
+              <button type="button" class="btn btn-primary" (click)="doSearch()">搜索</button>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <p>
+        <span style="margin-right: 15px;">拣货人：{{empName}}</span>
+        <span>编号：{{picknumber}}</span>
+      </p>
+      <form class="pagination-wrapper">
+        <div class="form-group pages">
+          <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+            autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+            screenReaderCurrentLabel="You're on page">
+          </pagination-controls>
+        </div>
+        <div class="form-group options pages">
+          <div class="input-group input-group-sm">
+            <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="OnQuery()">
+              <option>1</option>
+              <option>5</option>
+              <option>10</option>
+              <option>20</option>
+              <option>50</option>
+              <option>100</option>
+              <option>200</option>
+            </select>
+            <span class="input-group-addon addon-right">条/页</span>
+            <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条</span>
+          </div>
+        </div>
+      </form>
+      <table class="table table-hover table-bordered">
+        <thead>
+          <tr class="black-muted-bg">
+            <th>包裹号</th>
+            <th>跟踪号</th>
+            <th>SKU种类个数(
+              <small>单击查看详细</small>)</th>
+            <th>是否已打印</th>
+            <th>状态</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of taskArray|paginate: { id: 'pager',
+                                                      itemsPerPage: PageInfo.pageSize,
+                                                      currentPage: PageInfo.pageIndex,
+                                                      totalItems: PageInfo.totalCount}">
+            <td class="packageNumber-text">{{item.packageNumber}}</td>
+            <td class="traceNumber-text">{{item.trackingNumber}}</td>
+            <td>
+              <a href="javascript:;" (click)="openPackageSkuDetails(item.packageId)">{{item.skuCategoryCount}}</a>
+            </td>
+            <!--<td *ngIf="item.shippedTime!=null">是</td>-->
+            <!--<td *ngIf="item.shippedTime==null">否</td> -->
+            <td *ngIf="item.printedTime!=null">{{item.printedTime!=null?"是":"否"}}</td>
+            <td>{{item.statusDesc}}</td>
+            <td>
+              <!--<button type="button" class="btn btn-sm btn-danger" *ngIf="(item.status!='Failed')&&(item.packType=='SingleSkuOneItem')" (click)="RemarkPickFailed(item.packageId)">标记拣货失败</button>-->
+              <!--<button type="button" class="btn btn-sm btn-danger" *ngIf="(item.status!='Recalled')&&(item.packType=='SingleSkuOneItem')" (click)="RemarkPickFailed(item.packageId,item.skuId)">标记拣货失败</button>-->
+              <!--<span style="color: red" *ngIf="(item.status=='Failed')&&(item.packType=='SingleSkuOneItem')">捡货失败</span>-->
+              <span style="color: red" *ngIf="(item.status=='Recalled')&&(item.packType=='SingleSkuOneItem')">捡货失败</span>
+              <span *ngIf="item.packType!='SingleSkuOneItem'">无</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <a class="btn btn-sm pull-right cancel" (click)="closeModal()">关闭</a>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,32 @@
+<div class="wrapper .col-md-8 card card-block">
+  <h3 class="card-title">绑定承运商</h3>
+  <div class="button-box">
+    <button type="button" class="btn-emport" (click)="openSpAuthodal()"><i class="ion-plus-round"></i></button>
+  </div>
+
+  <div class="vertical-scroll table-box">
+    <table class="table table-hover table-bordered">
+      <thead>
+      <tr>
+        <th>承运商</th>
+        <th>状态</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let asp of authroizedSps">
+        <td>{{asp.spName}}</td>
+        <td>已授权</td>
+        <td>
+          <a href="javascript:;" class="edit-btn" data-toggle="modal" data-target="#editModal" (click)="openSpAuthodal(asp.spId)">
+            <i class="ion-compose"></i>
+            <span>编辑</span>
+          </a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+</div>

@@ -1,0 +1,18 @@
+<div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <span class="modal-title">打印商品标签</span>
+    <button type="button" class="close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <label class="control-label">请输入标签打印数量</label>
+    <input type="text" class="form-control" [(ngModel)]="printNumber">
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-default" (click)="closeModal()">取消</button>
+      <button class="btn btn-primary" (click)="printSkuLabel()">打印</button>
+    </div>
+  </div>
+</div>

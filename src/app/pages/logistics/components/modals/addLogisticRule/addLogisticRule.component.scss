@@ -1,0 +1,57 @@
+    .pop-content {
+        width: 1300px;
+        margin: 100px 0 0 -200px;
+        ul {
+            li {
+                list-style: none;
+                margin: 20px 0 20px -40px;
+            }
+        }
+        .list-label {
+            display: block;
+        }
+        .table {
+            tbody {
+                tr {
+                    td {
+                        writing-mode: rl-tb;
+                        padding: 0;
+                        text-align: center;
+                    }
+                }
+                .tab-input {
+                    width: 50px;
+                    height: 20px;
+                    background: rgba(0, 0, 0, 0);
+                    border: none;
+                    border-bottom: 1px dotted #fff;
+                    outline: none;
+                    color: #fff;
+                    text-align: center;
+                }
+                .tab-select {
+                    width: 90px;
+                }
+                option {
+                    color: #5782BD;
+                }
+                a {
+                    color: #fff;
+                    text-decoration: underline;
+                }
+            }
+        }
+        .form-control {
+            width: 150px;
+            display: inline-block;
+        }
+        .btn-group {
+            display: block;
+            margin: 10px 3px;
+        }
+        .btn-footer {
+            width: auto;
+            float: right;
+            margin: 10px 0;
+        }
+    }

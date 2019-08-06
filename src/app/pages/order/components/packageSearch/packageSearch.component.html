@@ -1,0 +1,11 @@
+<div class="wrapper card card-block">
+  <div class="tab-header">
+    <ul>
+      <li *ngFor="let tab of tabs" (click)="tabChoose(tab)" [class.tab-selected]="tab.selected">
+        <span>{{tab.name}}</span>
+      </li>
+    </ul>
+  </div>
+  <app-package-list *ngIf="selectedTab.name == '全部包裹'"></app-package-list>
+  <app-abnormal-weight-list *ngIf="selectedTab.name == '重量异常包裹'"></app-abnormal-weight-list>
+</div>

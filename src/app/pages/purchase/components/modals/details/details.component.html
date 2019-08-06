@@ -1,0 +1,138 @@
+<!-- <form id="formd"> -->
+  <div class="pop-content animated fadeIn">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">{{modalHeader}}
+        <button class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </h4>
+    </div>
+    <div class="modal-body">
+      <div class="card card-block">
+        <table class="table table-bordered table-hover">
+          <tbody>
+            <tr>
+              <td width="100px">订单号：</td>
+              <td>{{info.orderNumber}}</td>
+              <td width="120px">卖家：</td>
+              <td>{{info.sellerName}}</td>
+            </tr>
+            <tr>
+              <td>金额：</td>
+              <td>{{info.payAmount}}</td>
+              <td>订单状态：</td>
+              <td>{{info.orderStatusText}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="content-wrap">
+        <div class="item detail" style="max-height: 400px;overflow: auto;">
+          <table class="table table-hover table-bordered">
+            <tbody>
+              <tr>
+                <td class="black-muted-bg">下单时间：</td>
+                <td>{{info.orderTimeShow}}</td>
+              </tr>
+              <tr>
+                <td class="black-muted-bg">下单号：</td>
+                <td>{{info.purchaseNumber}}</td>
+              </tr>
+              <tr>
+                <td class="black-muted-bg">付款时间：</td>
+                <td>{{info.payTimeShow}}</td>
+              </tr>
+              <tr>
+                <td class="black-muted-bg">收货人：</td>
+                <td>{{info.buyerName}}</td>
+              </tr>
+              <tr>
+                <td class="black-muted-bg">收货地址：</td>
+                <td>{{info.buyerAddress}}</td>
+              </tr>
+              <tr *ngIf="!isOther">
+                <td class="black-muted-bg">物流公司：</td>
+                <td>{{info.logisticsName}}</td>
+              </tr>
+              <tr style="height: 72px;" *ngIf="!isOther">
+                <td class="black-muted-bg" style="position: relative;">运单号：
+                  <span class="tip">点击可编辑</span>
+                  <button *ngIf="(info.orderStatus=='WaitSellerSend'|| info.orderStatus=='WaitBuyerReceive' || info.orderStatus=='TradeSucess')&& (info.skuStatus!='Finished')&& checkAuthority(5)"
+                    class="ion-plus-round btn btn-xs btn-primary icon addNumIcon" (click)="addlogisticsNum()"></button>
+                </td>
+                <td>
+                  <div class="addlogisticsNum">
+                    <p class="p" *ngFor="let item of info.waybillNumbers;let index=index" [style.border]="info.waybillNumbers.length==1?'none':''">
+                      <span class="logi">{{item.logisticsCompanyName}}</span>
+                      <span *ngIf=" (item.createdByUserId!=0)&&checkAuthority(5)" class="data" style="cursor: pointer" (click)="addlogisticsNum(item.logisticsCompanyName,$event.target,item.wayBillNumber,item.id)">{{item.wayBillNumber}}</span>
+                      <!--index!=0 &&-->
+                      <span *ngIf=" item.createdByUserId==0" class="data">{{item.wayBillNumber}}</span>
+                      <span *ngIf="item.createdByUserId!=0" class="ion-close-round text-danger" (click)="deleteTrackingNumber(item.id)"></span>
+                      <!--index==0 &&-->
+                    </p>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="!isOther">
+                <td class="black-muted-bg">物流编号：</td>
+                <td>
+                  {{info.logisticsNumber}}
+                </td>
+              </tr>
+              <tr>
+                <td class="black-muted-bg">发货时间：</td>
+                <td>{{info.deliverTime}}</td>
+              </tr>
+              <tr class="remarks">
+                <td class="black-muted-bg">买家备注：</td>
+                <td>
+                  <div>
+                    <p>
+                      {{info.buyerremarks}}
+                    </p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="item">
+          <div class="card card-block">
+            <ul *ngIf="!isOther">
+              <li class="line"></li>
+              <li (click)="toggelTab(0)">订单详情</li>
+              <li (click)="toggelTab(1)">物流</li>
+              <li (click)="toggelTab(2)">日志</li>
+            </ul>
+            <div class="tab" *ngIf="tab==0&&orderDetails.items.length>0">
+              <app-order-details [orderDetails]="orderDetails" [isEdit]="(info.orderStatusText=='等待买家付款')||(info.orderStatusText=='等待卖家发货')">
+              </app-order-details>
+            </div>
+            <div class="tab" *ngIf="tab==0&&orderDetails.items.length==0">
+              <app-order-details [orderDetails]="orderDetails">
+              </app-order-details>
+            </div>
+            <div class="tab" *ngIf="tab==1&&logisticsList.length>0&&!isOther">
+              <app-logistics [logisticsList]="logisticsList"></app-logistics>
+            </div>
+            <div class="tab" *ngIf="tab==1&&logisticsList.length==0&&!isOther">
+              <app-logistics [logisticsList]="logisticsList"></app-logistics>
+            </div>
+            <div class="tab" *ngIf="tab==2&&notes.length>0&&!isOther">
+              <app-logs [notes]="notes"></app-logs>
+            </div>
+            <div class="tab" *ngIf="tab==2&&notes.length==0&&!isOther">
+              <app-logs [notes]="notes"></app-logs>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button *ngIf="ifhasError&&ifalldone&&!isorderOver&& info.skuStatus!='Finished'" class="btn btn-sm btn-outline-success pull-right"
+        (click)="orderOver()">标记订单完结</button>
+      <button class="btn btn-sm pull-right cancel" *ngIf="!isNotShowAnyc" (click)="sync()">同步</button>
+      <button class="btn btn-sm btn-danger pull-right cancel" (click)="closeModal()">关闭</button>
+    </div>
+  </div>
+<!-- </form> -->

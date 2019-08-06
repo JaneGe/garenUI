@@ -1,0 +1,37 @@
+<form class="smmodal" (submit)="OnSubmit(outrangecountry)">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">{{modalHeader}}
+        <span class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </span>
+      </h4>
+    </div>
+    <div class="modal-body">
+        <div class="selectCountry">
+          <span class="title">国家选择:</span>
+          <select2  class="country-select" [data]="country"
+                    style="width: 400px"
+                    (valueChanged)="onChangeCountryChanged($event)"></select2>
+        </div>
+      <div class="common">
+        <p class="title">常用国家选择：</p>
+        <p><span class="result" *ngFor="let item of commonCountry" (click)="addCommonCoutry(item.value)">{{item.country}}</span></p>
+      </div>
+      <div class="select">
+        <h4>选择内容：<span class="tip">(单击删除)</span></h4>
+        <p class="inline box">
+          <span class="result" *ngFor="let item of outrangecountry" (click)="del(item)">
+            ({{item}})
+          </span>
+        </p>
+      </div>
+      </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-sm pull-right submit">确定</button>
+      <button class="btn btn-sm pull-right cancel" (click)="closeModal()">取消</button>
+    </div>
+  </div>
+</form>
+
+

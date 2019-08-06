@@ -1,0 +1,147 @@
+<div class=".col-md-8 card card-block">
+  <div class=".col-md-8 card card-block search-wrapper">
+    <ul class="search-condition">
+      <li *ngFor="let item of screen;let index = index">
+        <label class="search-title">{{item.title}}：</label>
+        <div class="screen-wrapper" *ngFor="let subitem of item.items;let i = index">
+          <input type="radio" id="{{index}}{{subitem.Name}}" name="{{index}}" class="regular-radio" [checked]="i === 0" />
+          <label for="{{index}}{{subitem.Name}}" (click)="onSelect($event.target,item.type,subitem.Id)">{{subitem.Name}}</label>
+        </div>
+        <span *ngIf="item.type === 'searchDate'&&isCustom">
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <ng-datepicker [(ngModel)]="timeSearchStart" [options]="DatepickerOptions"></ng-datepicker>
+            </span>
+          </span>
+          -
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <ng-datepicker [(ngModel)]="timeSearchEnd" [options]="DatepickerOptions"></ng-datepicker>
+              <button class="btn btn-sm btn-primary" (click)="doTimeSearch()">确定</button>
+            </span>
+          </span>
+        </span>
+      </li>
+      <li>
+        <label class="search-title">SKU搜索：</label>
+        <div class="input-group">
+          <input type="text" class="form-control">
+          <div class="btn-group">
+            <button class="btn btn-primary">搜索</button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="action">
+    <label class="checkbox-inline custom-checkbox nowrap">
+      <input type="checkbox">
+      <span>选中所有页</span>
+    </label>
+    <button class="btn btn-sm btn-primary item-margin" style="margin-left:10px">导出选中列表</button>
+  </div>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="onQuery()">
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{totalCount}}条数据</span>
+      </div>
+    </div>
+  </form>
+  <table class="table table-hover table-bordered">
+    <thead>
+      <tr>
+        <th width="30px">
+          <label class="checkbox-inline custom-checkbox nowrap">
+            <input type="checkbox">
+            <span></span>
+          </label>
+        </th>
+        <th>采购单信息</th>
+        <th>人员信息</th>
+        <th>采购金额详情</th>
+        <th>采购数量</th>
+        <th>交易信息</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of detailData | paginate: { id: 'pager',
+        itemsPerPage:pageSize,
+        currentPage:currentPage,
+        totalItems:totalCount};let i = index">
+        <td>
+          <label class="checkbox-inline custom-checkbox nowrap">
+            <input type="checkbox">
+            <span></span>
+          </label>
+        </td>
+        <td>
+          <span class="display-block">平台订单号：{{data.platformOrderNum}}</span>
+          <span class="display-block">下单号：{{data.orderNum}}</span>
+          <span class="display-block">供应商：{{data.supplierName}}</span>
+          <span class="display-block">SKU：{{data.SKUItem[0]}} <button *ngIf="data.SKUItem.length>1" class="btn btn-xs btn-primary" (click)="openModal()">查看全部SKU</button></span>
+          <span class="display-block" title="{{data.purchaseLink}}">采购链接：
+            <a href="{{data.purchaseLink}}" target="_blank">点击查看链接</a>
+          </span>
+        </td>
+        <td>
+          <span class="display-block">采购人员：{{data.purchaser}}</span>
+          <span class="display-block">开发人员：{{data.developer}}</span>
+          <span class="display-block">付款人员：{{data.payer}}</span>
+          <span class="display-block">审核人员：{{data.auditer}}</span>
+        </td>
+        <td>
+          <span class="display-block">产品总价：<span class="lg-text yellow-text">{{data.total}}</span></span>
+          <span class="display-block">运费金额：<span class="lg-text yellow-text">{{data.freight}}</span></span>
+          <span class="display-block">优惠价格：<span class="lg-text yellow-text">{{data.discounts}}</span></span>
+          <span class="display-block">支付金额：<span class="lg-text yellow-text">{{data.pay}}</span></span>
+          <span class="display-block">折扣金额：<span class="lg-text yellow-text">{{data.discount}}</span></span>
+        </td>
+        <td>
+          <span class="display-block">采购数量：<span class="max-text yellow-text">{{data.number}}</span></span>
+        </td>
+        <td>
+          <span class="display-block">交易号：{{data.transactionNum}}</span>
+          <span class="display-block">付款日期：{{data.payDate}}</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="onQuery()">
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{totalCount}}条数据</span>
+      </div>
+    </div>
+  </form>
+</div>

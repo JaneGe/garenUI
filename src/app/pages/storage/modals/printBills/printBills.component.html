@@ -1,0 +1,15 @@
+<div class="pop-content animated fadeIn" id="form">
+  <div class="modal-header">
+    <span class="modal-title">打印包裹面单</span>
+  </div>
+  <div class="modal-body">
+      <!-- <pdf-viewer [src]="pdfSrc" [page]="2" [original-size]="true" style="display: block;"></pdf-viewer> -->
+      <iframe class="ifr" src="http://localhost:5744/shipping-label/17/label/DGHAD00002" frameborder="0" width="500px" height="700px"></iframe>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="printPDF()">打印面单</button>
+      <button class="btn btn-primary" (click)="closeModal()">取消</button>
+    </div>
+  </div>
+</div>

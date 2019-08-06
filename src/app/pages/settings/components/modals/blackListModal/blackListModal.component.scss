@@ -1,0 +1,41 @@
+.pop-content {
+    width: 750px;
+    margin-left: -50px;
+    .modal-body {
+        .buyer-info,
+        .order-info-wrapper {
+            float: left;
+            width: 49%;
+            margin: 0 .5% 10px .5%;
+        }
+        .order-info {
+            height: auto;
+            margin-bottom: 12px;
+            .scroll-table {
+                max-height: 300px;
+                overflow-y: scroll;
+            }
+            .btn-group {
+                width: 100px;
+                position: absolute;
+                right: 0;
+            }
+            .table-close {
+                height: 0;
+                overflow: hidden;
+            }
+        }
+        ul {
+            padding: 0;
+            li {
+                margin: 20px 0;
+            }
+            .info-title {
+                display: inline-block;
+                width: 50px;
+                text-align: right;
+                margin-right: 10px;
+            }
+        }
+    }
+}

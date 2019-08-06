@@ -1,0 +1,36 @@
+<div class="pop-content">
+  <div class="modal-header">
+    <h4 class="modal-title">添加1688账户</h4>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="card card-block">
+      <form>
+        <ul>
+          <!--<li>-->
+            <!--<label class="list-label"><span class="must">必填</span>1688账户名:</label>-->
+            <!--<input type="text" class="form-control">-->
+          <!--</li>-->
+          <li>
+            <label class="list-label"><span class="must">必填</span>AppKey:</label>
+            <input type="text" name="appKey" [(ngModel)]="appKey" class="form-control">
+          </li>
+          <li>
+            <label class="list-label"><span class="must">必填</span>签名串:</label>
+            <input type="text" name="secretKey" [(ngModel)]="secretKey"  class="form-control">
+          </li>
+        </ul>
+        <button class="btn btn-primary" type="button" *ngIf="!isSubmitted" (click)="bind()">授权</button>
+        <button class="btn btn-default" type="button" *ngIf="isSubmitted" (click)="bind()">重新授权</button>
+        <button class="btn btn-primary" type="button" *ngIf="isSubmitted" (click)="closeModal()">已授权</button>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group"  *ngIf="!isSubmitted">
+      <button class="btn btn-default" (click)="closeModal()">关闭</button>
+    </div>
+  </div>
+</div>

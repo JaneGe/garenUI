@@ -1,0 +1,160 @@
+.gap {
+    margin-bottom: 20px;
+}
+
+.addwordGap+span {
+    margin-left: 40px;
+}
+
+.wordGap+span {
+    margin-left: 5px;
+}
+
+.title {
+    font-size: 18px;
+}
+
+#table {
+    text-align: center;
+}
+
+#table thead tr th {
+    text-align: center;
+}
+
+#table tbody tr td button {
+    background-color: transparent;
+    border: 1px solid whitesmoke;
+    color: white;
+}
+
+#table tbody tr td button:nth-of-type(1) span {
+    color: #1E1E1E;
+}
+
+.modal-content {
+    border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+button span {
+    padding-right: 10px;
+}
+
+form {
+    font-size: 0;
+    display: flex;
+    justify-content: center;
+}
+
+form .options {
+    display: inline-block;
+    font-size: 16px;
+}
+
+form .options .input-group>span,
+form .options .input-group select {
+    background-color: transparent;
+    color: white;
+}
+
+form .options .input-group>span {
+    border: 1px solid whitesmoke;
+}
+
+form .options .input-group select {
+    cursor: pointer;
+}
+
+form .pages {
+    display: inline-block;
+    font-size: 16px;
+}
+
+.inline {
+    display: inline-block;
+}
+
+.tag {
+    font-size: 16px;
+    margin-right: 10px;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.my-pagination /deep/ .ngx-pagination {
+    border: 1px solid #fff;
+    border-radius: 5px;
+    height: 30px;
+    line-height: 1.5;
+}
+
+.my-pagination /deep/ .ngx-pagination a {
+    font-size: 14px;
+    height: 28px;
+}
+
+.my-pagination /deep/ .ngx-pagination .current,
+.my-pagination /deep/ .ngx-pagination a:hover {
+    height: 28px;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+
+/* .my-pagination /deep/ .ngx-pagination .pagination-previous,.my-pagination /deep/ .ngx-pagination .pagination-next{
+
+} */
+
+.search-wrapper {
+    .search-condition {
+        float: left;
+        height: auto;
+        padding: 0 5px;
+        li {
+            width: 100%;
+            float: left;
+            .search-title {
+                width: 120px;
+                font-weight: bold;
+                float: left;
+                margin: 7px 0;
+            }
+            .input-wrapper {
+                width: 500px;
+                float: left;
+                .form-control {
+                    display: inline-block;
+                    width: 430px;
+                    float: left;
+                    border-radius: 3px 0 0 3px;
+                }
+                .btn-group {
+                    float: left;
+                    height: 35px;
+                    .btn {
+                        border-radius: 0 3px 3px 0;
+                    }
+                }
+            }
+        }
+    }
+    .search-more {
+        text-align: center;
+        color: #48A1FB;
+        position: absolute;
+        top: 99%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 1.4em;
+        cursor: pointer;
+    }
+}
+
+.datePick-wrap {
+    display: inline-block;
+}
+
+.datePick {
+    display: flex;
+}

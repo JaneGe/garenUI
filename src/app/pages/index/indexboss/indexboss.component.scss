@@ -1,0 +1,14 @@
+.contain{min-height: 0;}
+.overview{width: 100%;}
+.twotable{display: flex;justify-content: space-between;}
+.twotable table{width: 49.7%;}
+#sale  thead tr th img{margin-left: 10px;}
+#sale thead tr th{width: 30%}
+#sale thead tr th:nth-of-type(1){width: 10%}
+#sale tbody tr td,#country tbody tr td{position: relative;}
+#sale tbody tr td span,#country tbody tr td span{position: absolute;left: 40%;font-size: 20px;}
+#country thead tr th img{margin-left: 5px;}
+#country thead tr th{width: 12.5%;}
+#country tbody tr td span{left: 30%;}
+
+

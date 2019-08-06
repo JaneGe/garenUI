@@ -1,0 +1,155 @@
+.wrapper{
+    width:100%;
+    height: auto;
+    margin:20px 0;
+    .goods-search-form{
+        width:100%;
+        height: auto;
+        ul{
+            width:100%;
+            height: auto;
+            li{
+                width:100%;
+                height:30px;
+                float: left;
+                margin:10px 0;
+                .screen-title{
+                    float: left;
+                    line-height: 20px;
+                    width:120px;
+                    line-height: 25px;
+                }
+                #exampleSelect1{
+                    height:30px;
+                    width:30%;
+                    max-width:200px;
+                    font-size: 12px;
+                    padding:0;
+                }
+                .search{
+                    height:30px;
+                    width:40%;
+                    margin:0 10px;
+                    .btn{
+                        padding:0;
+                        width:50px;
+                        line-height: 30px;
+                        text-align: center;
+                    }
+                }
+            }
+        }
+    }
+    .btn-box{
+        width:100%;
+        height: 70px;
+        .checkbox{
+            float: left;
+            margin:28px 20px;
+            label{
+                cursor: pointer;
+            }
+        }
+        .btn{
+            float: left;
+            padding:7px;
+            margin:20px;
+        }
+    }
+    .table-box{
+        width:100%;
+        height: auto;
+        .table{
+            width:100%;
+            tbody{
+                tr{
+                    td{
+                        img{
+                            width:100px;
+                            height:100px;
+                            margin-top:2.5px;
+                        }
+                        span{
+                            display: block;
+                        }
+                        .edit-btn{
+                            display: block;
+                            width:100%;
+                            height:30px;
+                            margin:0 0 10px 0;
+                            color:#fff;
+                            text-align: center;
+                            &:hover{
+                                color:rgb(0, 60, 255);
+                            }
+                            span{
+                                display: inline-block;
+                            }
+                        }
+                        .imgs{
+                            position: relative;
+                            width:133px;
+                            height:133px;
+                            overflow: hidden;
+                            margin:0 auto;
+                            .img{
+                                position: absolute;
+                                width: 100%;
+                                height: 100%;
+                                left:0;
+                                background: pink;
+                                transition: 0.2s;
+                            }
+                            .btn-sw{
+                                display: inline-block;
+                                width:30px;
+                                height:133px;
+                                line-height: 133px;
+                                background: transparent;
+                                z-index: 100;
+                                color:rgba(255,255,255,0);
+                                &:hover{
+                                    background: rgba(0,0,0,.4);
+                                    color:rgba(255,255,255,1);
+                                }
+                            }
+                            .prev{
+                                position: absolute;
+                                top:2.5px;
+                                left:0;
+                            }
+                            .next{
+                                position: absolute;
+                                top:2.5px;
+                                right:0;
+                            }
+                        }
+                    }
+                    .sku-com{
+                        .skucom{
+                            display: inline-block;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+@media (max-width:1280px){ //Mac Pro 13英寸
+   .wrapper{
+       font-size: 12px;
+   }
+}
+@media (max-width:1440px){ //Mac Pro 15英寸
+    .wrapper{
+        font-size: 13px;
+    }
+}
+span.clean {
+  font-size: 22px;
+  position: absolute;
+  right: 55px;
+  top: 4px;
+  cursor: pointer;
+  z-index: 1000;
+}

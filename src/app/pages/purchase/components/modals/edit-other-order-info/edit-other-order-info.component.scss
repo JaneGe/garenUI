@@ -1,0 +1,45 @@
+.pop-content {
+    width: 750px;
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    padding: 5px;
+    overflow: hidden;
+    .modal-body {
+        max-height: 720px;
+        overflow-y: scroll;
+        .form-control {
+            height: 40px;
+            margin-bottom: 10px;
+        }
+    }
+    .flex-wrap {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        .flex-wr {
+            width: 100px;
+        }
+        .prop-wrap {
+            padding: 4px 3px;
+            margin-top: 1px;
+            background: rgba(0, 0, 0, .15);
+            border-radius: 3px;
+            font-size: 12px;
+        }
+    }
+    .flex-wrap-top {
+        .flex-wr {
+            width: 200px;
+        }
+    }
+}
+
+.form-control-sm {
+    height: 30px !important;
+    line-height: 30px !important;
+    font-size: 12px !important;
+}

@@ -1,0 +1,33 @@
+<div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <h3 class="modal-title">选择面单模板</h3>
+  </div>
+  <div class="modal-body">
+    <div class="bill-details">
+      <img src="{{click_bill.img}}" alt="">
+      <span>{{click_bill.name}}</span>
+    </div>
+    <div class="imgs">
+      <div class="swiper-box">
+        <div class="bill-list" *ngFor="let bill of bill;let i = index" (mySwipe)="Change($event)" [@imgMove]="ImgState(i)" (click)="chooseBill(i)">
+          <img src="{{bill.img}}" alt="{{bill.name}}" class="img">
+          <span>{{bill.name}}</span>
+          <div class="btn-group">
+            <button class="btn btn-primary" *ngIf="isChoose === i" (click)="closeModal()">选中</button>
+          </div>
+        </div>
+      </div>
+      <a href="javascript:;" class="btn-sw prev" (click)="Prev()" *ngIf="prevState">
+        <i class="ion-chevron-left"></i>
+      </a>
+      <a href="javascript:;" class="btn-sw next" (click)="Next()" *ngIf="nextState">
+        <i class="ion-chevron-right"></i>
+      </a>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-danger" (click)="closeModal()">取消</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,118 @@
+
+<form class="pagination-wrapper">
+  <div class="form-group pages">
+    <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+      autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+      screenReaderCurrentLabel="You're on page">
+    </pagination-controls>
+  </div>
+  <div class="form-group options pages">
+    <div class="input-group input-group-sm">
+      <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (change)="loadData()">
+        <option>1</option>
+        <option>5</option>
+        <option>10</option>
+        <option>20</option>
+        <option>50</option>
+        <option>100</option>
+        <option>200</option>
+      </select>
+      <span class="input-group-addon addon-right">条/页</span>
+      <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条数据</span>
+      <span class="input-group-addon addon-right out">导出</span>
+    </div>
+  </div>
+</form>
+<div class="table-wrap">
+  <table class="table table-hover table-bordered gap" id="stockNum">
+    <thead>
+      <tr class="black-muted-bg">
+        <th>
+          <span>货架
+            <i class="ion-arrow-down-b"></i>
+          </span>
+        </th>
+        <th>货架类型</th>
+        <th>
+          <span>商品SKU</span>
+        </th>
+        <th width="250px">
+          <span>商品名称</span>
+        </th>
+        <th>
+          <span>是否锁定</span>
+        </th>
+        <th>
+          <span>系统总量
+            <i class="ion-arrow-up-b" (click)="updateSortData($event.target,1)"></i>
+          </span>
+        </th>
+        <th>
+          <span>可用数量
+            <i class="ion-arrow-up-b" (click)="updateSortData($event.target,2)"></i>
+          </span>
+        </th>
+        <th>
+          <span>预留数量
+            <i class="ion-arrow-up-b" (click)="updateSortData($event.target,3)"></i>
+          </span>
+        </th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let i of StockList|paginate: { id: 'pager',
+                                                      itemsPerPage: PageInfo.pageSize,
+                                                      currentPage: PageInfo.pageIndex,
+                                                      totalItems: PageInfo.totalCount}">
+        <td>{{i.shelf}}</td>
+        <td *ngIf="i.shelfKind=='Good'">良品</td>
+        <td *ngIf="i.shelfKind=='Bad'">次品</td>
+        <td *ngIf="i.shelfKind=='Exception'">异常</td>
+        <td>{{i.sku}}</td>
+        <td>{{i.name}}</td>
+        <td *ngIf="i.isLocked">
+          <i class="ion-locked red-text"></i>
+          已锁定</td>
+        <td *ngIf="!i.isLocked">
+          <i class="ion-unlocked yellow-text"></i>
+          未锁定</td>
+        <td>{{i.total}}</td>
+        <td>{{i.available}}</td>
+        <td><i class="ion-ios-information detail-icon" (click)="openReserveNumDetailModal(i.id)"></i>
+          <span style="display: inline-block;min-width:50px;text-align: center">{{i.prepare}}</span>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-primary" *ngIf="checkAuthority(1)" (click)="openReportModal($event.target)">报损报溢</button>
+          <button class="btn btn-sm btn-primary"  *ngIf="checkAuthority(2)" (click)="openTransferModal($event.target)">货架转移</button>
+          <button class="btn btn-sm btn-warning"  *ngIf="i.isLocked&&(checkAuthority(4))" (click)="unLockInventory(i.id)">解锁库存</button>
+          <button class="btn btn-sm btn-danger" *ngIf="(!i.isLocked)&&(checkAuthority(3))" (click)="lockInventory(i.id)">锁定库存</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<form class="pagination-wrapper" *ngIf="PageInfo.pageSize>=20">
+  <div class="form-group pages">
+    <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+      autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+      screenReaderCurrentLabel="You're on page">
+    </pagination-controls>
+  </div>
+  <div class="form-group options pages">
+    <div class="input-group input-group-sm">
+      <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="loadData()">
+        <option>1</option>
+        <option>5</option>
+        <option>10</option>
+        <option>20</option>
+        <option>50</option>
+        <option>100</option>
+        <option>200</option>
+      </select>
+      <span class="input-group-addon addon-right">条/页</span>
+      <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条数据</span>
+      <span class="input-group-addon addon-right out">导出</span>
+    </div>
+  </div>
+</form>

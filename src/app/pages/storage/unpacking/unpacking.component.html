@@ -1,0 +1,240 @@
+<div class="card card-block">
+  <div class="input-wrapper">
+    <ul>
+      <li>
+        <label class="list-label">选择仓库</label>
+        <select2 *ngIf="allWarehouses.length > 0" class="shipment-select" [width]="450" [data]="allWarehouses" (valueChanged)="onWarehouseChanged($event)"></select2>
+        <span class="sku-number">共{{skuPackages.length}}个SKU</span>
+      </li>
+      <li>
+        <select [(ngModel)]="selectScanType" class="form-control select" style="height: 60px!important;">
+          <option value="TrackingNumber">物流跟踪号</option>
+          <option value="Ali1688OrderNumber">1688订单号</option>
+          <option value="PurchaseNumber">下单号</option>
+        </select>
+        <input type="text" class="form-control logistic-id" [(ngModel)]="scanText" (keyup.enter)="doSearch()" />
+        <div class="btn-group">
+          <button class="btn btn-primary" (click)="doSearch()">查询</button>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="card card-block info-wrapper" [ngClass]="{'lj-wrap':skuPackage.isGroupSku}" *ngFor="let skuPackage of skuPackages">
+    <div class="card-body">
+      <div class="package-info">
+        <div class="img-box">
+          <img [src]="skuPackage.skuImage" alt="无SKU图片信息">
+          <div class="state-item">
+            <span class="package-state bufen" *ngIf="skuPackage.itemStatus == 'PartialArrived'"></span>
+            <span class="package-state yixiaodan" *ngIf="skuPackage.itemStatus == 'Arrived'"></span>
+            <span class="package-state zengpin" *ngIf="skuPackage.instockQuantity > skuPackage.purchaseQuantity"></span>
+            <!--<span class="package-state FBA"></span>-->
+            <span class="package-state lingjian" *ngIf="skuPackage.isGroupSku"></span>
+          </div>
+        </div>
+        <ul class="info-item">
+          <li class="info-list" style="text-align:center">
+            <!-- <span class="lg-text yellow-text">wish亚马逊品质爆款外贸女装 网纱刺绣礼服 蝴蝶结拼接大摆连衣裙</span> -->
+            <span class="lg-text yellow-text">{{skuPackage.name}}</span>
+          </li>
+          <li class="info-list" style="text-align:center">
+            <label class="list-title">SKUCode：</label>
+            <!-- <span class="lg-text red-text">DMT15748115</span> -->
+            <span class="lg-text red-text">{{skuPackage.skuCode}}</span>
+          </li>
+          <li class="info-list">
+            <div class="list-left">
+              <label class="list-title">1688订单号：</label>
+              <span>
+                <a href="javascript:;" (click)="openDetailsModal(skuPackage.purchasePlatformOrderId)">{{skuPackage.ali1688Order}}</a>
+              </span>
+            </div>
+            <div class="list-right">
+              <label class="list-title">1688账号：</label>
+              <span>{{skuPackage.accountName}}</span>
+            </div>
+          </li>
+          <li class="info-list">
+            <div class="list-left">
+              <label class="list-title">比例</label>
+              <span>
+                <span class="lg-text red-text">{{skuPackage.purchaseQuantityRatio}}</span>（平台:1688）</span>
+            </div>
+            <div class="list-right">
+              <label class="list-title">属性：</label>
+              <span class="caption" *ngFor="let a of skuPackage.aliAttributes">{{a}}</span>
+            </div>
+          </li>
+          <li class="info-list">
+            <div class="list-left">
+              <label class="list-title">跟踪号：</label>
+              <ul class="trackitem clearfix">
+                <li *ngFor="let t of skuPackage.trackingNumbers">
+                  <span class="span-list">{{t.trackingNumber}}【{{t.logisticsCompanyName}}】</span>
+                </li>
+              </ul>
+            </div>
+            <div class="list-right">
+              <label class="list-title">SKU属性：</label>
+              <ul class="trackitem clearfix">
+                <li>
+                  <span class="span-list">长：{{skuPackage.length}}cm</span>
+                </li>
+                <li>
+                  <span class="span-list">宽：{{skuPackage.width}}cm</span>
+                </li>
+                <li>
+                  <span class="span-list">高：{{skuPackage.height}}cm</span>
+                </li>
+                <li>
+                  <span class="span-list">体积：{{skuPackage.length * skuPackage.width * skuPackage.height}}cm³</span>
+                </li>
+                <li>
+                  <span class="span-list">重量：{{skuPackage.weight}}g</span>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li class="info-list">
+            <div class="list-left">
+              <label class="list-title">下单人员：</label>
+              <span>{{skuPackage.createOrderUserName}}</span>
+            </div>
+            <div class="list-right">
+              <label class="list-title">下单备注：</label>
+              <span>{{skuPackage.purchaseNote}}</span>
+            </div>
+
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="footer-left">
+        <ul>
+          <li class="footer-list">
+            <span class="title title-sm" style="width:70px;">总计：</span>
+            <span class="value value-number">{{skuPackage.trackingNumbers == null? 0 : skuPackage.trackingNumbers.length}}</span>
+            <span class="title-sm"> 个包裹</span>
+            <span class="title title-sm" style="width:70px;margin-left:70px;">已到：</span>
+            <span class="value value-number">{{getReceivePackageCount(skuPackage)}}</span>
+            <span class="title-sm"> 个包裹</span>
+          </li>
+          <li class="footer-list">
+            <span class="title" style="width:70px;">总计：</span>
+            <span class="value value-number" style="width:100px;">{{skuPackage.purchaseQuantity}}</span>
+            <span style="width:30px;"> 件</span>
+            <span class="title" style="width:90px;">已到货：</span>
+            <span class="value value-number" style="width:100px;">{{skuPackage.instockQuantity}}</span>
+            <span> 件</span>
+          </li>
+          <li class="footer-list">
+            <span class="title">应到：</span>
+            <span class="value" class="purchase-num" *ngIf="(skuPackage.purchaseQuantity - skuPackage.instockQuantity)>=0">
+              {{skuPackage.purchaseQuantity - skuPackage.instockQuantity}}
+            </span>
+            <span class="value" class="purchase-num" *ngIf="(skuPackage.purchaseQuantity - skuPackage.instockQuantity)<0">
+              0
+            </span>
+            <span> 件</span>
+            <ul class="clearfix component-item">
+              <li class="clearfix" *ngFor="let url of skuPackage.purchaseUrls">
+                <a [href]="url.url" target="_blank">{{url.title}}</a>
+                <span title="{{url.title}}">{{url.title}}</span>
+              </li>
+            </ul>
+          </li>
+          <li class="footer-list" *ngIf="skuPackage.itemStatus == 'Arrived'">
+            <span class="title">到货数量：</span>
+            <!-- <input class="form-control" type="text" [(ngModel)]="inputStock[skuPackage.purchasePlatformOrderItemId].tempGoodStock"> -->
+            <input class="form-control" type="number" [(ngModel)]="inputStock[skuPackage.purchasePlatformOrderItemId].goodQuantity" (keyup)="PutIn(skuPackage.purchaseQuantity - skuPackage.instockQuantity,$event, inputStock[skuPackage.purchasePlatformOrderItemId])"
+              disabled>
+            <span> 件</span>
+          </li>
+          <li class="footer-list" *ngIf="skuPackage.itemStatus != 'Arrived'">
+            <span class="title">到货数量：</span>
+            <input class="form-control" type="number" [(ngModel)]="inputStock[skuPackage.purchasePlatformOrderItemId].goodQuantity" (keyup)="PutIn(skuPackage.purchaseQuantity - skuPackage.instockQuantity,$event, inputStock[skuPackage.purchasePlatformOrderItemId])">
+            <span> 件</span>
+          </li>
+          <li class="footer-list">
+            <span class="title" style="width:50px;">缺：</span>
+            <input type="text" class="form-control" [(ngModel)]="inputStock[skuPackage.purchasePlatformOrderItemId].lackQuantity" disabled>
+
+            <div *ngIf="skuPackage.itemStatus == 'Arrived'">
+              <span class="title" style="width:50px;">坏：</span>
+              <input type="text" class="form-control" [(ngModel)]="inputStock[skuPackage.purchasePlatformOrderItemId].badQuantity" (keyup)="PutIn(skuPackage.purchaseQuantity - skuPackage.instockQuantity,$event, inputStock[skuPackage.purchasePlatformOrderItemId])"
+                disabled>
+            </div>
+            <div *ngIf="skuPackage.itemStatus != 'Arrived'">
+              <span class="title" style="width:50px;">坏：</span>
+              <input type="text" class="form-control" [(ngModel)]="inputStock[skuPackage.purchasePlatformOrderItemId].badQuantity" (keyup)="PutIn(skuPackage.purchaseQuantity - skuPackage.instockQuantity,$event, inputStock[skuPackage.purchasePlatformOrderItemId])">
+            </div>
+
+            <div *ngIf="skuPackage.itemStatus == 'Arrived'">
+              <span class="title" style="width:50px;">错：</span>
+              <input type="text" class="form-control" [(ngModel)]="inputStock[skuPackage.purchasePlatformOrderItemId].sendWrongQuantity"
+                (keyup)="PutIn(skuPackage.purchaseQuantity - skuPackage.instockQuantity,$event, inputStock[skuPackage.purchasePlatformOrderItemId])"
+                disabled>
+            </div>
+            <div *ngIf="skuPackage.itemStatus != 'Arrived'">
+              <span class="title" style="width:50px;">错：</span>
+              <input type="text" class="form-control" [(ngModel)]="inputStock[skuPackage.purchasePlatformOrderItemId].sendWrongQuantity"
+                (keyup)="PutIn(skuPackage.purchaseQuantity - skuPackage.instockQuantity,$event, inputStock[skuPackage.purchasePlatformOrderItemId])">
+            </div>
+
+          </li>
+        </ul>
+        <div>
+          <div class="input-group">
+            <div class="btn-group">
+              <button class="btn btn-sm btn-primary" (click)="Confirm(skuPackage.purchaseQuantity - skuPackage.instockQuantity,skuPackage,inputStock[skuPackage.purchasePlatformOrderItemId])">
+                <i class="ion-checkmark-round"></i> 确认到货信息</button>
+            </div>
+            <ng-container *ngIf="!skuPackage.isGroupSku">
+              <input type="number" class="form-control" style="font-size:15px;" [(ngModel)]="inputStock[skuPackage.purchasePlatformOrderItemId].printLabelQuantity"
+              />
+              <div class="btn-group">
+                <button class="btn btn-sm btn-primary" (click)="printSkuLabel(skuPackage)">打印标签</button>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="skuPackage.isGroupSku">
+              <div class="btn-group">
+                <button class="btn btn-sm btn-primary" (click)="printModal(skuPackage)">打印组合商品标签</button>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="footer-right">
+        <textarea name="" id="" cols="30" rows="10" class="form-control remark-input" placeholder="请输入该货品备注" [(ngModel)]="inputStock[skuPackage.purchasePlatformOrderItemId].warehouseNote"></textarea>
+        <button class="btn btn-primary" [disabled]="inputStock[skuPackage.purchasePlatformOrderItemId].warehouseNote == null" (click)="addWarehouseNote(inputStock[skuPackage.purchasePlatformOrderItemId], skuPackage)">添加备注
+        </button>
+        <div class="table-wrapper">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th width="50px">序号</th>
+                <th>内容</th>
+                <th width="70px">类型</th>
+                <th width="70px">操作人</th>
+                <th width="100px">时间
+                  <br/>「GMT +8:00」
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of skuPackage.orderNotes;let i = index">
+                <td>{{skuPackage.orderNotes.length - i}}</td>
+                <td>{{item.content}}</td>
+                <td>{{item.noteTypeDesc}}</td>
+                <td>{{item.userName}}</td>
+                <td>{{item.createdTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

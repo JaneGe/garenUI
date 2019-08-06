@@ -1,0 +1,55 @@
+.content {
+  display: flex;
+  .part {
+    width: 45%;
+    &:first-of-type{
+      margin-right: 10%;
+    }
+  }
+  p.p{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    span.title{
+      margin-bottom: 5px;
+    }
+    span.input{
+      width: 100%;
+    }
+  }
+}
+
+.part p span.part-wrap /deep/ .select2 {
+    & .select2-selection,
+    & .select2-selection>span {
+        height: 35px;
+        line-height: 35px;
+        width: 276px;
+    }
+    & .select2-selection {
+        position: relative;
+    }
+    & .select2-selection>span:nth-of-type(2) {
+        width: 10px;
+        position: absolute;
+        right: 10px;
+    }
+}
+
+.has-error {
+    border: 1px solid;
+    animation: borderColor .5s linear infinite;
+}
+
+.red {
+    border: 1px solid #ed6372;
+}
+
+@keyframes borderColor {
+    0% {
+        border-color: white;
+    }
+    100% {
+        border-color: #ed6372;
+    }
+}

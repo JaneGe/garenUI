@@ -1,0 +1,46 @@
+<app-search-head (childSelectedChannelType) = "getchildSelectedChannelType($event)"
+                 (childSelectedChannelIds) = "getchildSelectedChannelIds($event)"
+                 (childOnSelectCountry) = "getchildOnSelectCountry($event)"
+                 (childSelectedTimeFiltType) = "getchildSelectedTimeFiltType($event)"
+                 (childSelectedTimeValueType) = "getchildSelectedTimeValueType($event)"
+                 (childTimeSearchStart) = "getchildTimeSearchStart($event)"
+                 (childTimeSearchEnd) = "getchildTimeSearchEnd($event)"
+                 (childSelectSearchType) = "getchildSelectSearchType($event)"
+                 (childSearchText) = "getchildSearchText($event)"
+                 (childOrderBatchsearchType) = "getchildOrderBatchsearchType($event)"
+                 (childOrderBatchsearchText) = "getchildOrderBatchsearchText($event)"
+                 (childOrderBatchsearch) = "getchildOrderBatchsearch($event)"
+></app-search-head>
+<div class="btn-box" >
+  <div class="checkbox">
+    <label class="checkbox-inline custom-checkbox nowrap">
+      <input type="checkbox" [checked]="isCheckAllPages" (change)="onCheclAllPageChange($event.target.checked)"><span>选中所有页</span>
+    </label>
+  </div>
+  <div class="searchPart gap">
+    <div class="buttonpart">
+      <button class="btn btn-primary" (click)="ResetOrder($event.target)">重置订单</button>
+      <button class="btn btn-primary" (click)="VoidedOrder($event.target)">作废</button>
+      <button class="btn btn-primary" (click)="LockOrder($event.target)">锁定</button>
+    </div>
+  </div>
+</div>
+<app-table [orderException]="orderException"
+           [selectedChannelType]="selectedChannelType"
+           [selectedChannelIds]="selectedChannelIds"
+           [selectCountryCode]="selectCountryCode"
+           [selectedTimeFiltType]="selectedTimeFiltType"
+           [selectedTimeValueType]="selectedTimeValueType"
+           [timeSearchStart]="timeSearchStart"
+           [timeSearchEnd]="timeSearchEnd"
+           [selectSearchType]="selectSearchType"
+           [searchText]="searchText"
+           [orderBatchsearchType]="orderBatchsearchType"
+           [orderBatchsearchText]="orderBatchsearchText"
+           [isCheck]="isCheckAllPages"
+           [orderBatchsearch]="orderBatchsearch"
+
+           (childselectOrderIds) = "getchildSelectOrderIds($event)"
+           (childIsCheckAllPages) = "getchildIsCheckAllPages($event)"
+           (childIsRefresh) = "getchildIsRefresh($event)"
+></app-table>

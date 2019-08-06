@@ -1,0 +1,35 @@
+<form class="smmodal goods">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">{{modalHeader}}
+        <span class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </span>
+      </h4>
+    </div>
+    <div class="modal-body">
+      <p style="color:#FF9900">Tip：选择完成，再次Enter可以清空</p>
+      <div class="card card-block">
+        <div class="input-select search-input-wraper">
+        <!--<select2 [data]="commodityList" [value]="name"   [width]="738"  (valueChanged)="choose($event)" (keyup.enter)="choose($event)"></select2>-->
+          <input class="form-control custom-search" name="search"  [ngbTypeahead]="search" id="product"  #product (selectItem)="OnselectItem($event)" [inputFormatter]="disPlaySkuFormatter" [resultFormatter]="skuFormatter" />
+          <button type="button" class="btn btn-danger btn-sm" id="cleanButton" (click)="cleanSearchText()">清空</button>
+        </div>
+      </div>
+      <div>
+        <h4>选择内容：
+          <span class="tip">(单击删除)</span>
+        </h4>
+        <p class="inline box">
+          <span class="result" *ngFor="let item of limitingcommodity" (click)="del(item)">
+            {{item}}
+          </span>
+        </p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-sm pull-right submit" (click)="OnSubmit()">确定</button>
+      <button type="button" class="btn btn-sm pull-right cancel" (click)="closeModal()">取消</button>
+    </div>
+  </div>
+</form>

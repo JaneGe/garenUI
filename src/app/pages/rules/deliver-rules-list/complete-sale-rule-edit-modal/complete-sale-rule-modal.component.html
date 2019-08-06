@@ -1,0 +1,290 @@
+<form id="myform" class="smmodal goods" (submit)="OnSubmit()">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">{{modalHeader}}
+        <span class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </span>
+      </h4>
+    </div>
+    <div class="modal-body">
+      <div class="card card-block" style="margin-bottom: 10px;">
+        <div class="item-wrap">
+          <div class="title">发货仓库：</div>
+          <div class="content">
+            <select style="height: 38px;" name="warehouse" [(ngModel)]="selectedWarehouseId" class="form-control" #warehouse (change)="onWarehouseChange(warehouse.value)">
+              <option *ngFor="let item of allWarehouses" value="{{item.warehouseId}}">{{item.name}}</option>
+            </select>
+            <span class="badge badge-danger">必填</span>
+          </div>
+        </div>
+        <div class="item-wrap">
+          <div class="title">规则名称：</div>
+          <div class="content">
+            <input type="text" class="form-control" name="ruleName" [(ngModel)]="ruleName">
+            <span class="badge badge-danger">必填</span>
+          </div>
+        </div>
+        <div class="item-wrap">
+          <div class="title">优先级：</div>
+          <div class="content">
+            <input type="number" class="form-control" name="priority" [(ngModel)]="priority" disabled>
+            <!--<span class="badge badge-danger">必填</span>-->
+          </div>
+        </div>
+        <div class="item-wrap">
+          <div class="title">选择帐号：</div>
+          <div class="content">
+            <div class="add" [ngStyle]="{'marginBottom':selectedChannels && selectedChannels.length==0?'0':'10px'}">
+              <select2 #Channels [data]="allDropChannels" [width]="400" (valueChanged)="onChannelChange($event,Channels)" (keyup.enter)="onChannelChange($event,Channels)"></select2>
+              <button type="button" class="btn btn-warning btn-sm" (click)="cleanSelectChannels(Channels)">清空</button>
+
+              <!-- <label (click)="doCheckAllChannelAccounts()" class="checkbox-inline custom-checkbox nowrap">
+                <input type="checkbox" value="true" name="isCheckAllChannel" [(ngModel)]="isCheckAllChannel">
+                <span>全部账号</span>
+              </label> -->
+
+              <div class="check-all-channel">
+                <input type="checkbox" class="switch" id="isCheckAllChannel" name="isCheckAllChannel" [(ngModel)]="isCheckAllChannel">
+                <label class="switch-wrap switch-wrap-default" for="isCheckAllChannel" (click)="doCheckAllChannelAccounts()"></label>
+                <span>匹配所有账号</span>
+              </div>
+
+            </div>
+            <div class="select-wrap">
+              <span class="item" *ngFor="let item of selectedChannels">{{item.text}}
+                <i class="ion-trash-a" (click)="deleteChannel(item.id)"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="item-wrap">
+          <div class="title">订单国家：</div>
+          <div class="content">
+            <div class="add" [ngStyle]="{'marginBottom':selectedCountries && selectedCountries.length==0?'0':'10px'}">
+              <select2 #Country [data]="allCountries" [width]="400" (valueChanged)="onSelectCountry($event,Country)" (keyup.enter)="onSelectCountry($event,Country)"></select2>
+              <button type="button" class="btn btn-warning btn-sm" (click)="cleanSelectCountry(Country)">清空</button>
+            </div>
+            <div class="select-wrap">
+              <span class="item" *ngFor="let item of selectedCountries">{{item.text}}
+                <i class="ion-trash-a" (click)="deleteCountry(item.id)"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="item-wrap">
+          <div class="title">运输方式：</div>
+          <div class="content">
+            <div class="add" [ngStyle]="{'marginBottom':selectedDropShippingService && selectedDropShippingService.length==0?'0':'10px'}">
+              <select2 #ShippingService [data]="allDropShippingService" [width]="400" (valueChanged)="onShippingServiceChange($event,ShippingService)"
+                (keyup.enter)="onShippingServiceChange($event,ShippingService)"></select2>
+              <button type="button" class="btn btn-warning btn-sm" (click)="cleanSelectShippingService(ShippingService)">清空</button>
+            </div>
+            <div class="select-wrap">
+              <span class="item" *ngFor="let item of selectedDropShippingService">{{item.text}}
+                <i class="ion-trash-a" (click)="deleteShippingService(item.id)"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="item-wrap">
+          <div class="title">订单产品包含：</div>
+          <div class="content">
+            <div class="add" [ngStyle]="{'marginBottom':selectedDropSkus && selectedDropSkus.length==0?'0':'10px'}">
+              <!--<select2 #Sku [data]="allDropSkus" [width]="400" (valueChanged)="onSkuChange($event,Sku)"-->
+              <!--(keyup.enter)="onSkuChange($event,Sku)"></select2>-->
+              <input class="form-control custom-search" [ngbTypeahead]="search" id="product" #product (selectItem)="OnselectItem(product)"
+                [inputFormatter]="disPlaySkuFormatter" [resultFormatter]="skuFormatter" />
+              <button type="button" class="btn btn-warning btn-sm" (click)="cleanSearchText()">清空</button>
+            </div>
+            <div class="select-wrap">
+              <span class="item" *ngFor="let item of selectedDropSkus">{{item.text}}
+                <i class="ion-trash-a" (click)="deleteSku(item.id)"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="item-wrap">
+        <div class="title">执行时间：</div>
+        <div class="content">
+          <div class="exeTime-wrap">
+            <div class="exeTime">
+              <div class="timeItem">
+                <p class="day">星期一
+                  <label class="custom-checkbox nowrap">
+                    <input type="checkbox" [checked]="mondayExe.checked" (change)="mondayExe.checked=!mondayExe.checked">
+                    <span></span>
+                  </label>
+                </p>
+                <p class="time">
+                  <input type="number" (input)="NumberInput(mondayExe.time.start,mondayExe.time.end)" class="form-control" [disabled]="!mondayExe.checked"
+                    name="monStart" [(ngModel)]="mondayExe.time.start">
+                  <span>--</span>
+                  <input type="number" (input)="NumberInput(mondayExe.time.start,mondayExe.time.end)" class="form-control" [disabled]="!mondayExe.checked"
+                    name="monEnd" [(ngModel)]="mondayExe.time.end">
+                </p>
+              </div>
+            </div>
+            <div class="exeTime">
+              <div class="timeItem">
+                <p class="day">星期二
+                  <label class="custom-checkbox nowrap">
+                    <input type="checkbox" [checked]="tuesdayExe.checked" (change)="tuesdayExe.checked=!tuesdayExe.checked">
+                    <span></span>
+                  </label>
+                </p>
+                <p class="time">
+                  <input type="number" (input)="NumberInput(tuesdayExe.time.start,tuesdayExe.time.end)" class="form-control" [disabled]="!tuesdayExe.checked"
+                    name="tusStart" [(ngModel)]="tuesdayExe.time.start">
+                  <span>--</span>
+                  <input type="number" (input)="NumberInput(tuesdayExe.time.start,tuesdayExe.time.end)" class="form-control" [disabled]="!tuesdayExe.checked"
+                    name="tusEnd" [(ngModel)]="tuesdayExe.time.end">
+                </p>
+              </div>
+            </div>
+            <div class="exeTime">
+              <div class="timeItem">
+                <p class="day">星期三
+                  <label class="custom-checkbox nowrap">
+                    <input type="checkbox" [checked]="wednesdayExe.checked" (change)="wednesdayExe.checked=!wednesdayExe.checked">
+                    <span></span>
+                  </label>
+                </p>
+                <p class="time">
+                  <input type="number" (input)="NumberInput(wednesdayExe.time.start,wednesdayExe.time.end)" class="form-control" [disabled]="!wednesdayExe.checked"
+                    name="wenStart" [(ngModel)]="wednesdayExe.time.start">
+                  <span>--</span>
+                  <input type="number" (input)="NumberInput(wednesdayExe.time.start,wednesdayExe.time.end)" class="form-control" [disabled]="!wednesdayExe.checked"
+                    name="wenEnd" [(ngModel)]="wednesdayExe.time.end">
+                </p>
+              </div>
+            </div>
+            <div class="exeTime">
+              <div class="timeItem">
+                <p class="day">
+                  星期四
+                  <label class="custom-checkbox nowrap">
+                    <input type="checkbox" [checked]="thursdayExe.checked" (change)="thursdayExe.checked=!thursdayExe.checked">
+                    <span></span>
+                  </label>
+                </p>
+                <p class="time">
+                  <input type="number" (input)="NumberInput(thursdayExe.time.start,thursdayExe.time.end)" class="form-control" [disabled]="!thursdayExe.checked"
+                    name="thuStart" [(ngModel)]="thursdayExe.time.start">
+                  <span>--</span>
+                  <input type="number" (input)="NumberInput(thursdayExe.time.start,thursdayExe.time.end)" class="form-control" [disabled]="!thursdayExe.checked"
+                    name="thudayEnd" [(ngModel)]="thursdayExe.time.end">
+                </p>
+              </div>
+            </div>
+            <div class="exeTime">
+              <div class="timeItem">
+                <p class="day">星期五
+                  <label class="custom-checkbox nowrap">
+                    <input type="checkbox" [checked]="fridayExe.checked" (change)="fridayExe.checked=!fridayExe.checked">
+                    <span></span>
+                  </label>
+                </p>
+                <p class="time">
+                  <input type="number" (input)="NumberInput(fridayExe.time.start,fridayExe.time.end)" class="form-control" [disabled]="!fridayExe.checked"
+                    name="friStart" [(ngModel)]="fridayExe.time.start">
+                  <span>--</span>
+                  <input type="number" (input)="NumberInput(fridayExe.time.start,fridayExe.time.end)" class="form-control" [disabled]="!fridayExe.checked"
+                    name="friEnd" [(ngModel)]="fridayExe.time.end">
+                </p>
+              </div>
+            </div>
+            <div class="exeTime">
+              <div class="timeItem">
+                <p class="day">
+                  星期六
+                  <label class="custom-checkbox nowrap">
+                    <input type="checkbox" [checked]="saturdayExe.checked" (change)="saturdayExe.checked=!saturdayExe.checked">
+                    <span></span>
+                  </label>
+                </p>
+                <p class="time">
+                  <input type="number" (input)="NumberInput(saturdayExe.time.start,saturdayExe.time.end)" class="form-control" [disabled]="!saturdayExe.checked"
+                    name="satStart" [(ngModel)]="saturdayExe.time.start">
+                  <span>--</span>
+                  <input type="number" (input)="NumberInput(saturdayExe.time.start,saturdayExe.time.end)" class="form-control" [disabled]="!saturdayExe.checked"
+                    name="saturEnd" [(ngModel)]="saturdayExe.time.end">
+                </p>
+              </div>
+            </div>
+            <div class="exeTime">
+              <div class="timeItem">
+                <p class="day">
+                  星期日
+                  <label class="custom-checkbox nowrap">
+                    <input type="checkbox" [checked]="sundayExe.checked" (change)="sundayExe.checked=!sundayExe.checked">
+                    <span></span>
+                  </label>
+                </p>
+                <p class="time">
+                  <input type="number" (input)="NumberInput(sundayExe.time.start,sundayExe.time.end)" class="form-control" [disabled]="!sundayExe.checked"
+                    name="sunStart" [(ngModel)]="sundayExe.time.start">
+                  <span>--</span>
+                  <input type="number" (input)="NumberInput(sundayExe.time.start,sundayExe.time.end)" class="form-control" [disabled]="!sundayExe.checked"
+                    name="sunEnd" [(ngModel)]="sundayExe.time.end">
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="item-wrap">
+        <div class="title">发货时间：</div>
+        <div class="content">
+          <div class="deliverTime-wrap">
+            <span class="item">
+              <div class="customRadio-wrap" (click)="deliverTimeInfo.value=0">
+                <div class="customRadio">
+                  <span [ngClass]="{'none':deliverTimeInfo.value !=0}"></span>
+                </div>
+              </div>
+              <label (click)="deliverTimeInfo.value=0">真实发货后标记立即发货</label>
+            </span>
+            <span class="item">
+              <div class="customRadio-wrap" (click)="deliverTimeInfo.value=1">
+                <div class="customRadio">
+                  <span [ngClass]="{'none':deliverTimeInfo.value!=1}"></span>
+                </div>
+              </div>
+              <label (click)="deliverTimeInfo.value=1">在订单的支付时间加
+                <input type="number" [(ngModel)]="deliverTimeInfo.payHours" name="payHours" class="form-control innerInput">小时后发货</label>
+            </span>
+            <span class="item">
+              <div class="customRadio-wrap" (click)="deliverTimeInfo.value=2">
+                <div class="customRadio">
+                  <span [ngClass]="{'none':deliverTimeInfo.value!=2}"></span>
+                </div>
+              </div>
+              <label (click)="deliverTimeInfo.value=2">在订单的最后标记发货时间剩余
+                <input type="number" [(ngModel)]="deliverTimeInfo.shipHours" name="shipHours" class="form-control innerInput">小时后发货</label>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="item-wrap">
+        <div class="title">跟踪号类型：</div>
+        <div class="content">
+          <select class="form-control track-number" name="selectTrackingNumberType" [(ngModel)]="selectTrackingNumberType">
+            <option value="None">未指定</option>
+            <option value="TrackingNumber">跟踪号</option>
+            <option value="SpPackageId">转单号</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <label class="custom-checkbox nowrap active">
+        <input type="checkbox" [checked]="isActive" (change)="isActive=!isActive" />
+        <span></span>激活
+      </label>
+      <button type="submit" class="btn btn-sm pull-right btn-primary">保存</button>
+      <button class="btn btn-sm pull-right default-btn" (click)="closeModal()">取消</button>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,15 @@
+<div class="card card-block">
+  <div class="todolist">
+    <h2 class="card-title title">公告栏</h2>
+    <hr/>
+    <ul>
+      <li class="notice-list" *ngFor="let item of noticeList;let i = index" (click)="openNoticeModal(item.id)">
+        <a href="javascript:;">
+          <span class="cirle"></span>
+          <span class="notice-title">{{item.title}}</span>
+          <span class="notice-time">{{item.createTime | date: 'y年/MM月/d日/H:mm:ss'}}</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

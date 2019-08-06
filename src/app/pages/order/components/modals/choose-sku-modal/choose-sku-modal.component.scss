@@ -1,0 +1,35 @@
+.pop-content {
+    width: 900px;
+    margin-left: -305px;
+    .modal-body {
+        width: 100%;
+        .search-condition {
+            width: 100%;
+            height: auto;
+            padding: 0;
+            li {
+                display: block;
+                width: 100%;
+                height: 40px;
+                margin: 10px 0;
+                .search-title {
+                    float: left;
+                    line-height: 40px;
+                }
+                .screen-wrapper {
+                    float: left;
+                }
+                .input-group {
+                    width: 300px;
+                    float: left;
+                    margin-left: 5px;
+                }
+            }
+        }
+        .addon-right {
+            height: 31px;
+            line-height: 31px;
+            border: 1px solid #fff
+        }
+    }
+}

@@ -1,0 +1,11 @@
+.notice-time{
+    float: right;
+}
+
+@media (max-width:1280px){ //Mac Pro 13英寸
+    .overview{
+        h3{
+            font-size: 17px;
+        }
+    }
+}

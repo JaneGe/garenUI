@@ -1,0 +1,62 @@
+#account .tag {
+    margin-bottom: 15px;
+    width: auto;
+    text-align: center;
+}
+.tag-selected{
+  background:#fff;color:#2389F2;
+}
+.tag{
+  margin-bottom: 10px;
+}
+form {
+    min-height: 600px;
+}
+
+.modal-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+}
+
+.card div .inline:nth-of-type(1) {
+    width: 15%
+}
+
+.card div .inline:nth-of-type(2) select {
+    width: 100%;
+}
+
+.result {
+    background: #fff;
+    color: #2389F2;
+    display: inline-block;
+    margin: 0 10px 10px 0;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.box {
+    height: 150px;
+    width: 100%;
+    overflow: auto;
+}
+
+.tip {
+    font-size: 14px;
+}
+
+.height {
+    max-height: 320px;
+    padding-bottom: 0;
+}
+form.smmodal{
+  position: absolute;
+  left: 50%;
+  width: 810px;
+  top:50px;
+  margin-left: -405px;
+  min-height: 800px;
+}

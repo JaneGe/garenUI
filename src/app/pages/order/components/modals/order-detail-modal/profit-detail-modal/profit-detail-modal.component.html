@@ -1,0 +1,127 @@
+<div class="pop-content clearfix" style="min-height: 575px;">
+  <div class="modal-header">
+    <span class="modal-title">
+      订单利润详情
+      <a href="javascript:;" (click)="closeModal()">
+        <i class="ion-close-round"></i>
+      </a>
+    </span>
+  </div>
+  <div class="modal-body">
+    <div class="profit">
+      <ul>
+        <li>总收入：<span class="green-text attention">{{orderDetail.totalAmountCny| number:'1.1-2'}}￥</span></li>
+        <li>总支出：<span class="red-text attention">{{(orderDetail.confirmShippingFee || orderDetail.estimateShippingFee) + (orderDetail.confirmSkuCostAmount || orderDetail.skuCostAmount) + (orderDetail.siteCommissionFee*orderDetail.currencyExchangeRate )| number:'1.1-2'}}￥</span></li>
+        <li>预估利润：<span class="yellow-text attention">{{orderDetail.estimateProfit != null ? orderDetail.estimateProfit+'￥' : '暂无数据'}}</span></li>
+        <li>实际利润：<span class="attention gold-text">{{orderDetail.confirmProfit != null ? orderDetail.confirmProfit+'￥' : '暂无数据'}}</span></li>
+      </ul>
+      <ul>
+        <li *ngIf="orderDetail.estimateProfit != null">预估利润率：<span class="yellow-text attention">{{orderDetail.estimateProfit/orderDetail.totalAmountCny * 100 | number:'1.1-3'}}%</span>
+        </li>
+        <li *ngIf="orderDetail.estimateProfit === null">预估利润率：<span class="yellow-text attention">暂无数据</span></li>
+        <li *ngIf="orderDetail.confirmProfit === null">实际利润率：<span class="attention gold-text">暂无数据</span></li>
+        <li *ngIf="orderDetail.confirmProfit != null">实际利润率：<span class="attention gold-text">{{orderDetail.confirmProfit/orderDetail.totalAmountCny* 100 | number:'1.1-3'}}%</span>
+        </li>
+        <!--<li>销售毛利率：<span class="attention blue-text"> 52.6%</span></li>-->
+      </ul>
+    </div>
+    <div class="tab-content" *ngIf="orderDetail">
+      <!--<label>订单运费</label>-->
+      <!--<span>{{orderDetail.confirmShippingFee != null ? orderDetail.confirmShippingFee+'￥' : '没有录入'}}</span>-->
+
+      <!--<label>预估利润：</label>-->
+      <!--<span class="yellow-text">{{orderDetail.estimateProfit != null ? orderDetail.estimateProfit+'￥' : '暂无数据'}}</span>-->
+      <!--<label>预估利润率：</label>-->
+      <!--<span class="yellow-text" *ngIf="orderDetail.estimateProfit === null">暂无数据</span>-->
+      <!--<span class="yellow-text" *ngIf="orderDetail.estimateProfit != null">{{orderDetail.estimateProfit/orderDetail.totalAmountCny * 100 | number:'1.1-3'}}%</span>-->
+      <!--<br>-->
+      <!--<label>实际利润：</label>-->
+      <!--<span class="yellow-text">{{orderDetail.confirmProfit != null ? orderDetail.confirmProfit+'￥' : '暂无数据'}}</span>-->
+      <!--<label>实际利润率：</label>-->
+      <!--<span class="yellow-text" *ngIf="orderDetail.confirmProfit === null">暂无数据</span>-->
+      <!--<span class="yellow-text" *ngIf="orderDetail.confirmProfit != null">{{orderDetail.confirmProfit/orderDetail.totalAmountCny* 100 | number:'1.1-3'}}%</span>-->
+
+      <!--<label>汇率</label>-->
+      <!--<span>{{orderDetail.confirmCurrencyExchangeRate != null ? orderDetail.confirmCurrencyExchangeRate+'￥' : '无'}}</span>-->
+      <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+          <th>币种</th>
+          <th>操作人员</th>
+          <th>当前金额</th>
+          <th>实际金额</th>
+          <th>费用类型</th>
+          <th>是否确认</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>{{orderDetail.currency}}</td>
+          <td>系统</td>
+          <td class="money-text">{{orderDetail.totalAmount | number:'1.1-2'}}</td>
+          <td class="money-text">{{orderDetail.totalAmountCny | number:'1.1-2'}}￥</td>
+          <td>订单总金额</td>
+          <td>
+            <i class="ion-checkmark-circled true normal-size"></i>
+          </td>
+        </tr>
+        <tr>
+          <td>CNY</td>
+          <td>系统</td>
+          <td>{{orderDetail.estimateShippingFee | number:'1.1-2'}}</td>
+          <td *ngIf="orderDetail.confirmShippingFee!=null">{{orderDetail.confirmShippingFee | number:'1.1-2'}}￥</td>
+          <td *ngIf="orderDetail.confirmShippingFee==null">暂无</td>
+          <td>本地仓运费</td>
+          <td *ngIf="orderDetail.confirmShippingFee==null">
+            <i class="ion-close-circled false normal-size"></i>
+          </td>
+          <td *ngIf="orderDetail.confirmShippingFee!=null">
+            <i class="ion-checkmark-circled true normal-size"></i>
+          </td>
+        </tr>
+        <tr>
+          <td>CNY</td>
+          <td>系统</td>
+          <td>{{orderDetail.skuCostAmount | number:'1.1-2'}}</td>
+          <td *ngIf="orderDetail.confirmSkuCostAmount!=null">{{orderDetail.confirmSkuCostAmount | number:'1.1-2'}}￥</td>
+          <td *ngIf="orderDetail.confirmSkuCostAmount==null">暂无</td>
+          <td>商品采购成本</td>
+          <td *ngIf="orderDetail.status!='Shipped'">
+            <i class="ion-close-circled false normal-size"></i>
+          </td>
+          <td *ngIf="orderDetail.status =='Shipped'">
+            <i class="ion-checkmark-circled true normal-size"></i>
+          </td>
+        </tr>
+        <tr>
+          <td>{{orderDetail.currency}}</td>
+          <td>系统</td>
+          <td>{{orderDetail.siteCommissionFee | number:'1.1-2'}}</td>
+          <td>{{orderDetail.siteCommissionFee*orderDetail.currencyExchangeRate | number:'1.1-2'}}￥</td>
+          <td>佣金</td>
+          <td>
+            <i class="ion-checkmark-circled true normal-size"></i>
+          </td>
+        </tr>
+        <tr>
+          <td>CNY</td>
+          <td>系统</td>
+          <td>0</td>
+          <td  *ngIf="orderDetail.financeProfit!=null">{{orderDetail.financeProfit | number:'1.1-2'}}￥</td>
+          <td  *ngIf="orderDetail.financeProfit==null">暂无</td>
+          <td>对账利润</td>
+          <td *ngIf="orderDetail.financeProfit==null">
+            <i class="ion-close-circled false normal-size"></i>
+          </td>
+          <td *ngIf="orderDetail.financeProfit!=null">
+            <i class="ion-checkmark-circled true normal-size"></i>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="footer">
+    <button class="btn btn-sm btn-default right" (click)="closeModal()">关闭</button>
+  </div>
+</div>

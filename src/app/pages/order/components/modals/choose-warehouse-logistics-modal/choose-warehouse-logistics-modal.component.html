@@ -1,0 +1,26 @@
+<div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <span class="modal-title">合并订单</span>
+    <button type="button" class="close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body clearfix">
+    <div class="display-block">
+      <label>选择仓库</label>
+      <select class="form-control select-option" (change)="OnWarehouseChange($event.target)">
+        <option *ngFor="let name of warehouseItem;"  value="{{name.warehouseId}}">{{name.name}}</option>
+      </select>
+    </div>
+    <div class="display-block">
+      <label>选择物流</label>
+      <select2 [data]="logisticsItem" [width]="420" (valueChanged)="onLogicChanged($event)"></select2>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="footer-btn">
+      <button class="btn btn-default" type="submit" (click)="closeModal()">取消</button>
+      <button class="btn btn-primary" (click)="confirmMerge()">确定合并订单</button>
+    </div>
+  </div>
+</div>

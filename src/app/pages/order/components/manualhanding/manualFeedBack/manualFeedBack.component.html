@@ -1,0 +1,151 @@
+<app-search-head
+  (childSelectedWarehouse)="getchildSelectedWarehouse($event)"
+  (childSelectedChannelType)="getchildSelectedChannelType($event)"
+  (childSelectedChannelIds)="getchildSelectedChannelId($event)"
+  (childOnSelectCountry)="getchildOnSelectCountry($event)"
+  (childSelectedTimeFiltType)="getchildSelectedTimeFiltType($event)"
+  (childSelectedTimeValueType)="getchildSelectedTimeValueType($event)"
+  (childTimeSearchStart)="getchildTimeSearchStart($event)"
+  (childTimeSearchEnd)="getchildTimeSearchEnd($event)"
+  (childSelectSearchType)="getchildSelectSearchType($event)"
+  (childSearchText)="getchildSearchText($event)"
+  (childOrderBatchsearchType)="getchildOrderBatchsearchType($event)"
+  (childOrderBatchsearchText)="getchildOrderBatchsearchText($event)"
+  (childOrderBatchsearch)="getchildOrderBatchsearch($event)">
+</app-search-head>
+<div class="btn-box">
+  <div class="checkbox">
+    <label class="checkbox-inline custom-checkbox nowrap">
+      <input type="checkbox" [checked]="isCheckAllPages" (change)="onCheclAllPageChange($event.target.checked)">
+      <span>选中所有页</span>
+    </label>
+  </div>
+  <div class="searchPart gap">
+    <div class="buttonpart">
+      <!--<button class="btn btn-primary" (click)="DoExport($event.target)">导出</button>-->
+    </div>
+  </div>
+</div>
+
+<form class="pagination-wrapper">
+  <div class="form-group pages center">
+    <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+      autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+      screenReaderCurrentLabel="You're on page">
+    </pagination-controls>
+  </div>
+  <div class="form-group options pages">
+    <div class="input-group input-group-sm">
+      <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+        <option>1</option>
+        <option>5</option>
+        <option>10</option>
+        <option>20</option>
+        <option>50</option>
+        <option>100</option>
+        <option>200</option>
+      </select>
+      <span class="input-group-addon addon-right">条/页</span>
+      <span class="input-group-addon addon-right">共{{total}}条数据</span>
+    </div>
+  </div>
+</form>
+<table class="table table-hover table-bordered">
+  <thead>
+    <tr>
+      <th>
+        <label class="checkbox-inline custom-checkbox nowrap">
+          <input type="checkbox" [checked]="selectOrderIds.length == items.length && items.length > 0" (change)="onCheckAllOrderChanged($event.target.checked)">
+          <span></span>
+        </label>
+      </th>
+      <!--<th>图片</th>-->
+      <th class="order-id">订单号</th>
+      <th>收件人
+        <br>[买家]</th>
+      <th>目的地</th>
+      <th>金额</th>
+      <th>时间
+        <br>[GMT+8:00]</th>
+      <th>
+        <p>回传跟踪号码</p>
+        <p style="margin-bottom: 0;">物流回传名称</p>
+      </th>
+      <th>
+        <p>真实发货跟踪号码</p>
+        <p style="margin-bottom: 0;">物流回传名称</p>
+      </th>
+      <!--<th>状态</th>-->
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let order of items | paginate: { id: 'pager',
+                                                itemsPerPage: pageSize,
+                                                currentPage: pageNumber,
+                                                totalItems: total};let i = index">
+      <td>
+        <label class="checkbox-inline custom-checkbox nowrap">
+          <input type="checkbox" [checked]="selectOrderIds.indexOf(order.id) >= 0" (change)="onCheckOrderChanged($event.target.checked, order.id)"
+          />
+          <span></span>
+        </label>
+      </td>
+
+      <td class="short-info">
+        <a href="javascript:;" class="orderNumber-text" (click)="openOrderDetailModal(order.id)">{{order.orderNumber}}</a>
+      </td>
+      <td class="short-info">{{order.buerName}}</td>
+      <td class="short-info">{{order.shippingCountryName}}</td>
+      <td class="short-info">{{order.currency}} {{order.totalAmount}}</td>
+      <td>
+        <div class="infobox">
+          <p>付款时间：{{order.paidTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</p>
+          <p *ngIf="order.printedTime != null">打印时间：{{order.printedTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</p>
+          <p *ngIf="order.printedTime == null">打印时间：未打印 </p>
+
+          <p *ngIf="order.shippedTime != null">发货时间：{{order.shippedTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</p>
+          <p *ngIf="order.shippedTime == null">发货时间：未发货</p>
+          <p>下单时间：{{order.orderedTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</p>
+        </div>
+      </td>
+      <td>
+        <p>{{order.siteTrackingNumber!=null?order.siteTrackingNumber:'暂无数据'}}</p>
+        <p>{{order.siteShippingServiceCarrierCode!=null?order.siteShippingServiceCarrierCode:'暂无数据'}}</p>
+      </td>
+      <td>
+        <p>{{order.trackingNumber}}</p>
+        <p>{{order.shippingServiceCarrierCode}}</p>
+      </td>
+      <td class="short-info">
+        <button class="btn btn-warning btn-sm" (click)="confirmModify(order.id)">确认修改</button>
+        <button class="btn btn-default btn-sm" (click)="openOrderDetailModal(order.id)">详细</button>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot>
+  </tfoot>
+</table>
+<form class="pagination-wrapper">
+  <div class="form-group pages">
+    <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+      autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+      screenReaderCurrentLabel="You're on page">
+    </pagination-controls>
+  </div>
+  <div class="form-group options pages">
+    <div class="input-group input-group-sm">
+      <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+        <option>1</option>
+        <option>5</option>
+        <option>10</option>
+        <option>20</option>
+        <option>50</option>
+        <option>100</option>
+        <option>200</option>
+      </select>
+      <span class="input-group-addon addon-right">条/页</span>
+      <span class="input-group-addon addon-right">共{{total}}条数据</span>
+    </div>
+  </div>
+</form>

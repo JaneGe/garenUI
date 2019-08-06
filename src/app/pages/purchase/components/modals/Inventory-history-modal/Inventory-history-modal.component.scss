@@ -1,0 +1,11 @@
+.pop-content {
+    width: 1200px;
+    margin-left: -400px;
+    padding: 5px;
+    overflow: hidden;
+    .pagination-wrapper {
+        select.form-control {
+            height:35px;
+        }
+    }
+}

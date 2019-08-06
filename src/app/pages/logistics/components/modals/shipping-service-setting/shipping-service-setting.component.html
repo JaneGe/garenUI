@@ -1,0 +1,206 @@
+<div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <h3 class="modal-title">{{modalHeader}}</h3>
+    <button type="button" class="close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <select class="form-control select" [(ngModel)]="pickWay">
+      <option value="BySku">按SKU拣货</option>
+      <option value="ByPackage">按包裹拣货</option>
+    </select>
+    <select class="form-control select" [(ngModel)]="shipTypes">
+      <option value="ByPackage">按件发货</option>
+      <option value="ByPocket">按袋发货</option>
+    </select>
+
+    <section class="well well-edit">
+      <a href="javascript:;" class="edit" title="编辑" (click)="editCarrierCodes()">
+        <span class="triangle">
+          <i class="ion-edit"></i>
+        </span>
+      </a>
+      <div class="control-group">
+        <label class="control-label">物流方式名称</label>
+        <input type="text" value="{{ssDetail.ssName}}" id="ssName"  class="form-control  short-input bg-disabled" disabled>
+        <label class="control-label">物流服务商</label>
+        <input type="text" value="{{ssDetail.spName}}" id="spName" class="form-control short-input bg-disabled" disabled>
+      </div>
+      <div class="control-group feedBack">
+        <label class="control-label">回传名称</label>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th style="width:140px">平台名称</th>
+              <th>回传名称</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>亚马逊</td>
+              <td>
+                <div class="feedBack-part">
+                  <span *ngIf="!isEditCarrierCodes">{{amazonCarrierCode.carrierCode}}</span>
+                  <select class="form-control short-input" [(ngModel)]="amazonCarrierCode.carrierCode" *ngIf="isEditCarrierCodes">
+                    <option *ngFor="let carrierCode of allAmazonCarrierCodes" value="{{carrierCode.code}}">{{carrierCode.name}}</option>
+                  </select>
+                  <input [disabled]="isEditCarrierCodes?null:'true'" class="form-control" type="text" *ngIf="amazonCarrierCode.carrierCode == 'Other'" [(ngModel)]="amazonCarrierCode.customCarrierName"/>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>速卖通</td>
+              <td>
+                <div class="feedBack-part">
+                <span *ngIf="!isEditCarrierCodes">{{aliExpressCarrierCode.carrierCode}}</span>
+                <select class="form-control short-input" [(ngModel)]="aliExpressCarrierCode.carrierCode"  *ngIf="isEditCarrierCodes">
+                  <option *ngFor="let carrierCode of getChannelCarrierCodes('AliExpress')" value="{{carrierCode.code}}">{{carrierCode.name}}</option>
+                </select>
+                <input class="form-control" [disabled]="isEditCarrierCodes?null:'true'" type="text"
+                       *ngIf="aliExpressCarrierCode.carrierCode != null && aliExpressCarrierCode.carrierCode.toLocaleLowerCase().indexOf('other') >= 0"
+                       [(ngModel)]="aliExpressCarrierCode.customCarrierName" />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Wish</td>
+              <td>
+                <span *ngIf="!isEditCarrierCodes">{{wishCarrierCode.carrierCode}}</span>
+                <select class="form-control short-input" [(ngModel)]="wishCarrierCode.carrierCode"  *ngIf="isEditCarrierCodes">
+                  <option *ngFor="let carrierCode of getChannelCarrierCodes('Wish')" value="{{carrierCode.code}}">{{carrierCode.name}}</option>
+                </select>
+                <input class="form-control" [disabled]="isEditCarrierCodes?null:'true'" type="text"
+                       *ngIf="wishCarrierCode.carrierCode != null && wishCarrierCode.carrierCode.toLocaleLowerCase().indexOf('other') >= 0"
+                       [(ngModel)]="wishCarrierCode.customCarrierName" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="control-group item-wrap">
+        <label class="control-label">跟踪号查询网址</label>
+        <input type="text" [(ngModel)]="ssDetail.trackSite" class="form-control" />
+      </div>
+      <div class="control-group item-wrap" style="margin:20px 0">
+        <label class="custom-checkbox">
+          <!--<input type="checkbox" (change)="ifNeedTraceNum=!ifNeedTraceNum" [attr.checked]="ifNeedTraceNum?null:'true'"  name="ifNeedTraceNum" class="form-control" />-->
+          <input type="checkbox" (change)="onIfNeedTraceNumChange(ssDetail.hasTrackingNumber=!ssDetail.hasTrackingNumber)" [attr.checked]="!ssDetail.hasTrackingNumber?null:'true'"
+            name="ifNeedTraceNum" class="form-control" />
+          <span>是否有跟踪号</span>
+        </label>
+      </div>
+      <div class="control-group item-wrap">
+        <label class="custom-checkbox">
+          <input type="checkbox" (change)="onIfNeedReturnPackage(ssDetail.needReturnPackage=!ssDetail.needReturnPackage)" [attr.checked]="!ssDetail.needReturnPackage?null:'true'"
+            name="ifNeedReturnPackage" class="form-control" />
+          <span>是否需要退件</span>
+        </label>
+      </div>
+    </section>
+    <section class="well">
+      <div class="control-group">
+        <label class="control-label">发货标签设置</label>
+        <div class="bill-group">
+          <a href="javascript:;" class="edit" title="编辑">
+            <span class="triangle">
+              <i class="ion-edit"></i>
+            </span>
+          </a>
+          <div class="row-fluid">
+            <div class="text-middle">
+              <label>地址标签</label>
+            </div>
+            <div class="text-center">
+              <img src="{{choose_bill.img}}" alt="面单" class="bill-model">
+              <span class="desc">{{choose_bill.name}}</span>
+            </div>
+            <div class="edit-mode">
+              <a href="javascript:;" (click)="openModal(0)">选择其他模板</a>
+            </div>
+          </div>
+        </div>
+        <div class="bill-group">
+          <a href="javascript:;" class="edit" title="编辑">
+            <span class="triangle">
+              <i class="ion-edit"></i>
+            </span>
+          </a>
+          <div class="row-fluid">
+            <div class="text-middle">
+              <div class="checkbox">
+                <input type="checkbox" id="checkbox-1" class="regular-checkbox" />
+                <label for="checkbox-1"></label>
+                <span>报关单</span>
+              </div>
+            </div>
+            <div class="text-center">
+              <img src="{{declaration_bill.img}}" alt="报关单" class="bill-model">
+              <span class="desc">{{declaration_bill.name}}</span>
+            </div>
+            <div class="edit-mode">
+              <a href="javascript:;" (click)="openModal(1)">选择其他模板</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="control-group consignor-info">
+        <ul>
+          <li>
+            <label class="control-label">发货人</label>
+            <input type="text" class="form-control short-input" [(ngModel)]="senderCn.userName" placeholder="发件人中文名称">
+            <input type="text" class="form-control short-input" [(ngModel)]="senderEn.userName" placeholder="发件人英文名称">
+          </li>
+          <li>
+            <label class="control-label">Email</label>
+            <input type="text" class="form-control short-input" [(ngModel)]="senderCn.email" placeholder="发件人Email">
+          </li>
+          <li>
+            <label class="control-label">联系电话</label>
+            <input type="text" class="form-control short-input" [(ngModel)]="senderCn.phoneNumber" placeholder="发件人联系电话">
+          </li>
+          <li>
+            <label class="control-label">邮编</label>
+            <input type="text" class="form-control short-input" [(ngModel)]="senderCn.zipCode" placeholder="发件地区邮编">
+          </li>
+          <li>
+            <label class="control-label">地址</label>
+
+            <div>
+              <select class="form-control control-sm" [(ngModel)]="senderCn.provinceId" (change)="onProvinceChange()">
+                <option value="0">----请选择省----</option>
+                <option *ngFor="let province of provinces" [value]="province.id">{{province.name}}</option>
+              </select>
+              <select class="form-control control-sm" [(ngModel)]="senderCn.cityId" (change)="onCityChange()">
+                <option value="0">----请选择市----</option>
+                <option *ngFor="let city of cities" [value]="city.id">
+                  {{city.name}}
+                </option>
+              </select>
+              <select class="form-control control-sm" [(ngModel)]="senderCn.regionId">
+                <option value="0">----请选择区----</option>
+                <option *ngFor="let region of regions" [value]="region.id">
+                  {{region.name}}
+                </option>
+              </select>
+            </div>
+
+          </li>
+          <li>
+            <label class="control-label">街道</label>
+            <textarea cols="30" rows="10" class="form-control" [(ngModel)]="senderCn.street" placeholder="中文发件详细地址"></textarea>
+            <textarea cols="30" rows="10" class="form-control" [(ngModel)]="senderEn.street" placeholder="英文发件详细地址"></textarea>
+          </li>
+          <li></li>
+        </ul>
+      </div>
+    </section>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-default" (click)="closeModal()">取消</button>
+      <button class="btn btn-primary" (click)="saveServiceSetting()">保存</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,164 @@
+<div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <span class="modal-title">补发货</span>
+    <button type="button" class="close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="content-header">
+      <ul>
+        <li>
+          <span class="caption">订单号</span>
+          <span>{{orderDetail.orderNumber}}</span>
+        </li>
+        <li>
+          <span class="caption">卖家</span>
+          <span>{{orderDetail.channelName}}</span>
+        </li>
+        <li>
+          <span class="caption">站点</span>
+          <span>{{orderDetail.site}}</span>
+        </li>
+        <li>
+          <span class="caption">金额</span>
+          <span>{{orderDetail.currency}} {{orderDetail.totalAmount}}</span>
+        </li>
+      </ul>
+    </div>
+    <div class="body-left">
+      <div class="card">
+        <label class="form-title">
+          商品信息
+          <span class="must">必填</span>
+          <a href="javascript:;" (click)="addGoods()">增加商品</a>
+        </label>
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>Cust.L</th>
+              <th>SKU</th>
+              <th>数量</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let orderLine of goodsList;let i = index">
+              <td></td>
+              <td>
+                <div class="btn-group">
+                  <button class="btn btn-xs btn-primary" (click)="openChooseSkuModal(i)">
+                    <i class="ion-edit"></i>
+                  </button>
+                </div>
+                <input type="text" class="table-input" [(ngModel)]="orderLine.skuCode" />
+                <!-- <input type="text" class="table-input" [(ngModel)]="orderLine.skuCode"> -->
+              </td>
+              <td>
+                <input type="text" class="table-input" [(ngModel)]="orderLine.quantity">
+              </td>
+              <td>
+                <a href="javascript:;" (click)="removeGood(i)">删除</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card card-block">
+        <label class="form-title">物流信息
+          <span class="must">必填</span>
+        </label>
+        <ul>
+          <li>
+            <label class="list-label">发货仓库：</label>
+            <select class="form-control" [(ngModel)]="selectedWarehouseId" (change)="onWarehouseChanged($event)">
+              <option value="">请选择</option>
+              <option *ngFor="let types of allWarehouses" [value]="types.warehouseId" [selected]="types.warehouseId===orderDetail.allocatedWarehouseId">
+                {{types.name}}
+              </option>
+            </select>
+          </li>
+          <li>
+            <label class="list-label">物流方式：</label>
+            <select class="form-control" [(ngModel)]="selectSsId" (change)="onShippingServiceChanged($event)">
+              <option value="">请选择</option>
+              <option *ngFor="let types of warehouseAllShippingService" [value]="types.ssid" [selected]="types.ssid===orderDetail.allocatedShippingServiceId">
+                {{types.name}}
+              </option>
+            </select>
+
+
+          </li>
+        </ul>
+      </div>
+      <div class="card">
+        <label class="form-title">补发货原因
+          <span class="must">必填</span>
+        </label>
+        <textarea class="form-control" [(ngModel)]="reissueReason"></textarea>
+      </div>
+    </div>
+    <div class="body-right">
+      <div class="card">
+        <label class="form-title">收件人信息</label>
+        <ul>
+          <li>
+            <span class="must">必填</span>
+            <label class="list-label">收件人</label>
+            <input type="text" class="form-control" disabled placeholder="请输入收件人名称" [(ngModel)]="buyerAddress.buyerName">
+          </li>
+          <li>
+            <span class="must">必填</span>
+            <label class="list-label">地址1</label>
+            <input type="text" class="form-control" disabled placeholder="请输入地址" [(ngModel)]="buyerAddress.addressLine1">
+          </li>
+          <li>
+            <span class="explain">选填</span>
+            <label class="list-label">地址2</label>
+            <input type="text" class="form-control" disabled placeholder="请输入地址" [(ngModel)]="buyerAddress.addressLine2">
+          </li>
+          <li>
+            <span class="must">必填</span>
+            <label class="list-label">城市</label>
+            <input type="text" class="form-control" disabled placeholder="请输入收件城市" [(ngModel)]="buyerAddress.city">
+          </li>
+          <li>
+            <span class="must">必填</span>
+            <label class="list-label">省州</label>
+            <input type="text" class="form-control" disabled placeholder="请输入收件省州" [(ngModel)]="buyerAddress.stateOrProvince">
+          </li>
+          <li>
+            <span class="must">必填</span>
+            <label class="list-label">国家</label>
+            <!--<select2 class="country-select" [data]="countryName" [width]="368" [value]="value" (valueChanged)="onChangeCountryChanged($event)"></select2>-->
+
+            <select2 *ngIf="allCountries.length > 0" class="country-select" [data]="allCountries" [width]="368" [value]="buyerAddress.countryCode"
+              (valueChanged)="onChangeCountryChanged($event)"></select2>
+
+          </li>
+          <li>
+            <span class="must">必填</span>
+            <label class="list-label">邮编</label>
+            <input type="text" class="form-control" disabled placeholder="请输入邮编" [(ngModel)]="buyerAddress.postalCode">
+          </li>
+          <li>
+            <span class="must">必填</span>
+            <label class="list-label">电话1</label>
+            <input type="text" class="form-control" disabled placeholder="请输入电话" [(ngModel)]="buyerAddress.phoneNumber1">
+          </li>
+          <li>
+            <span class="explain">选填</span>
+            <label class="list-label">电话2</label>
+            <input type="text" class="form-control" disabled placeholder="请输入电话" [(ngModel)]="buyerAddress.phoneNumber2">
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-default" (click)="closeModal()">关闭</button>
+      <button class="btn btn-primary" (click)="saveReissue()">提交</button>
+    </div>
+  </div>
+</div>

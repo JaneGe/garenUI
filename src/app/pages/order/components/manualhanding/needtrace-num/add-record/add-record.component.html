@@ -1,0 +1,24 @@
+<form (submit)="OnSubmit(bg.value,gz.value)" id="form">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">您还有个{{itemsLength}}包裹未录入跟踪号</h4>
+      <button class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="card card-block">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="请输入包裹号" #bg>
+        </div>
+        <div class="form-group">
+        <input type="text" class="form-control" placeholder="请输入跟踪号" #gz>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-sm pull-right submit">确定</button>
+      <button type="button" class="btn btn-sm pull-right cancel" (click)="closeModal()">取消</button>
+    </div>
+  </div>
+</form>

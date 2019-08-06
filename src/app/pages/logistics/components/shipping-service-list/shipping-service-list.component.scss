@@ -1,0 +1,83 @@
+.wrapper{
+  height:auto;
+  .screen-box{
+    width:100%;
+    height: auto;
+    .screen-list{
+      width:100%;
+      padding:0;
+      li{
+        width:100%;
+        float: left;
+        margin:10px 0;
+        .screen-title{
+          display: inline-block;
+          width:120px;
+          line-height: 28px;
+          float: left;
+          font-size: 1.1em;
+        }
+        .custom-radio{
+          margin:0 20px 0 5px;
+          float: left;
+          line-height: 30px;
+        }
+        .search{
+          width:300px;
+          input{
+            margin-left:5px;
+            height:30px;
+          }
+        }
+      }
+    }
+  }
+  .table-box{
+    width:100%;
+  }
+  .table{
+    th,td{
+      text-align: center;
+    }
+    tbody{
+      tr{
+        td{
+          text-indent: 0.3em;
+          .false-sign{
+            display: inline-block;
+            margin-right:3px;
+          }
+          .custombtn.false-sign{
+            background-color: #209e91;
+            padding:5px;
+            border-radius: 2px;
+            vertical-align: middle;
+            height: 22px;
+            line-height: 1;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+    .edit-btn{
+      color:#fff;
+      &:hover{
+        text-decoration: underline !important;
+      }
+    }
+  }
+}
+table tbody tr td.import{
+  p{
+    margin-bottom: 0;
+  }
+  button{
+    float: right;
+  }
+}
+@media (max-width:1280px){ //Mac Pro 13英寸
+
+}
+@media (max-width:1440px){ //Mac Pro 15英寸
+
+}

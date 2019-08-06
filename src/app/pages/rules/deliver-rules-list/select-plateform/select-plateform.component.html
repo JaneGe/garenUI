@@ -1,0 +1,12 @@
+<h3 style="margin-bottom: 20px;">平台选择：</h3>
+<div class="area-wrapper">
+  <div class="card-wrapper" *ngFor="let item of platforms">
+    <a href="javascript:;" [routerLink]="'../deliverRulesList'" [queryParams]="{plateForm:item.code}">
+    <div class="card">
+      <span>{{item.displayName}}</span>
+      <div class="type-box">
+      </div>
+    </div>
+    </a>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+.pop-content {
+    width: 1000px;
+    ul {
+        li {
+            list-style: none;
+            margin: 20px 0 20px -40px;
+        }
+    }
+    .edit-btn {
+        color: #fff;
+    }
+    .btn-group {
+        width: auto;
+        float: right;
+        margin: 10px 0;
+    }
+}
+
+.custom-pager-wraper .form-group {
+    margin: 25px 0 0 0;
+}
+
+div.custom-btn-group {
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+.country-codes {
+    word-break: break-all;
+}

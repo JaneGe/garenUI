@@ -1,0 +1,32 @@
+<form id="form">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">{{modalHeader}}</h4>
+      <button class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="card card-block">
+        <p>
+          <span class="title">供应商名称：</span>{{info.name}}</p>
+        <p>
+          <span class="title">地址：</span>{{info.address}}</p>
+        <p>
+          <span class="title">网址：</span>{{info.url}}</p>
+        <p>
+          <span class="title">联系人：</span>{{info.contactName}}</p>
+        <p>
+          <span class="title">电话：</span>{{info.phone}}</p>
+        <p>
+          <span class="title">Email：</span>{{info.email}}</p>
+        <!--<p><span class="title">维护人：</span>{{info.maintainMan}}</p>-->
+        <p>
+          <span class="title">描述：</span>{{info.note}}</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-sm btn-danger pull-right cancel" (click)="closeModal()">关闭</button>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,142 @@
+<h3>最后更新时间：2017/12/22 下午 13:58</h3>
+<div class="card card-block">
+  <div class="card card-block select-part">
+    <div class="select bdb">
+      <div class="part-wrap">
+        <span class="title">仓库：</span>
+      </div>
+      <div class="option-wrap">
+        <span class="option" *ngFor="let item of warehouse" (click)="selectedwarehouse=item.id"
+              [ngClass]="{'tag':item.id==selectedwarehouse}">{{item.text}}</span>
+      </div>
+    </div>
+
+    <div *ngIf="clickbottom==1">
+      <div class="select">
+        <div class="part-wrap">
+          <span class="title">时间筛选：</span>
+        </div>
+        <div class="option-wrap">
+        <span class="option" *ngFor="let item of deliverTime" (click)="selecteddeliverTime=item.id"
+              [ngClass]="{'tag':item.id==selecteddeliverTime}">{{item.text}}</span>
+          <span class="option option-nobot" *ngIf="selecteddeliverTime==4">
+                <ng-datepicker   [(ngModel)]="timeSearchStart"
+                                 [options]="DatepickerOptions"></ng-datepicker>
+              </span>
+          <span class="option timegap option-nobot" *ngIf="selecteddeliverTime==4">~</span>
+          <span class="option option-nobot" [ngClass]="{'unvisible':selecteddeliverTime!=4}">
+                <ng-datepicker  [(ngModel)]="timeSearchEnd"
+                                [options]="DatepickerOptions"></ng-datepicker>
+              </span>
+          <span class="option option-nobot">
+                <button *ngIf="selecteddeliverTime==4" class="btn btn-primary"
+                        (click)="OnUserSetTimeQuery()">确定</button>
+              </span>
+        </div>
+      </div>
+      <div class="select">
+        <div class="part-wrap">
+          <span class="title">员工筛选：</span>
+        </div>
+        <div class="option-wrap">
+        <span class="option" *ngFor="let item of people" (click)="peopleSelect(item.id)"
+              [ngClass]="{'tag':item.id==selectedpeople}">{{item.text}}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="toggle-select">
+      <button *ngIf="clickbottom==0&&clicktop==0" class="btn btn-primary btn-sm" (click)="toggle1(0)">
+        <span class="icon ion-arrow-down-b"></span>高级筛选</button>
+      <button *ngIf="clickbottom==1&&clicktop==0" class="btn btn-primary btn-sm" (click)="toggle1(1)">
+        <span class="icon ion-arrow-up-b"></span>收起</button>
+    </div>
+  </div>
+  <div class="toggle-btn">
+    <div class="arrorw arrorw-right" (click)="toggleBar(0)"><p> > > > > > > </p></div>
+    <span class="title-b" (click)="toggleBar(1)">表格</span>
+    <div class="toggele-bar" [ngStyle]="{'left':toggle?'0':'50%'}"></div>
+    <span class="title-t" (click)="toggleBar(0)">图表</span>
+    <div class="arrorw arrorw-left" (click)="toggleBar(1)"><p> < < < < < < </p></div>
+  </div>
+
+  <div class="content-wrap">
+    <div class="table-wrap" [ngClass]="{'none':!toggle}">
+      <form class="pagination-wrapper">
+        <div class="form-group pages">
+          <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+                               autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                               screenReaderCurrentLabel="You're on page">
+          </pagination-controls>
+        </div>
+        <div class="form-group options pages">
+          <div class="input-group input-group-sm">
+            <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize">
+              <option>1</option>
+              <option>2</option>
+              <option>5</option>
+              <option>10</option>
+              <option>20</option>
+              <option>50</option>
+              <option>100</option>
+              <option>200</option>
+            </select>
+            <span class="input-group-addon addon-right">条/页</span>
+            <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条数据</span>
+            <span class="input-group-addon addon-right output">导出</span>
+          </div>
+        </div>
+      </form>
+      <table class="table table-hover table-bordered" id="table">
+        <thead>
+        <tr class="black-muted-bg">
+          <th>时间</th>
+          <th>姓名</th>
+          <th>小组</th>
+          <th >数量</th>
+
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of tableinfo|paginate: { id: 'pager',
+                                                        itemsPerPage:PageInfo.pageSize,
+                                                        currentPage:PageInfo.pageIndex,
+                                                        totalItems:PageInfo.totalCount};let index = index">
+          <td>{{item.time}}</td>
+          <td>{{item.name}}</td>
+          <td>{{item.group}}</td>
+          <td [ngClass]="{'red-text':smallestindex.indexOf(index)!=-1,'green-text':biggestindex.indexOf(index)!=-1}">{{item.num}}</td>
+        </tr>
+        </tbody>
+      </table>
+      <form class="pagination-wrapper" *ngIf="PageInfo.totalCount>20&&PageInfo.pageSize==20">
+        <div class="form-group pages">
+          <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+                               autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                               screenReaderCurrentLabel="You're on page">
+          </pagination-controls>
+        </div>
+        <div class="form-group options pages">
+          <div class="input-group input-group-sm">
+            <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize"  (ngModelChange)="OnQuery()">
+              <option>1</option>
+              <option>5</option>
+              <option>10</option>
+              <option>20</option>
+              <option>50</option>
+              <option>100</option>
+              <option>200</option>
+            </select>
+            <span class="input-group-addon addon-right">条/页</span>
+            <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条数据</span>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="lineChart-wrap" [ngClass]="{'none':toggle}">
+      <div id="unpackageColumncontainer"></div>
+    </div>
+  </div>
+</div>
+

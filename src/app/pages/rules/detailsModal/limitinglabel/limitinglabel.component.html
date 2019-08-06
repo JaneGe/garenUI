@@ -1,0 +1,22 @@
+<form class="smmodal">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">{{modalHeader}}
+        <span class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </span>
+      </h4>
+    </div>
+    <div class="modal-body">
+      <div class="card card-block">
+        <div class="input-group">
+          <input type="search"  id="search" class="form-control" placeholder="请输入标签名称...">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-sm pull-right submit">确定</button>
+      <button class="btn btn-sm pull-right cancel" (click)="closeModal()">取消</button>
+    </div>
+  </div>
+</form>

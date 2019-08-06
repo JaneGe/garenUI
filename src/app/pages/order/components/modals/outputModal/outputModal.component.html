@@ -1,0 +1,22 @@
+<div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <span class="modal-title">导出订单</span>
+  </div>
+  <div class="modal-body">
+    <h3>请选择需要导出的订单数据项</h3>
+    <div class="checkbox">
+      <label class="checkbox-inline custom-checkbox nowrap" (click)="allChecked(selectAll)">
+        <input type="checkbox" name="all" [(ngModel)]="selectAll"><span>选择全部</span>
+      </label>
+    </div>
+    <label class="checkbox-inline custom-checkbox nowrap output-screen" *ngFor="let column of columns">
+      <input type="checkbox" name="screen" [(ngModel)]="column.checked" [disabled]="column.disabled" [checked]="column.checked"><span>{{column.name}}</span>
+    </label>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-default" (click)="closeModal()">取消</button>
+      <button class="btn btn-primary" (click)="doExport()">导出</button>
+    </div>
+  </div>
+</div>

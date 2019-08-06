@@ -1,0 +1,56 @@
+<div class="tree">
+  <ul>
+    <li *ngFor="let item of treesItem">
+      <div *ngIf="item.data.menu.title === 'index'">
+        <div class="trees-items" (click)="toggleItem(item)">
+          <label class="radio-inline custom-radio nowrap">
+            <input type="radio" checked/>
+            <span></span>
+          </label>
+          <div class="file-ico">
+            <i class="ion-chevron-right ico" *ngIf="item.children.length>0&&!item.toggle"></i>
+            <i class="ion-chevron-down ico" *ngIf="item.children.length>0&&item.toggle"></i>
+          </div>
+          <span>{{item.data.menu.title}}</span>
+        </div>
+        <div class="item-children" *ngIf="item.toggle">
+          <div class="tree">
+            <ul>
+              <li *ngFor="let home of item.children;let i = index">
+                <div class="trees-items" (click)="toggleItem(home)">
+                  <label class="radio-inline custom-radio nowrap">
+                    <input type="radio" [checked]="home.isChecked" (change)="onRadioChanged(item.children,i)" />
+                    <span></span>
+                  </label>
+                  <div class="file-ico">
+                    <i class="ion-chevron-right ico" *ngIf="home.children.length>0&&!home.toggle"></i>
+                    <i class="ion-chevron-down ico" *ngIf="home.children.length>0&&home.toggle"></i>
+                  </div>
+                  <span>{{home.data.menu.title}}</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="item.data.menu.title !== 'index'">
+        <div class="trees-items" (click)="toggleItem(item)">
+          <label class="checkbox-inline custom-checkbox nowrap">
+            <input type="checkbox" [checked]="item.isChecked" (change)="onCheckChanged(item)" />
+            <span></span>
+          </label>
+          <div class="file-ico">
+            <i class="ion-chevron-right ico" *ngIf="item.children.length>0&&!item.toggle"></i>
+            <i class="ion-chevron-down ico" *ngIf="item.children.length>0&&item.toggle"></i>
+            <i class="ion-record ico" *ngIf="item.children.length==0"></i>
+          </div>
+          <span>{{item.data.menu.title}}</span>
+        </div>
+        <div class="item-children" *ngIf="item.toggle">
+          <fileTrees *ngIf="item.children" [treesItem]="item.children"></fileTrees>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

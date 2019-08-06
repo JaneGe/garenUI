@@ -1,0 +1,54 @@
+<form (submit)="onSubmit(reason.value)">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">{{modalHeader}}
+        <button class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </h4>
+    </div>
+    <div class="modal-body">
+      <div class="card card-block">
+        <div class="reason">
+        <p>原因：</p>
+        <textarea class="form-control" rows="5" #reason></textarea>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="table table-hover table-bordered gap" id="stockNum">
+          <thead>
+          <tr class="black-muted-bg">
+            <th>SKU</th>
+            <th>系统总量</th>
+            <th>可用数量</th>
+            <th>预留数量</th>
+            <th>操作类型</th>
+            <th>变更数量</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let i of report">
+            <td>{{i.SKU}}</td>
+            <td>{{i.total}}</td>
+            <td>{{i.available}}</td>
+            <td>{{i.prepare}}</td>
+            <td>
+              <select name="select" [(ngModel)]="operateKind">
+                <option value="0" selected>少了</option>
+                <option value="1">多了</option>
+              </select>
+            </td>
+            <td>
+              <input type="text" name="num" [(ngModel)]="num" value={{num}} (input)="isUnsignedInteger(num)">
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-sm pull-right submit">确定</button>
+      <button class="btn btn-sm pull-right cancel" (click)="closeModal()">取消</button>
+    </div>
+  </div>
+</form>

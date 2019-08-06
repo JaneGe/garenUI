@@ -1,0 +1,186 @@
+<div class="card card-block search-wrapper">
+  <ul class="search-condition">
+    <li>
+      <label class="search-title">选择仓库：</label>
+      <div class="screen-wrapper" *ngFor="let item of warehouse;let i = index">
+        <input type="radio" id="warehouse{{item.Id}}" name="warehouse" class="regular-radio" [checked]="i === 0" />
+        <label for="warehouse{{item.Id}}" (click)="onSelect($event.target,'warehouse',item.Id)">{{item.Name}}</label>
+      </div>
+    </li>
+    
+    <li>
+      <label class="search-title">时段筛选：</label>
+      <div class="screen-wrapper" *ngFor="let item of timeChoose;let i = index">
+        <input type="radio" id="timeChoose{{item}}" name="timeChoose" class="regular-radio" [checked]="i === 0" />
+        <label for="timeChoose{{item}}" (click)="onSelect($event.target,'timeChoose',item)">{{item}}</label>
+      </div>
+    </li>
+    <li>
+      <label class="search-title"></label>
+      <div class="screen-wrapper" *ngFor="let item of timeSpan;let i = index">
+        <input type="radio" id="timeSpan{{item.Id}}" name="timeSpan" class="regular-radio" [checked]="i === 0" />
+        <label for="timeSpan{{item.Id}}" (click)="onSelect($event.target,'timeSpan',item.Id)">{{item.Name}}</label>
+      </div>
+      <span *ngIf="isCustom">
+        <!--<span class="datePick-wrap">-->
+        <!--<span class="datePick">-->
+        <!--<ng-datepicker [(ngModel)]="timeSearchStart" [options]="DatepickerOptions"></ng-datepicker>-->
+        <!--</span>-->
+        <!--</span>-->
+        <!-- - -->
+        <!--<span class="datePick-wrap">-->
+        <!--<span class="datePick">-->
+        <!--<ng-datepicker [(ngModel)]="timeSearchEnd" [options]="DatepickerOptions"></ng-datepicker>-->
+        <!--<button class="btn btn-sm btn-primary" (click)="doTimeSearch()">确定</button>-->
+        <!--</span>-->
+        <!--</span>-->
+        <span class="datePick-wrap">
+          <span class="datePick">
+            <!--<ng-datepicker [(ngModel)]="timeSearchStart" [options]="DatepickerOptions"></ng-datepicker>-->
+            <div class="input-group" style="width: auto;">
+              <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="ngTimeSearchStart" ngbDatepicker #start="ngbDatepicker">
+              <div class="input-group-addon" (click)="start.toggle()">
+                <i class="ion-android-calendar"></i>
+              </div>
+            </div>
+
+          </span>
+        </span>
+        <span class="datePick-wrap">
+          <span class="datePick">
+            <ngb-timepicker [(ngModel)]="ngShortTimeStart" [seconds]="'true'"></ngb-timepicker>
+          </span>
+        </span>
+        -
+        <span class="datePick-wrap">
+          <span class="datePick">
+            <!--<ng-datepicker [(ngModel)]="timeSearchEnd" [options]="DatepickerOptions"></ng-datepicker>-->
+            <div class="input-group" style="width: auto;">
+              <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="ngTimeSearchEnd" ngbDatepicker #end="ngbDatepicker">
+              <div class="input-group-addon" (click)="end.toggle()">
+                <i class="ion-android-calendar"></i>
+              </div>
+            </div>
+          </span>
+        </span>
+        <span class="datePick-wrap">
+          <span class="datePick">
+            <ngb-timepicker [(ngModel)]="ngShortTimeEnd" [seconds]="'true'"></ngb-timepicker>
+          </span>
+        </span>
+        <button class="btn btn-sm btn-primary" (click)="doTimeSearch()">确定</button>
+      </span>
+    </li>
+    <li>
+      <label class="search-title">下单人员：</label>
+      <select2 class="country-select" [data]="salesman" [options]="options" [width]="360" [value]="salesmanValue" (valueChanged)="onChanged($event)"></select2>
+    </li>
+    <li>
+      <label class="search-title">条件筛选：</label>
+      <div class="screen-wrapper" *ngFor="let item of searchType;let i = index">
+        <input type="radio" id="searchType{{item.Id}}" name="searchType" class="regular-radio" [checked]="i === 0" />
+        <label for="searchType{{item.Id}}" (click)="onSelect($event.target,'conditionChoose',item.Id)">{{item.Name}}</label>
+      </div>
+    </li>
+    <li>
+      <label class="search-title">搜索内容：</label>
+      <div class="input-group">
+        <input type="text" class="form-control">
+        <div class="btn-group">
+          <button class="btn btn-primary">搜索</button>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+<form class="pagination-wrapper">
+  <div class="form-group pages">
+    <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+      autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+      screenReaderCurrentLabel="You're on page">
+    </pagination-controls>
+  </div>
+  <div class="form-group options pages">
+    <div class="input-group input-group-sm">
+      <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+        <option>1</option>
+        <option>5</option>
+        <option>10</option>
+        <option>20</option>
+        <option>50</option>
+        <option>100</option>
+        <option>200</option>
+      </select>
+      <span class="input-group-addon addon-right">条/页</span>
+      <span class="input-group-addon addon-right">共{{total}}条</span>
+    </div>
+  </div>
+</form>
+<table class="table table-hover table-bordered">
+  <thead>
+    <tr>
+      <th>下单号</th>
+      <th>下单人</th>
+      <th>SKUCode</th>
+      <th>供应商ID</th>
+      <th>供应商名称</th>
+      <th>卖家名称</th>
+      <th>订单号</th>
+      <th>跟踪号</th>
+      <th>时间</th>
+      <th>原价</th>
+      <th>折后价</th>
+      <th>降价金额</th>
+      <th>降价幅度</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of items | paginate: { id: 'pager',
+            itemsPerPage:pageSize,
+            currentPage:pageNumber,
+            totalItems:total};let i = index">
+      <td>1321321321</td>
+      <td>郭胜涛</td>
+      <td>DMT12121211</td>
+      <td>0123</td>
+      <td>高阳飞飞毛巾厂</td>
+      <td>高阳飞飞</td>
+      <td>4568754651</td>
+      <td>115798791464</td>
+      <td>
+        <span class="display-block">下单时间：18:03:02 12:12:12</span>
+        <span class="display-block">付款时间：18:03:02 12:12:12</span>
+      </td>
+      <td>100￥</td>
+      <td>90￥</td>
+      <td>10￥</td>
+      <td>10%</td>
+      <td>
+        <button class="btn btn-sm btn-primary" (click)="openOrderDetailModal(20012)">详细</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<form class="pagination-wrapper">
+  <div class="form-group pages">
+    <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+      autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+      screenReaderCurrentLabel="You're on page">
+    </pagination-controls>
+  </div>
+  <div class="form-group options pages">
+    <div class="input-group input-group-sm">
+      <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+        <option>5</option>
+        <option>10</option>
+        <option>20</option>
+        <option>50</option>
+        <option>100</option>
+        <option>200</option>
+      </select>
+      <span class="input-group-addon addon-right">条/页</span>
+      <span class="input-group-addon addon-right">共{{total}}条</span>
+    </div>
+  </div>
+</form>

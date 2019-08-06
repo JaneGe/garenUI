@@ -1,0 +1,24 @@
+<div class="pop-content">
+  <div class="modal-header head">
+    <h4 class="modal-title mytitle">账号信息编辑</h4>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label class="control-label">平台</label>
+      <select class="form-control" [(ngModel)]="selectedPlatformType" [disabled]="accountId > 0">
+        <option *ngFor="let item of platformTypes" value="{{item.Id}}">{{item.Name}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="control-label">账号名称</label>
+      <input type="text" class="form-control" [(ngModel)]="accountName" placeholder="输入账号名称">
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-sm btn-default" (click)="closeModal()">取消</button>
+    <button class="btn btn-sm btn-primary" (click)="saveData()">保存</button>
+  </div>
+</div>

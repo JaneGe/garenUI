@@ -1,0 +1,26 @@
+.pop-content {
+    width: 500px;
+    margin-left: -50px;
+    .modal-body {
+        ul {
+            padding: 0;
+            li {
+                margin: 20px 0;
+            }
+        }
+    }
+}
+
+.datePick-wrap {
+    display: inline-block;
+}
+
+.datePick {
+    display: flex;
+    .ngx-datepicker-container[_ngcontent-c9] .ngx-datepicker-input[_ngcontent-c9] {
+        width: 228px;
+        background: rgba(0, 0, 0, .1);
+        color: #fff;
+        border: none;
+    }
+}

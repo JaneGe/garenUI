@@ -1,0 +1,93 @@
+<div class=".col-md-8 card card-block">
+  <div class=".col-md-8 card card-block search-wrapper">
+    <ul class="search-condition">
+      <li>
+        <label class="search-title">平台筛选：</label>
+        <div class="screen-wrapper" *ngFor="let item of platformTypes;let i = index">
+          <input type="radio" id="platformTypes{{item.Id}}" name="platformTypes" class="regular-radio" [checked]="i === 0" />
+          <label for="platformTypes{{item.Id}}" (click)="onSelectPlatform($event.target,item.Id)">{{item.Name}}</label>
+        </div>
+      </li>
+      <li>
+        <label class="search-title">账号搜索：</label>
+        <div class="input-group">
+          <input type="text" class="form-control" [(ngModel)]="searchText" />
+          <div class="btn-group">
+            <button class="btn btn-primary" (click)="doSearch()">搜索</button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="action">
+    <button class="btn btn-sm btn-primary" (click)="openAddModal()"><span class="ion-plus-round icon"></span>添加</button>
+  </div>
+
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="onQuery()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条数据</span>
+      </div>
+    </div>
+  </form>
+  <table class="table table-hover table-bordered">
+    <thead>
+      <tr>
+        <th>账号名称</th>
+        <th>账号平台</th>
+        <th>创建时间</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of DataItems | paginate: { id: 'pager',
+          itemsPerPage:PageInfo.pageSize,
+          currentPage:PageInfo.pageIndex,
+          totalItems:PageInfo.totalCount};let i = index">
+        <td><span>{{data.accountName}}</span></td>
+        <td><span>{{data.platformTypeDesc}}</span></td>
+        <td><span>{{data.createdTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</span></td>
+        <td><button class="btn btn-sm btn-primary" (click)="openEditModal(data)">编辑</button></td>
+      </tr>
+    </tbody>
+  </table>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="onQuery()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条数据</span>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,211 @@
+<div class="wrapper card card-block">
+  <div class="tab-header">
+    <ul>
+      <li *ngFor="let tab of tabs" (click)="tabChoose(tab)" [class.tab-selected]="tab.selected">
+        <span>{{tab.name}}</span>
+      </li>
+    </ul>
+  </div>
+  <div class="input-wrapper card card-block">
+    <ul>
+      <li>
+        <label class="list-label">选择仓库</label>
+        <select class="warehouse-select form-control" [(ngModel)]="selectedWarehouseId" (change)="onWarehouseChanged($event)">
+          <option *ngFor="let warehouse of allWarehouses" [value]="warehouse.warehouseId">
+            {{warehouse.name}}
+          </option>
+        </select>
+      </li>
+      <li>
+        <label class="list-label">选择物流渠道</label>
+        <select class="warehouse-select form-control" (change)="onShippingServiceChanged($event.target)">
+          <option *ngFor="let item of warehouseAllShippingService" [value]="item.id">
+            {{item.text}}
+          </option>
+        </select>
+        <input *ngIf="selectedTab.name == '按袋发货'" type="number" class="form-control bagNumber" placeholder="输入袋号" [(ngModel)]="bagNumber">
+        <div class="btn-group" *ngIf="selectedTab.name == '按袋发货'">
+          <button class="btn btn-primary " (click)="setBagInfo()">确定</button>
+        </div>
+        <!-- <select2 class="shipment-select" [data]="warehouseAllShippingService" (valueChanged)="onShippingServiceChanged($event)"></select2> -->
+      </li>
+      <li>
+        <select class="list-label-select form-control" [(ngModel)]="scanType">
+          <option value="TrackingNumber">物流跟踪号</option>
+          <option value="PackageNumber">包裹号</option>
+        </select>
+        <input type="text" id="inputScanText" class="form-control logistic-id" [(ngModel)]="scanText" placeholder="" (keyup.enter)="searchPackage()">
+        <div class="btn-group">
+          <button class="btn btn-primary" (click)="searchPackage()">查询</button>
+        </div>
+      </li>
+    </ul>
+    <!--<div class="total-wrapper">-->
+    <!--<label>今日共称重</label>-->
+    <!--<div><span>{{SucLogsLength+FailLogsLength}}</span>个</div>-->
+    <!--</div>-->
+    <!--<div class="total-wrapper">-->
+    <!--<label>成功</label>-->
+    <!--<div><span>{{SucLogsLength}}</span>个</div>-->
+    <!--</div>-->
+    <!--<div class="total-wrapper">-->
+    <!--<label>失败</label>-->
+    <!--<div><span>{{FailLogsLength}}</span>个</div>-->
+    <!--</div>-->
+  </div>
+  <div class="card card-block info-wrapper" *ngIf="selectedTab.name == '按件发货'">
+    <table class="table table-hover" *ngIf="packageInfo != null">
+      <tbody>
+        <tr>
+          <td width="150px">包裹号：</td>
+          <td>{{packageInfo.packageNumber}}</td>
+        </tr>
+        <tr>
+          <td>订单号：</td>
+          <td>{{packageInfo.orderNumbers.join(',')}}</td>
+        </tr>
+        <tr>
+          <td>SKU：</td>
+          <td>
+            <span class="detail" *ngFor="let sku of packageInfo.skuInfos; let idx = index">{{sku.skuCode}}*{{sku.quantity}}</span>
+          </td>
+        </tr>
+        <tr>
+          <td>预估重量：</td>
+          <td>{{packageInfo.estimateWeight}}g</td>
+        </tr>
+        <tr>
+          <td>包裹状态：</td>
+          <td>{{packageInfo.packageStatusDesc}}</td>
+        </tr>
+        <tr>
+          <td>跟踪号：</td>
+          <td>{{getDisplayTrackingNumber()}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <!--<div class="log-wrapper">-->
+    <!--<span>称重成功记录<i class="ion-checkmark-circled"></i></span>-->
+    <!--<div class="table-wrapper">-->
+    <!--<table class="table table-bordered table-hover">-->
+    <!--<thead>-->
+    <!--<tr>-->
+    <!--<th>包裹号</th>-->
+    <!--<th>跟踪号</th>-->
+    <!--<th>重量</th>-->
+    <!--<th>时间</th>-->
+    <!--</tr>-->
+    <!--</thead>-->
+    <!--<tbody>-->
+    <!--<tr *ngFor="let item of sucLogs">-->
+    <!--<td>{{item.packageId}}</td>-->
+    <!--<td>{{item.trackingId}}</td>-->
+    <!--<td>{{item.weight}}g</td>-->
+    <!--<td>{{item.time | date: 'MM月/d日/H:mm'}}</td>-->
+    <!--</tr>-->
+    <!--</tbody>-->
+    <!--</table>-->
+    <!--</div>-->
+    <!--<span>称重失败记录<i class="ion-close-circled"></i></span>-->
+    <!--<div class="table-wrapper">-->
+    <!--<table class="table table-bordered table-hover">-->
+    <!--<thead>-->
+    <!--<tr>-->
+    <!--<th>包裹号</th>-->
+    <!--<th>跟踪号</th>-->
+    <!--<th>时间</th>-->
+    <!--</tr>-->
+    <!--</thead>-->
+    <!--<tbody>-->
+    <!--<tr *ngFor="let item of failLogs">-->
+    <!--<td>{{item.packageId}}</td>-->
+    <!--<td>{{item.trackingId}}</td>-->
+    <!--<td>{{item.time | date: 'MM月/d日/H:mm'}}</td>-->
+    <!--</tr>-->
+    <!--</tbody>-->
+    <!--</table>-->
+    <!--</div>-->
+    <!--</div>-->
+    <div class="card-footer">
+      <div class="input-group">
+        <span class="input-group-addon addon-left input-group-addon-primary">重量：</span>
+        <input id="weight" type="text" class="form-control weight" [(ngModel)]="shipWeight" (keyup.enter)="doShip(false)">
+        <span class="input-group-addon addon-left input-group-addon-primary">(g)</span>
+        <div class="btn-group">
+          <button [disabled]="packageInfo == null" class="btn btn-primary" (click)="doShip(false)">发货</button>
+        </div>
+      </div>
+      <div class="success-tips" *ngIf="successTips">
+        <span class="ico">
+          <i class="ion-checkmark-circled"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="card card-block info-wrapper" *ngIf="selectedTab.name == '按袋发货'">
+    <div class="row">
+      <div class="col-md-8">
+        <table class="table table-hover" *ngIf="packageInfo != null">
+          <tbody>
+          <tr>
+            <td width="150px">包裹号：</td>
+            <td>{{packageInfo.packageNumber}}</td>
+          </tr>
+          <tr>
+            <td>订单号：</td>
+            <td>{{packageInfo.orderNumbers.join(',')}}</td>
+          </tr>
+          <tr>
+            <td>SKU：</td>
+            <td>
+              <span class="detail" *ngFor="let sku of packageInfo.skuInfos; let idx = index">{{sku.skuCode}}*{{sku.quantity}}</span>
+            </td>
+          </tr>
+          <tr>
+            <td>预估重量：</td>
+            <td>{{packageInfo.estimateWeight}}g</td>
+          </tr>
+          <tr>
+            <td>包裹状态：</td>
+            <td>{{packageInfo.packageStatusDesc}}</td>
+          </tr>
+          <tr>
+            <td>跟踪号：</td>
+            <td>{{getDisplayTrackingNumber()}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-4" *ngIf="packagePocket">
+        <span class="total-wg">总重：
+          <span class="yellow-text">{{packagePocket.totalWeightAmount}}</span>
+          <label>g</label>
+        </span>
+        <span class="total-wg">已入：
+          <span>{{packagePocket.packageCounts}}</span>
+          <label>件</label>
+        </span>
+        <button class="btn btn-primary" *ngIf="!isPrintOver">打包发货</button>
+        <div class="input-group" *ngIf="isPrintOver">
+          <input type="text" class="form-control" placeholder="输入毛重" [(ngModel)]="totalPocketWeight" (keyup.enter)="sendPackagePocket()">
+          <button class="btn btn-primary" (click)="sendPackagePocket()" >完成</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="input-group">
+        <span class="input-group-addon addon-left input-group-addon-primary">当前包裹重量：</span>
+        <input id="weight" type="text" class="form-control weight" [(ngModel)]="shipWeight">
+        <span class="input-group-addon addon-left input-group-addon-primary">(g)</span>
+        <div class="btn-group">
+          <button class="btn btn-primary" (click)="doShip(true)">入袋</button>
+        </div>
+      </div>
+      <div class="success-tips" *ngIf="successTips">
+        <span class="ico">
+          <i class="ion-checkmark-circled"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+.operate {
+    height: 35px;
+    display: flex;
+    align-items: center;
+    text-align: left;
+    flex-wrap: wrap;
+    font-size: 14px;
+}
+
+.moregap {
+    margin-right: 43px;
+}
+
+.search button {
+    height: 100%;
+    border-radius: 0 5px 5px 0;
+}
+
+.search input[type='search'] {
+    height: 100%;
+    box-sizing: border-box;
+    border-radius: 5px 0 0 5px;
+    font-size: 18px;
+    width: 252px;
+}
+
+table tr td {
+    width: 12.5%;
+}
+
+#stockNum thead tr th span {
+    cursor: pointer;
+}
+
+#stockNum thead tr th span i {
+    position: relative;
+    left: 10px;
+}
+
+.out {
+    background: #00ABFF!important;
+    border-color: #00ABFF!important;
+    cursor: pointer;
+}
+
+input {
+    background: rgba(255, 255, 255, .1);
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, .5);
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.title {
+    line-height: 23px;
+}
+

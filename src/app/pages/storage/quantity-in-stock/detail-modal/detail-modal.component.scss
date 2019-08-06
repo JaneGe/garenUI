@@ -1,0 +1,73 @@
+.head {
+    background-color: #a4d6ff;
+    padding: 5px 0;
+    border-radius: 5px 5px 0 0;
+}
+
+.mytitle {
+    font-size: 16px;
+    padding-left: 15px;
+}
+
+.submit {
+    background-color: #c78100;
+    border: 1px solid #c78100;
+    color: whitesmoke;
+}
+
+.cancel {
+    background-color: transparent;
+    border: 1px solid whitesmoke;
+    color: whitesmoke;
+}
+
+.close {
+    margin-right: 10px;
+}
+
+.detail {
+    display: flex;
+}
+
+table {
+    font-size: 14px;
+    text-align: center;
+    color: white;
+}
+
+table thead tr th {
+    text-align: center;
+    padding: 8px;
+}
+
+table tbody tr td:last-child button {
+    margin: 3px 0;
+}
+
+.detail table {
+    width: 35%;
+    margin-right: 30px;
+}
+
+.detail .info {
+    width: 65%;
+    height: 140px;
+    overflow-y: auto;
+    border: 1px solid rgba(255, 255, 255, .5);
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.remark {
+    font-size: 13px;
+    margin: 0;
+}
+
+.remark span {
+    color: red;
+    font-weight: 500;
+}
+
+p:first-child .icon {
+    margin-right: 10px;
+}

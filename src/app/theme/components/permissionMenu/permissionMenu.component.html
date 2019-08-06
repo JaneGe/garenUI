@@ -1,0 +1,17 @@
+<div class="tree">
+  <ul>
+    <li *ngFor="let item of treesItem">
+      <div class="trees-items" (click)="toggleItem(item)">
+        <div class="file-ico">
+          <!--<i class="ion-chevron-right ico" *ngIf="item.children&&!item.toggle"></i>-->
+          <!--<i class="ion-chevron-down ico" *ngIf="item.children&&item.toggle"></i>-->
+          <i class="fa fa-hand-o-right ico" *ngIf="item.isTarget"></i>
+        </div>
+        <span>{{item.resourceName}}</span>
+      </div>
+      <!--<div class="item-children" *ngIf="item.toggle">-->
+      <!--<permission-menu *ngIf="item.children" [treesItem]="item.children"></permission-menu>-->
+      <!--</div>-->
+    </li>
+  </ul>
+</div>

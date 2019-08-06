@@ -1,0 +1,35 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">{{modalHeader}}
+        <button class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </h4>
+    </div>
+    <div class="modal-body">
+      <div class="card card-block">
+        <h4>仓库基本信息</h4>
+        <div class="form-wrap">
+          <p><span>仓库名称：</span><input type="text"  name="name" id="name" formControlName="warehouseName"></p>
+        </div>
+        <div class="form-wrap">
+          <p><span>包裹前缀：</span><input type="text"  name="name" id="packagePre" formControlName="packagePreNumber"></p>
+        </div>
+        <div class="form-wrap">
+          <p><span>详细地址：</span>
+            <textarea name="address" class="form-control detailaddress" id="E-address" formControlName="address" cols="20" rows="3"></textarea></p>
+        </div>
+        <div class="form-wrap">
+          <p><span>生成采购任务：</span><input type="checkbox" formControlName="isGeneatePurchaseTask" id="check"/>
+            <label for="check"><span class="ion-checkmark"></span></label>
+          </p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-sm pull-right cancel" (click)="closeModal()">取消</button>
+        <button class="btn btn-sm pull-right submit" [disabled]="!form.valid || submitted"  type="submit">保存</button>
+      </div>
+    </div>
+  </div>
+</form>

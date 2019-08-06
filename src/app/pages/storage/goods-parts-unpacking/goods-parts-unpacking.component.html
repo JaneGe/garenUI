@@ -1,0 +1,105 @@
+<div class="card card-block">
+  <div class="input-wrapper">
+    <ul class="search-condition">
+      <!--       <li class="clearfix">
+        <label class="search-title">可入库包裹筛选：</label>
+        <div class="screen-box" style="font-size:14px; ">
+          <div class="screen-wrapper" style="min-width:50px;line-height:20px" *ngFor="let name of packageType;let i = index">
+            <input type="radio" id="{{name.name}}" name="packageType" class="regular-radio" (change)="onPackageTypeChange($event,name.id)"
+              [checked]="i === 0" />
+            <label for="{{name.name}}">{{name.name}}</label>
+          </div>
+        </div>
+      </li> -->
+      <li class="clearfix">
+        <label class="search-title">搜　索　类　型：</label>
+        <div class="screen-box" style="font-size:14px; ">
+          <div class="screen-wrapper" style="min-width:50px;line-height:20px" *ngFor="let name of searchType;let i = index">
+            <input type="radio" id="{{name.name}}" name="searchType" class="regular-radio" (change)="onSearchTypeChange($event,name.id)"
+              [checked]="i === 0" />
+            <label for="{{name.name}}">{{name.name}}</label>
+          </div>
+        </div>
+      </li>
+      <li class="clearfix">
+        <label class="search-title">搜　索　内　容：</label>
+        <div class="input-group">
+          <input type="text" class="form-control" [(ngModel)]="searchText">
+          <button class="btn btn-sm btn-primary" (click)="OnQuery()">搜索</button>
+        </div>
+      </li>
+    </ul>
+    <div class="btn-group">
+      <button class="btn btn-sm btn-primary" (click)="unfoldAll(true)">展开全部</button>
+      <button class="btn btn-sm btn-primary" (click)="unfoldAll(false)">关闭全部</button>
+    </div>
+  </div>
+</div>
+<div class="card card-block" *ngFor="let items of goodsPartsItems">
+  <table class="table table-bordered">
+    <tbody>
+      <tr>
+        <td colspan="9" class="unfold-btn-wrap">
+          <button class="unfold-btn" (click)="unfoldItem(items)">
+            <i class="ion-chevron-down" *ngIf="!items.isUnfold"></i>
+            <i class="ion-chevron-up" *ngIf="items.isUnfold"></i>
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <td width="220px" class="img-wrap">
+          <img class="sku-img" src="{{items.skuImages}}" alt="无sku图片信息">
+        </td>
+        <td colspan="2">SKUCode：
+          <span class="yellow-text">{{items.skuCode}}</span>
+        </td>
+        <td colspan="3" class="name-th">
+          <p class="yellow-text">{{items.skuName}}</p>
+        </td>
+        <td>最大入库数量：
+          <br>
+          <span class="lg-text red-text">{{items.maxInstoreNumber}}件</span>
+        </td>
+        <td colspan="2" class="img-wrap" width="250px">
+          <div class="input-group">
+            <input type="number" class="form-control" placeholder="入库数量" [(ngModel)]="items.inStoreNumber">
+            <button class="btn btn-sm btn-primary" (click)="enterPutIn(items)">确认入库</button>
+          </div>
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="标签数量" [(ngModel)]="items.printNumber">
+            <button class="btn btn-sm btn-primary" (click)="printSkuLabel(items)">打印标签</button>
+          </div>
+        </td>
+      </tr>
+      <ng-container *ngIf="items.isUnfold">
+        <tr>
+          <td>(最近一次)<p>订单号</p></td>
+          <td>(最近一次)<p>下单号</p></td>
+          <td>采购账号</td>
+          <td>下单人</td>
+          <td>比例</td>
+          <td>属性</td>
+          <td>到货数量</td>
+          <td>问题件</td>
+          <td>下单备注</td>
+        </tr>
+        <tr *ngFor="let item of items.items">
+          <td>{{item.purchaseOrderNumber}}</td>
+          <td>{{item.purchaseNumber}}</td>
+          <td>{{item.buyerLoginId}}</td>
+          <td>{{item.createOrderUser}}</td>
+          <td>
+            <span class="lg-text yellow-text">{{item.purchaseQuantityRatio}}</span>(平台:1688)</td>
+          <td>
+            <span class="label label-primary">{{item.compositeAttr}}</span>
+          </td>
+          <td>
+            <span class="lg-text yellow-text">{{item.inStcokQuantity}}</span>件</td>
+          <td>
+            <span class="lg-text red-text">{{item.badQuantity + item.sendWrongQuantity}}</span>件</td>
+          <td>{{item.purchaseNote}}</td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>

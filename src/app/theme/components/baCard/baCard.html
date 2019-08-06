@@ -1,0 +1,8 @@
+<div style="height: 100%;margin:-12px auto 20px auto;" baCardBlur class="animated fadeIn card {{cardType}} {{baCardClass || ''}}" zoom-in>
+    <div *ngIf="cardTitle">
+        <h3 style="margin:auto; text-align: center;margin-top:15px; font-size: 20px;width:95%;">{{cardTitle}}<hr/></h3>
+    </div>
+    <div class="card-body">
+        <ng-content></ng-content>
+    </div>
+</div>

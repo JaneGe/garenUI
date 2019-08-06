@@ -1,0 +1,25 @@
+@import '../../theme/sass/auth';
+.first-title {
+    font-size: 25px;
+    &::first-letter {
+        font-size: 30px;
+    }
+}
+
+.desc-title {
+    font-size: 13px;
+    color: $primary;
+}
+
+.form-control {
+    border-radius: 0;
+}
+
+.btn-group {
+    width: 100%;
+    margin-top: 20px;
+    .btn {
+        width: 100%;
+        border-radius: 0;
+    }
+}

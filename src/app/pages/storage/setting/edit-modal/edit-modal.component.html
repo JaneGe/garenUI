@@ -1,0 +1,40 @@
+<form>
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">编辑仓库信息
+        <button class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </h4>
+    </div>
+    <div class="modal-body">
+      <div class="card card-block">
+        <h4>仓库基本信息</h4>
+        <div class="form-wrap">
+          <p><span>仓库名称：</span><input type="text" name="name" id="name"  formControlName="warehouseName"></p>
+        </div>
+        <div class="form-wrap">
+          <p><span>联系电话：</span><input type="text" name="tel" formControlName=""/></p>
+        </div>
+        <div class="form-wrap">
+          <p><span>邮箱：<span class="blank"></span></span><input type="text" name="email"/></p>
+        </div>
+        <div class="form-wrap">
+          <p><span>邮编：<span class="blank"></span></span><input type="text" name="postcode"/></p>
+        </div>
+        <div class="form-wrap">
+          <p><span>英文地址：</span><textarea name="address" id="E-address" cols="20" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="card card-block">
+        <div class="form-wrap">
+          <p><span>备注：<span class="blank"></span></span><textarea class="form-control" name="remark" id="remark" cols="20" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-sm pull-right submit">保存</button>
+        <button class="btn btn-sm pull-right cancel" (click)="closeModal()">取消</button>
+      </div>
+    </div>
+  </div>
+</form>

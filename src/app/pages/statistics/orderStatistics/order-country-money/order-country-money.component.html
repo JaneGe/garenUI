@@ -1,0 +1,52 @@
+<div class="card card-block">
+  <h3>最后更新时间：2017/12/22 下午 13:58</h3>
+  <div class="card card-block select-part">
+    <div class="select">
+      <div class="part-wrap">
+        <span class="title">时间筛选：</span>
+      </div>
+      <div class="option-wrap">
+        <span class="option" *ngFor="let item of orderTime" (click)="selectedordertimesearch=item.id"
+              [ngClass]="{'tag':item.id==selectedordertimesearch}">{{item.text}}</span>
+        <span class="option option-nobot" *ngIf="selectedordertimesearch==4">
+                <ng-datepicker   [(ngModel)]="timeSearchStart"
+                                 [options]="DatepickerOptions"></ng-datepicker>
+              </span>
+        <span class="option timegap option-nobot" *ngIf="selectedordertimesearch==4">~</span>
+        <span class="option option-nobot" [ngClass]="{'unvisible':selectedordertimesearch!=4}">
+                <ng-datepicker  [(ngModel)]="timeSearchEnd"
+                                [options]="DatepickerOptions"></ng-datepicker>
+              </span>
+        <span class="option option-nobot">
+                <button *ngIf="selectedordertimesearch==4" class="btn btn-primary"
+                        (click)="OnUserSetTimeQuery()">确定</button>
+              </span>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <ba-card class="col-xlg-6 col-xl-6 col-lg-12 col-sm-12 col-12"
+             cardTitle="国家金额分布占比" baCardClass="traffic-panel medium-card">
+      <table class="table table-hover table-bordered" id="table">
+        <thead>
+        <tr class="black-muted-bg">
+          <th>国家</th>
+          <th>金额</th>
+          <th><span (click)="valueSort=!valueSort">占比<i class="ion-arrow-down-b" *ngIf="valueSort"></i><i class="ion-arrow-up-b" *ngIf="!valueSort"></i></span></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of info|sort:{arrowdown:valueSort,key:'percentage'};let index=index;">
+          <td>{{item.country}}</td>
+          <td>{{item.value}}</td>
+          <td [ngClass]="{'green-text':index==0,'red-text':index==info.length-1}">{{item.percentage}}%</td>
+        </tr>
+        </tbody>
+      </table>
+      <traffic-chart [doughnutData]="ChannelData" [TotalValue]="TotalValue"
+                     [Character]="Character" [CircleTitle]="CircleTitle"></traffic-chart>
+    </ba-card>
+  </div>
+</div>
+

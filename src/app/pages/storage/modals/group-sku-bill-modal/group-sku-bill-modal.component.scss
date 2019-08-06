@@ -1,0 +1,38 @@
+.pop-content {
+    width: 370px;
+    height: auto;
+    background: #fff;
+    color: #000;
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    .modal-body {
+        .print-body {
+            padding: 0;
+            margin: 0;
+            font-size: 3mm;
+        }
+        .bill-wrap {
+            width: 38mm;
+            height: 29mm;
+            border:1px solid #000;
+            float: left;
+        }
+        .bill-wrap:nth-child(even) {
+            margin-left: 3mm
+        }
+        .bill-wrap td {
+            text-align: center;
+        }
+        .qr-wrap .code {
+            width: 14mm;
+            float: left;
+            margin: 0 5mm;
+        }
+        .bill-number {
+            font-size: 4mm;
+            text-align: right;
+        }
+    }
+}

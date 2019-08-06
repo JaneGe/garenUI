@@ -1,0 +1,585 @@
+<div class="pop-content animated fadeIn clearfix">
+  <div class="modal-header">
+    <span class="modal-title">
+      订单详情
+      <a href="javascript:;" (click)="closeModal()">
+        <i class="ion-close-round"></i>
+      </a>
+    </span>
+  </div>
+  <div class="modal-body">
+    <ngx-loading [show]="loadingOrder" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <div class="content-header">
+      <ul>
+        <li>
+          <span class="caption">订单号</span>
+          <span class="orderNumber-text">{{orderDetail.orderNumber}}</span>
+        </li>
+        <li>
+          <span class="caption">卖家帐号</span>
+          <span>{{orderDetail.channelName}}</span>
+        </li>
+        <li>
+          <span class="caption">站点</span>
+          <span>{{orderDetail.site}}</span>
+        </li>
+        <li style="padding-top: 0">
+          <span class="caption">金额</span>
+          <span class="money-text">{{orderDetail.currency}} {{orderDetail.totalAmount}}</span>
+        </li>
+        <li style="position: absolute;right: 0;" *ngIf="orderDetail.statusInt >= 100&&orderDetail.statusInt<=300">
+          <!--<button class="btn btn-warning btn-sm" *ngIf="orderDetail.priority==0&&!orderDetail.isLocked&&orderDetail.statusInt !== 700&&(orderDetail.exceptionDesc==='缺货'||orderDetail.exceptionDesc===null)"-->
+          <!--(click)="ChangeOrderPrority(20)">有货先发</button>-->
+          <button class="btn btn-warning btn-sm" *ngIf="((orderDetail.status=='Paid'||orderDetail.status=='Apporved'||orderDetail.status=='Allocated') && orderDetail.priority!=99999)&&(checkAuthority(8)) "
+            (click)="ChangeOrderPrority(99999)">有货先发</button>
+          <button class="btn btn-danger btn-sm" *ngIf="(orderDetail.priority==99999&&!orderDetail.isLocked&&orderDetail.statusInt !== 700&&(orderDetail.exceptionDesc==='缺货'||orderDetail.exceptionDesc===null))&&(checkAuthority(8))"
+            (click)="ChangeOrderPrority(0)">取消有货先发</button>
+        </li>
+      </ul>
+    </div>
+    <div class="profit">
+      <ul>
+        <!--<li>总支出：<span class="red-text attention">{{orderDetail.totalAmountCny-orderDetail.confirmShippingFee-orderDetail.confirmSkuCostAmount-(orderDetail.siteCommissionFee*orderDetail.currencyExchangeRate )| number:'1.1-2'}}￥</span></li>-->
+        <li>总收入：<span class="green-text attention">{{orderDetail.totalAmountCny| number:'1.1-2'}}￥</span></li>
+        <li>总支出：<span class="red-text attention">{{(orderDetail.confirmShippingFee || orderDetail.estimateShippingFee) + (orderDetail.confirmSkuCostAmount || orderDetail.skuCostAmount)+(orderDetail.siteCommissionFee*orderDetail.currencyExchangeRate )| number:'1.1-2'}}￥</span></li>
+        <li>预估利润：<span class="yellow-text attention">{{orderDetail.estimateProfit != null ? orderDetail.estimateProfit+'￥' : '暂无数据'}}</span></li>
+        <li>实际利润：<span class="attention gold-text">{{orderDetail.confirmProfit != null ? orderDetail.confirmProfit+'￥' : '暂无数据'}}</span></li>
+        <li class="btn-wraper"><button class="btn btn-info btn-sm" (click)="openProfitDetailModal()">查看详情</button></li>
+      </ul>
+    </div>
+    <div class="state-wrapper">
+      <!-- <span class="order-state2" *ngIf="orderDetail != null && orderDetail.id==-1"><span>部分退款</span></span>-->
+      <span class="order-state2" *ngIf="orderDetail != null && orderDetail.relatedOrderId > 0">
+        <span>补发订单</span>
+      </span>
+      <span class="order-state2" *ngIf="orderDetail != null && orderDetail.hasReissue">
+        <span>有补发</span>
+      </span>
+    </div>
+    <div class="steps" style="display: flex;overflow: hidden;">
+      <span class="order-state" *ngIf="orderDetail.statusInt!=900&&orderDetail.statusInt !=700 && orderDetail.isLocked == false && orderDetail.exception != 'None'">
+        {{orderDetail.exceptionDesc}}
+      </span>
+      <span class="order-state" *ngIf="orderDetail.statusInt == 700 && orderDetail.isLocked == false ">已作废</span>
+      <span class="order-state" *ngIf="orderDetail.isLocked == true ">订单已锁定</span>
+      <span class="order-state" *ngIf="orderDetail.statusInt==900 ">订单已合并</span>
+      <!--&& orderDetail.exception == 'None'-->
+      <span class="step first-step" [class.steped]="orderDetail.statusInt >= 100">
+        <i class="ion-checkmark-round"></i>已付款</span>
+      <span class="step" [class.steped]="orderDetail.statusInt >= 200">
+        <i class="ion-checkmark-round"></i>已审核</span>
+      <span class="step" [class.steped]="orderDetail.statusInt >= 300">
+        <i class="ion-checkmark-round"></i>已分配</span>
+      <span class="step" [class.steped]="orderDetail.statusInt >= 400">
+        <i class="ion-checkmark-round"></i>已配货</span>
+      <span class="step" [class.steped]="orderDetail.statusInt >= 500">
+        <i class="ion-checkmark-round"></i>已打印</span>
+      <span class="step" [class.steped]="orderDetail.statusInt >= 600">
+        <i class="ion-checkmark-round"></i>已发货</span>
+    </div>
+    <div class="buyer-info card card-block" style="position: relative">
+      <ngx-loading [show]="loadingShippingAddress" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+      <div class="info-header">
+        <span>买家姓名/收件人/地址</span>
+        <div class="btn-group" role="group" aria-label="...">
+          <button type="button" class="btn" *ngIf="isEditBuyerAddress" (click)="resetBuyerAddress()">
+            <i class="ion-refresh"></i>
+          </button>
+          <button type="button" class="btn" *ngIf="isEditBuyerAddress" (click)="saveBuyerAddress()">
+            <i class="ion-checkmark-round"></i>
+          </button>
+          <button type="button" class="btn" *ngIf="isEditBuyerAddress" (click)="cancelBuyAddress()">
+            <i class="ion-close-round"></i>
+          </button>
+          <button type="button" class="btn" *ngIf="!isEditBuyerAddress && !orderDetail.isLocked && orderDetail.orderOperationStatus!= null && orderDetail.orderOperationStatus.canAllocate"
+            (click)="setEditBuyerAddressStatus(true)">
+            <i class="ion-edit"></i>
+          </button>
+        </div>
+      </div>
+      <div class="info-content">
+        <ul class="buyer-info-edit" *ngIf="isEditBuyerAddress">
+          <li>
+            <label class="info-title">收件人：</label>
+            <input type="text" class="info-input" [(ngModel)]="buyerAddress.buyerName" />
+          </li>
+          <li>
+            <label class="info-title">地址1：</label>
+            <input type="text" class="info-input" [(ngModel)]="buyerAddress.addressLine1" />
+          </li>
+          <li>
+            <label class="info-title">地址2：</label>
+            <input type="text" class="info-input" [(ngModel)]="buyerAddress.addressLine2" />
+          </li>
+          <li>
+            <label class="info-title">城市：</label>
+            <input type="text" class="info-input" [(ngModel)]="buyerAddress.city" />
+          </li>
+          <li>
+            <label class="info-title">省州：</label>
+            <input type="text" class="info-input" [(ngModel)]="buyerAddress.stateOrProvince" />
+          </li>
+          <li>
+            <label class="info-title">国家：</label>
+            <select2 *ngIf="allCountries.length > 0" class="country-select" [data]="allCountries" [value]="buyerAddress.countryCode"
+              (valueChanged)="onChangeCountryChanged($event)"></select2>
+          </li>
+          <li>
+            <label class="info-title">邮编：</label>
+            <input type="text" class="info-input" [(ngModel)]="buyerAddress.postalCode">
+          </li>
+          <li>
+            <label class="info-title">电话1：</label>
+            <input type="text" class="info-input" [(ngModel)]="buyerAddress.phoneNumber1">
+          </li>
+          <li>
+            <label class="info-title">电话2：</label>
+            <input type="text" class="info-input" [(ngModel)]="buyerAddress.phoneNumber2">
+          </li>
+        </ul>
+        <ul class="buyer-info-edit" *ngIf="!isEditBuyerAddress">
+          <li>
+            <label class="info-title">收件人：</label>
+            <span>{{buyerAddress.buyerName}}</span>
+          </li>
+          <li>
+            <label class="info-title">地址1：</label>
+            <span>{{buyerAddress.addressLine1}}</span>
+          </li>
+          <li>
+            <label class="info-title">地址2：</label>
+            <span>{{buyerAddress.addressLine2}}</span>
+          </li>
+          <li>
+            <label class="info-title">城市：</label>
+            <span>{{buyerAddress.city}}</span>
+          </li>
+          <li>
+            <label class="info-title">省州：</label>
+            <span>{{buyerAddress.stateOrProvince}}</span>
+          </li>
+          <li>
+            <label class="info-title">国家：</label>
+            <span *ngIf="buyerAddress.countryCode != null">{{buyerAddress.countryCnName}}({{buyerAddress.countryCode}})</span>
+          </li>
+          <li>
+            <label class="info-title">邮编：</label>
+            <span>{{buyerAddress.postalCode}}</span>
+          </li>
+          <li>
+            <label class="info-title">电话1：</label>
+            <span>{{buyerAddress.phoneNumber1}}</span>
+          </li>
+          <li>
+            <label class="info-title">电话2：</label>
+            <span>{{buyerAddress.phoneNumber2}}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="goods-info card card-block" style="position: relative">
+      <ngx-loading [show]="loadingOrderLines" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+      <div class="info-header">
+        <span>商品信息</span>
+        <div class="btn-group" role="group" aria-label="...">
+          <button type="button" class="btn" *ngIf="isEditOrderLine" (click)="addOrderLine()">
+            <i class="ion-plus-round"></i>
+          </button>
+          <button type="button" class="btn" *ngIf="isEditOrderLine" (click)="saveOrderLine()">
+            <i class="ion-checkmark-round"></i>
+          </button>
+          <button type="button" class="btn" *ngIf="isEditOrderLine" (click)="cancelOrderLine()">
+            <i class="ion-close-round"></i>
+          </button>
+          <button type="button" class="btn" *ngIf="!isEditOrderLine && !orderDetail.isLocked
+                  &&((orderDetail.orderOperationStatus!= null  && orderDetail.orderOperationStatus.canAllocate)
+                    || orderDetail.exception == 'ItemNoMapSku')
+                    " (click)="setEditOrderLineStatus(true)">
+            <i class="ion-edit"></i>
+          </button>
+        </div>
+      </div>
+      <div class="info-content">
+        <table class="table table-bordered" *ngIf="!isEditOrderLine">
+          <thead>
+            <tr>
+              <th>平台SKU</th>
+              <th>库存SKU</th>
+              <th>数量</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let orderLine of orderLines">
+              <td>{{orderLine.externalSku}}</td>
+              <td>{{orderLine.skuCode}}</td>
+              <td>{{orderLine.quantity}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-bordered" *ngIf="isEditOrderLine">
+          <thead>
+            <tr>
+              <th>Cust.L</th>
+              <th>库存SKU</th>
+              <th>数量</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let orderLine of orderLines">
+              <td></td>
+              <td>
+                <div class="btn-group">
+                  <button class="btn btn-xs btn-primary" (click)="openChooseSkuModal(orderLine)">
+                    指定库存商品
+                  </button>
+                </div>
+                <input type="text" *ngIf="orderLine.skuCode" [(ngModel)]="orderLine.skuCode" />
+              </td>
+              <td>
+                <input type="text" [(ngModel)]="orderLine.quantity" style="width:50px" />
+              </td>
+              <td>
+                <a href="javascript:;" (click)="deleteOrderLine(orderLine)">
+                  <i class="ion-close-round"></i> 删除</a>
+                <button class="btn btn-primary" *ngIf="orderLine.isDeclarationMissed" (click)="openCompletionDeclarationModal(orderLine)">补充报关信息
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="tabs">
+      <ul>
+        <li *ngFor="let tab of tabs;let i = index" (click)="tabChoose(i)" [class.selected]="tab.selected == 1">
+          <span>
+            <i *ngIf="(i==3&&orderDetail.orderNotes.length>0)||(i==6&&mergeSplitLog.length>0)" class="fa fa-exclamation-circle red-text"></i>
+            {{tab.name}}
+          </span>
+        </li>
+      </ul>
+      <div class="tab-contents card card-block">
+        <div class="tab-content" *ngIf="choose == 0">
+          <div class="vertical-scroll table-box">
+            <table class="table table-hover table-bordered">
+              <thead>
+                <tr>
+                  <th>图片</th>
+                  <th>交易平台商品编号/参数/Title商品ID</th>
+                  <th>库存SKU</th>
+                  <th>数量</th>
+                  <th>外形尺寸(cm)</th>
+                  <th>重量(g)</th>
+                  <th>报关信息</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let orderLine of orderDetail.orderLines">
+                  <ng-container *ngIf="orderLine.productUrl == null || orderLine.productUrl == ''">
+                    <td><img *ngIf="orderLine.productImgUrl != null" [src]="orderLine.productImgUrl" alt=""></td>
+                    <td>{{orderLine.externalSku}}/{{orderLine.title}}</td>
+                  </ng-container>
+                  <ng-container  *ngIf="orderLine.productUrl != null && orderLine.productUrl != ''">
+                    <td><a target="_blank" href="{{orderLine.productUrl}}"><img *ngIf="orderLine.productImgUrl != null" [src]="orderLine.productImgUrl" alt="" /></a></td>
+                    <td><a style="color:#fff836;" target="_blank" href="{{orderLine.productUrl}}">{{orderLine.externalSku}}/{{orderLine.title}}</a></td>
+                  </ng-container>
+                  <td>{{orderLine.skuCode}}</td>
+                  <td>{{orderLine.quantity}}</td>
+                  <td>
+                    <span *ngIf="orderLine.skuInfo != null">{{orderLine.skuInfo.length}}*{{orderLine.skuInfo.width}}*{{orderLine.skuInfo.height}}</span>
+                  </td>
+                  <td>
+                    <span *ngIf="orderLine.skuInfo != null">{{orderLine.skuInfo.weight}}</span>
+                  </td>
+                  <td>
+                    <span *ngIf="orderLine.skuInfo != null && !orderLine.isDeclarationMissed">
+                      {{orderLine.skuInfo.declaration.chineseName}}, {{orderLine.skuInfo.declaration.englishName}}, USD {{orderLine.skuInfo.declaration.declaredValue}}
+                    </span>
+                    <button *ngIf="orderLine.skuInfo != null && orderLine.isDeclarationMissed" class="btn btn-primary" (click)="openCompletionDeclarationModal()">补充报关信息
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="tab-content" *ngIf="choose == 1">
+          <ngx-loading [show]="loadingOrderAllocatedInfo" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+          <table class="table table-hover table-bordered">
+            <thead>
+              <tr>
+                <th>买家指定物流</th>
+                <th>发货仓库</th>
+                <th>物流方式</th>
+                <th>跟踪单号</th>
+                <th>重量</th>
+                <th>估计运费</th>
+                <th>包裹编号</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{orderDetail.shippingMethod && orderDetail.shippingMethod.length>0?orderDetail.shippingMethod:'未获取'}}
+                </td>
+                <td *ngIf="!isEditOrderAllocateInfo">
+                  {{orderDetail.warehouseName && orderDetail.warehouseName.length > 0 ?orderDetail.warehouseName:'未分配'}}
+                </td>
+                <td *ngIf="!isEditOrderAllocateInfo">
+                  {{orderDetail.shippingServiceName&&orderDetail.shippingServiceName.length>0?orderDetail.shippingServiceName:'未分配'}}
+                </td>
+                <td *ngIf="isEditOrderAllocateInfo">
+                  <select class="form-control" [(ngModel)]="selectedWarehouseId" (change)="onSelectWarehouseChange()" style="height: 38px;">
+                    <option *ngFor="let warehouse of allWarehouses" [value]="warehouse.warehouseId">
+                      {{warehouse.name}}
+                    </option>
+                  </select>
+                </td>
+                <td *ngIf="isEditOrderAllocateInfo">
+                  <select class="form-control" [(ngModel)]="selectedSsId" style="height: 38px;">
+                    <option *ngFor="let warehouseShippingService of warehouseAllShippingService" [value]="warehouseShippingService.ssid">
+                      {{warehouseShippingService.name}}
+                    </option>
+                  </select>
+                </td>
+
+                <td>
+                  <span *ngIf="!(orderDetail.trackingNumber && orderDetail.trackingNumber.length > 0) && trackingNumberDisplayType != 2" class="traceNumber-text">{{getTrackingNumberDisplayText()}}</span>
+                  <p *ngIf="orderDetail.trackingNumber && orderDetail.trackingNumber.length > 0"  class="traceNumber-text">跟踪号: {{orderDetail.trackingNumber}}</p>
+                  <p *ngIf="orderDetail.spPackageId && orderDetail.spPackageId.length > 0" class="traceNumber-text">转单号: {{orderDetail.spPackageId}}</p>
+                  <button type="button" class="btn btn-info btn-sm" *ngIf="((trackingNumberDisplayType == 1 || trackingNumberDisplayType == 4) && !isEditOrderAllocateInfo)&&(orderDetail.statusInt !== 700)"
+                    (click)="onFetchTrackingNumber()">
+                    获取跟踪号
+                  </button>
+                  <div class="input-group myinput-group" *ngIf="trackingNumberDisplayType ==2">
+                    <input type="text" name="fillTrackingNuber" class="form-control" autofocus/>
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-sm btn-primary">确定</button>
+                    </span>
+                  </div>
+                </td>
+                <td>{{orderDetail.estimateTotalWeight}}g</td>
+                <td>{{orderDetail.estimateShippingFee>=0 ? orderDetail.estimateShippingFee: '未获取'}}</td>
+                <td>{{orderDetail.allocatedPakcageNumber == null?'未生成' : orderDetail.allocatedPakcageNumber}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="btn-group" style="float:left;margin:10px 0;">
+          <button type="button" class="btn btn-info btn-sm"  *ngIf="orderDetail.canPreCompleteSale" (click)="orderBackComesBack()">提前回传</button>
+          </div>
+          <div class="btn-group" *ngIf="isEditOrderAllocateInfo" style="float:right;margin:10px 0;">
+            <button class="btn btn-default" (click)="cancelEditOrderAllocateInfo()">取消</button>
+            <button class="btn btn-primary" (click)="saveOrderAllocateInfo()">保存</button>
+          </div>
+        </div>
+
+        <!--<div class="tab-content" *ngIf="choose == 2">-->
+          <!--&lt;!&ndash;<label>订单运费</label>&ndash;&gt;-->
+          <!--&lt;!&ndash;<span>{{orderDetail.confirmShippingFee != null ? orderDetail.confirmShippingFee+'￥' : '没有录入'}}</span>&ndash;&gt;-->
+          <!--<label>预估利润：</label>-->
+          <!--<span class="yellow-text">{{orderDetail.estimateProfit != null ? orderDetail.estimateProfit+'￥' : '暂无数据'}}</span>-->
+          <!--<label>预估利润率：</label>-->
+          <!--<span class="yellow-text" *ngIf="orderDetail.estimateProfit === null">暂无数据</span>-->
+          <!--<span class="yellow-text" *ngIf="orderDetail.estimateProfit != null">{{orderDetail.estimateProfit/orderDetail.totalAmountCny * 100 | number:'1.1-3'}}%</span>-->
+          <!--<br>-->
+          <!--<label>实际利润：</label>-->
+          <!--<span class="yellow-text">{{orderDetail.confirmProfit != null ? orderDetail.confirmProfit+'￥' : '暂无数据'}}</span>-->
+          <!--<label>实际利润率：</label>-->
+          <!--<span class="yellow-text" *ngIf="orderDetail.confirmProfit === null">暂无数据</span>-->
+          <!--<span class="yellow-text" *ngIf="orderDetail.confirmProfit != null">{{orderDetail.confirmProfit/orderDetail.totalAmountCny* 100 | number:'1.1-3'}}%</span>-->
+          <!--&lt;!&ndash;<label>汇率</label>&ndash;&gt;-->
+          <!--&lt;!&ndash;<span>{{orderDetail.confirmCurrencyExchangeRate != null ? orderDetail.confirmCurrencyExchangeRate+'￥' : '无'}}</span>&ndash;&gt;-->
+          <!--<table class="table table-hover table-bordered">-->
+            <!--<thead>-->
+              <!--<tr>-->
+                <!--<th>币种</th>-->
+                <!--<th>操作人员</th>-->
+                <!--<th>当前金额</th>-->
+                <!--<th>实际金额</th>-->
+                <!--<th>费用类型</th>-->
+                <!--<th>是否确认</th>-->
+              <!--</tr>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+              <!--<tr>-->
+                <!--<td>{{orderDetail.currency}}</td>-->
+                <!--<td>系统</td>-->
+                <!--<td class="money-text">{{orderDetail.totalAmount | number:'1.1-2'}}</td>-->
+                <!--<td class="money-text">{{orderDetail.totalAmountCny | number:'1.1-2'}}￥</td>-->
+                <!--<td>订单总金额</td>-->
+                <!--<td>-->
+                  <!--<i class="ion-checkmark-circled true"></i>-->
+                <!--</td>-->
+              <!--</tr>-->
+              <!--<tr>-->
+                <!--<td>CNY</td>-->
+                <!--<td>系统</td>-->
+                <!--<td>{{orderDetail.estimateShippingFee | number:'1.1-2'}}</td>-->
+                <!--<td *ngIf="orderDetail.confirmShippingFee!=null">{{orderDetail.confirmShippingFee | number:'1.1-2'}}￥</td>-->
+                <!--<td *ngIf="orderDetail.confirmShippingFee==null">暂无</td>-->
+                <!--<td>本地仓运费</td>-->
+                <!--<td *ngIf="orderDetail.confirmShippingFee==null">-->
+                  <!--<i class="ion-close-circled false"></i>-->
+                <!--</td>-->
+                <!--<td *ngIf="orderDetail.confirmShippingFee!=null">-->
+                  <!--<i class="ion-checkmark-circled true"></i>-->
+                <!--</td>-->
+              <!--</tr>-->
+              <!--<tr>-->
+                <!--<td>CNY</td>-->
+                <!--<td>系统</td>-->
+                <!--<td>{{orderDetail.skuCostAmount | number:'1.1-2'}}</td>-->
+                <!--<td *ngIf="orderDetail.confirmSkuCostAmount!=null">{{orderDetail.confirmSkuCostAmount | number:'1.1-2'}}￥</td>-->
+                <!--<td *ngIf="orderDetail.confirmSkuCostAmount==null">暂无</td>-->
+                <!--<td>商品采购成本</td>-->
+                <!--<td *ngIf="orderDetail.status!='Shipped'">-->
+                  <!--<i class="ion-close-circled false"></i>-->
+                <!--</td>-->
+                <!--<td *ngIf="orderDetail.status =='Shipped'">-->
+                  <!--<i class="ion-checkmark-circled true"></i>-->
+                <!--</td>-->
+              <!--</tr>-->
+              <!--<tr>-->
+                <!--<td>{{orderDetail.currency}}</td>-->
+                <!--<td>系统</td>-->
+                <!--<td>{{orderDetail.siteCommissionFee | number:'1.1-2'}}</td>-->
+                <!--<td>{{orderDetail.siteCommissionFee*orderDetail.currencyExchangeRate | number:'1.1-2'}}￥</td>-->
+                <!--<td>佣金</td>-->
+                <!--<td>-->
+                  <!--<i class="ion-checkmark-circled true"></i>-->
+                <!--</td>-->
+              <!--</tr>-->
+            <!--</tbody>-->
+          <!--</table>-->
+        <!--</div>-->
+        <div class="tab-content" *ngIf="choose == 2">
+          <div class="vertical-scroll table-box">
+            <table class="table table-hover table-bordered">
+              <thead>
+                <tr>
+                  <th>内容</th>
+                  <th width="100px">操作者</th>
+                  <th width="150px">时间</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let log of orderDetail.orderLogs">
+                  <td>{{log.message}}</td>
+                  <td>{{log.userName}}</td>
+                  <td>{{log.createdTime| amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="tab-content" *ngIf="choose == 3">
+          <div class="vertical-scroll table-box">
+            <table class="table table-hover table-bordered">
+              <thead>
+                <tr>
+                  <th>内容</th>
+                  <th>操作者</th>
+                  <th width="100px">类型</th>
+                  <th width="200px">时间[GMT + 8:00 ]</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let orderNote of orderDetail.orderNotes">
+                  <td>{{orderNote.content}}</td>
+                  <td>{{orderNote.userName}}</td>
+                  <td>客服备注</td>
+                  <td>{{orderNote.createdTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="tab-content" *ngIf="choose == 4">
+          <span>没有退款或补发货记录。</span>
+        </div>
+        <div class="tab-content" *ngIf="choose == 5">
+          <span>无退换货记录</span>
+        </div>
+        <div class="tab-content" *ngIf="choose == 6">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>操作日志</th>
+                <th width="100px">操作人员</th>
+                <th width="150px">时间</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of mergeSplitLog">
+                <td>
+                  <span *ngIf="item.isSplit">
+                    <ng-container *ngFor="let i of item.actionModels.originalOrderNumbers;let index = index">
+                      <span [ngClass]="{'yellow-text':i==orderDetail.orderNumber,'blue-text':i!=orderDetail.orderNumber}">{{i}}</span>
+                    </ng-container>
+                    拆分为
+                    <ng-container>
+                      <span [ngClass]="{'yellow-text':item.actionModels.currentOrderNumber==orderDetail.orderNumber,'blue-text':item.actionModels.currentOrderNumber!=orderDetail.orderNumber}">{{item.actionModels.currentOrderNumber}}</span>
+                    </ng-container>
+                  </span>
+
+                  <span *ngIf="!item.isSplit">
+                    由
+                    <ng-container *ngFor="let i of item.actionModels.originalOrderNumbers">
+                      <span [ngClass]="{'yellow-text':i==orderDetail.orderNumber,'blue-text':i!=orderDetail.orderNumber}">{{i}}</span>
+                    </ng-container>
+                    合并为
+                    <ng-container>
+                      <span [ngClass]="{'yellow-text':item.actionModels.currentOrderNumber==orderDetail.orderNumber,'blue-text':item.actionModels.currentOrderNumber!=orderDetail.orderNumber}">{{item.actionModels.currentOrderNumber}}</span>
+                    </ng-container>
+                  </span>
+                </td>
+                <td>{{item.operatorName}}</td>
+                <td>{{item.createTimeDesc}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="btns" *ngIf="orderDetail.statusInt!=900">
+      <button class="btn btn-sm btn-default" *ngIf="(orderDetail.statusInt>=200&&orderDetail.statusInt<=300&&(isCanMerge))&&(checkAuthority(9))"
+        (click)="mergeOrderModal()">合并订单</button>
+
+      <button class="btn btn-sm btn-default" *ngIf="((orderDetail.statusInt>=200&&orderDetail.statusInt<=300)&&(isCanRefuse))&&(checkAuthority(10))"
+        (click)="splitOrderModal()">拆分订单</button>
+
+      <button class="btn btn-sm btn-default" (click)="loadOrderData()">刷新</button>
+      <button class="btn btn-sm btn-default" *ngIf="(orderDetail.statusInt !== 700&&!orderDetail.isLocked)&&(checkAuthority(11))"
+        (click)="doLockOrder()">锁定</button>
+      <button class="btn btn-sm btn-warning" *ngIf="orderDetail.isLocked&&(checkAuthority(11))" (click)="unlockOrder()">解锁</button>
+
+      <button class="btn btn-sm btn-warning" *ngIf="(orderDetail.exception=='NeedManualAudit'&& orderDetail.exception!='LowProfitAudit')&&(checkAuthority(14))"
+        (click)="orderApproved()">审核通过
+      </button>
+      <button class="btn btn-sm btn-warning" *ngIf="(orderDetail.exception=='LowProfitAudit' && orderDetail.exception!='NeedManualAudit')&&(checkAuthority(13)) "
+        (click)="orderLowProfitApproved()">审核通过
+      </button>
+
+      <button class="btn btn-sm btn-default" *ngIf="checkAuthority(12)" (click)="openAddOrderNoteModal()">备注</button>
+      <button class="btn btn-sm btn-default" *ngIf="(!orderDetail.isLocked && orderDetail.orderOperationStatus!= null && orderDetail.orderOperationStatus.canAllocate)&&(checkAuthority(15))"
+        (click)="editOrderAllocateInfo()">手工分配
+      </button>
+      <button class="btn btn-sm btn-default" *ngIf="(!orderDetail.isLocked && orderDetail.orderOperationStatus!= null && orderDetail.orderOperationStatus.canReset)&&(checkAuthority(16))"
+        (click)="resetOrder()">重置订单
+      </button>
+      <button class="btn btn-sm btn-default" *ngIf="(!orderDetail.isLocked && orderDetail.orderOperationStatus!= null && orderDetail.orderOperationStatus.canVoid)&&checkAuthority(17)"
+        (click)="voidOrder()">作废
+      </button>
+      <button class="btn btn-sm btn-default" *ngIf="(orderDetail.orderOperationStatus!= null && orderDetail.orderOperationStatus.canActive)&&(checkAuthority(17))"
+        (click)="activeOrder()">激活
+      </button>
+      <button class="btn btn-sm btn-default" *ngIf="(!orderDetail.isLocked&&!orderDetail.isMerged&&orderDetail.statusDesc !== '已作废')&&(checkAuthority(18))">退款</button>
+      <button class="btn btn-sm btn-primary" *ngIf="orderDetail.status=='Shipped' " (click)="openReissueModal()">补发</button>
+      <button class="btn btn-sm btn-default" (click)="closeModal()">关闭</button>
+    </div>
+    <div class="btns" *ngIf="orderDetail.statusInt==900">
+      <button class="btn btn-sm btn-default" (click)="loadOrderData()">刷新</button>
+      <button class="btn btn-sm btn-default" (click)="closeModal()">关闭</button>
+    </div>
+  </div>
+</div>

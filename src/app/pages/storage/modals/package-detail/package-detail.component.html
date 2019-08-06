@@ -1,0 +1,73 @@
+<div class="pop-content" id="form">
+  <div class="modal-header">
+    <span class="modal-title">打印盘库任务</span>
+  </div>
+  <div class="modal-body">
+    <div class="print-body">
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <td colspan="8">
+              <h3>盘库任务</h3>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="8" class="border-bottom-none">
+              <label>时间：</label>
+              <span style="margin-right:40px;"></span>
+              <label>仓库：</label>
+              <span style="margin-right:40px;"></span>
+              <label>任务编号：</label>
+              <span></span>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="8" class="border-bottom-none">
+              <label>SKU总数：</label>
+              <span style="margin-right:40px;"></span>
+              <label>产品总数：</label>
+              <span></span>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="8" style="padding:0">
+              <table class="table border-none">
+                <tbody>
+                  <tr>
+                    <td>库位</td>
+                    <td>SKU</td>
+                    <td>商品名</td>
+                    <td>数量</td>
+                    <td>二维码</td>
+                  </tr>
+                  <tr>
+                    <td>A05D03</td>
+                    <td>DMT123451234</td>
+                    <td>单缸单臂导轨式升降机 可定制 室内小型液压升降货梯 升降平台 举报</td>
+                    <td>2</td>
+                    <td><img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=928442572,873821289&fm=27&gp=0.jpg" alt=""></td>
+                  </tr>
+                  <tr style="border-top:1px solid #000">
+                    <td>A05D03</td>
+                    <td>DMT123451234</td>
+                    <td>单缸单臂导轨式升降机 可定制 室内小型液压升降货梯 升降平台 举报</td>
+                    <td>2</td>
+                    <td>
+                      <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=928442572,873821289&fm=27&gp=0.jpg" alt="">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="printPDF()">打印明细单</button>
+      <button class="btn btn-primary" (click)="closeModal()">取消</button>
+    </div>
+  </div>
+</div>

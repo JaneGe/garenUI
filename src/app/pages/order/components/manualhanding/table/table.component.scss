@@ -1,0 +1,52 @@
+.search-wrapper {
+    .search-condition {
+        li {
+            height: 30px;
+            margin: 5px 0;
+            line-height: 1em;
+            .search-input {
+                display: inline-block;
+                width: 300px;
+                height: 30px;
+                margin-left: 0;
+            }
+        }
+    }
+}
+
+.table {
+    font-size: 12px;
+    td {
+        a {
+            word-break: break-all !important;
+        }
+    }
+}
+
+.customs-info {
+    margin: 0;
+    border-top: 1px solid rgba(255, 255, 255, .4);
+    &:first-child {
+        border: none;
+    }
+    p {
+        font-size: 12px;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+.ali-order-wrap {
+    padding: 5px;
+    border-top: 1px solid rgba(255, 255, 255, .2);
+    margin: 0;
+    text-align: left;
+    &:first-child {
+        border: none;
+    }
+}
+// 物流信息
+.short-info-details {
+    display: block;
+    text-align: left;
+}

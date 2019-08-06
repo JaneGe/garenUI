@@ -1,0 +1,33 @@
+<div class="card card-block">
+  <div class="select bdb">
+    <div class="part-wrap">
+      <span class="title">状态筛选：</span>
+    </div>
+    <div class="option-wrap">
+        <span class="option" *ngFor="let item of status" (click)="selectStatu(item)"
+              [ngClass]="{'tag':item==selectedstatu}">{{item}}</span>
+    </div>
+  </div>
+  <div class="select">
+    <div class="part-wrap">
+      <span class="title">搜索类型：</span>
+    </div>
+    <div class="option-wrap">
+        <span class="option" *ngFor="let item of searchKind" (click)="selectsearchKind(item)"
+              [ngClass]="{'tag':item==selectedsearchKind}">{{item}}</span>
+    </div>
+  </div>
+  <div class="select bdb bdb-gap">
+    <div class="part-wrap">
+      <span class="title">搜索内容：</span>
+    </div>
+    <div class="part-wrap">
+      <div class="input-group  input">
+        <input type="search" class="form-control">
+        <span class="input-group-btn">
+        <button class="btn btn-sm btn-danger">搜索</button>
+      </span>
+      </div>
+    </div>
+  </div>
+</div>

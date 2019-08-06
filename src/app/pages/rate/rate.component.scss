@@ -1,0 +1,115 @@
+/* .rate-wrapper{
+    width:auto;
+    height:auto;
+    float: left;
+    margin:45px;
+    padding:20px;
+    background: rgba(255,255,255,0.2);
+    border:1px solid rgba(0,0,0,0.2);
+    border-radius: 10px;
+    .update{
+        display: block;
+        text-align: center;
+        margin:20px 0;
+    }
+    .left,.right{
+        display: inline-block;
+        width:auto;
+        float: left;
+        text-align: center;
+        .country{
+            img{
+                width:200px;
+                height:auto;
+                margin:0 0 20px 0;
+                border:1px solid rgba(0,0,0,0.2);
+                border-radius: 5px;
+            }
+            span{
+                height:40px;
+                display: block;
+                line-height: 40px;
+                font-size: 1.2em;
+            }
+            form{
+                .scur{
+                    display: inline-block;
+                    float: left;
+                }
+                .form-control{
+                    width:125px;
+                    float: left;
+                    margin-left:20px;
+                }
+            }
+        }
+    }
+    .rate{
+        width:auto;
+        margin:0 20px;
+        text-align: center;
+        float: left;
+        span{
+            display: block;
+            color:#fff;
+            margin:20px 0;
+        }
+        a{
+            display: inline-block;
+            width:30px;
+            height:30px;
+            font-size: 3.5em;
+            text-align: center;
+            color:#fff;
+            &:hover{
+                text-shadow: 1px 1px 1px rgba(0,0,0,1);
+            }
+        }
+        .title{
+            font-size: 1.4em;
+        }
+        .new-rate{
+            font-size: 2em;
+        }
+    }
+} */
+.card{
+    width:80%;
+    min-width: 525px;
+    float: left;
+    position: relative;
+    left:10%;
+    text-align: center;
+    th{
+        text-align: center;
+    }
+    .updata{
+        display: block;
+        margin:10px 0;
+        letter-spacing: 2px;
+        text-align: center;
+    }
+    td{
+        img{
+            width:50px;
+            margin:10px 0;
+        }
+        span{
+            line-height: 50px;
+        }
+        
+    }
+    .now-rate{
+      font-size: 30px;
+    }
+}
+@media (max-width:1280px){ //Mac Pro 13英寸
+    .card{
+        top:0px;
+    }
+}
+@media (max-width:1440px){ //Mac Pro 15英寸 
+    .card{
+        top:0px;
+    }
+} 

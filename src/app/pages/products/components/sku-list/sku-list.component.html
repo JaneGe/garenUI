@@ -1,0 +1,223 @@
+<div class="wrapper .col-md-8 card card-block">
+  <div class="card card-block">
+    <form class="goods-search-form">
+      <ul>
+        <li>
+          <span class="screen-title">按照物流属性：</span>
+          <div class="screen-wrapper" *ngFor="let attr of attrs;let i = index">
+            <input type="radio" id="attr-{{i}}" name="attr" class="regular-radio" [checked]="i === 0" />
+            <!--[checked]="selectShippingAttribute == attr.value "-->
+            <label for="attr-{{i}}" (click)="onShippingAttributeSelect($event.target,attr.value)">{{attr.name}}</label>
+          </div>
+        </li>
+        <li>
+          <span class="screen-title">异常状态：</span>
+          <div class="screen-wrapper" *ngFor="let unusualType of unusualTypes;let i = index">
+            <input type="radio" id="unusualType-{{i}}" name="unusualType" class="regular-radio" [checked]="i === 0" />
+            <label for="unusualType-{{i}}" (click)="onSearchUnusualTypeSelect($event.target,unusualType.value)">{{unusualType.name}}</label>
+          </div>
+        </li>
+        <li>
+          <span class="screen-title">有无采购链接：</span>
+          <div class="screen-wrapper" *ngFor="let exist of haspurchaseLink;let i = index">
+            <input type="radio" id="exist-{{i}}" name="exist" class="regular-radio" [checked]="i === 0" />
+            <label for="exist-{{i}}" (click)="onSearchIfPurchaseLink($event.target,exist.value)">{{exist.name}}</label>
+          </div>
+        </li>
+        <li>
+          <span class="screen-title">是否是组合商品：</span>
+          <div class="screen-wrapper" *ngFor="let component of ifComponent;let i = index">
+            <input type="radio" id="component-{{i}}" name="component" class="regular-radio" [checked]="i === 0" />
+            <label for="component-{{i}}" (click)="onSearchIsCompoennt($event.target,component.value)">{{component.name}}</label>
+          </div>
+        </li>
+        <li>
+          <span class="screen-title">搜索类型：</span>
+          <div class="screen-wrapper" *ngFor="let type of types;let i = index">
+            <input type="radio" id="type-{{i}}" name="type" class="regular-radio" [checked]="i === 0" />
+            <label for="type-{{i}}" (click)="onSearchTypeSelect($event.target,type.value)">{{type.name}}</label>
+          </div>
+        </li>
+        <li>
+          <span class="screen-title">搜索内容：</span>
+          <div class="input-group search">
+            <input type="text" class="form-control with-primary-addon" name="searchText" #s="ngModel" [(ngModel)]="searchText" placeholder="搜索 "
+              (keyup.enter)="doSearch()">
+            <span class="ion-close-circled clean" *ngIf="s.value!=''" (click)="cleanSearchText()"></span>
+            <span class="input-group-btn">
+              <button class="btn btn-primary" type="button" (click)="doSearch()">搜索</button>
+            </span>
+          </div>
+        </li>
+      </ul>
+    </form>
+  </div>
+  <div class="btn-box">
+    <div class="checkbox">
+      <label class="checkbox-inline custom-checkbox nowrap">
+        <input type="checkbox" [checked]="isCheckAllPages" (change)="onCheclAllPageChange($event.target.checked)">
+        <span>选中所有页</span>
+      </label>
+    </div>
+    <button type="button" class="btn btn-primary" *ngIf="getCurrentAuthoritiy('Add')" (click)="openAddModal()">添加商品</button>
+    <button type="button" class="btn btn-primary" *ngIf="getCurrentAuthoritiy('Import')" (click)="openInSKUModal()">导入商品</button>
+    <button type="button" class="btn btn-primary" *ngIf="getCurrentAuthoritiy('Export')" (click)="openOutputModal()">导出商品</button>
+  </div>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{total}}条数据</span>
+      </div>
+    </div>
+  </form>
+  <div class="table-box">
+    <table class="table table-hover table-bordered">
+      <thead>
+        <tr>
+          <th width="40px">
+            <label class="checkbox-inline custom-checkbox nowrap">
+              <input type="checkbox" [checked]="selectSkuIds.length == items.length && items.length > 0" (change)="onCheckAllOrderChanged($event.target.checked)">
+              <span></span>
+            </label>
+          </th>
+          <th width="70px">图片</th>
+          <th width="250px">商品基础信息</th>
+          <th width="100px">库存</th>
+          <th class="thAttr">商品属性</th>
+          <th width="200px">物理属性</th>
+          <th class="operate">相关操作</th>
+          <th width="100px">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of items | paginate: { id: 'pager',
+                                            itemsPerPage: pageSize,
+                                            currentPage: pageNumber,
+                                            totalItems: total}">
+          <td>
+            <label class="checkbox-inline custom-checkbox nowrap">
+              <input type="checkbox" [checked]="selectSkuIds.indexOf(item.id) >= 0" (change)="onCheckOrderChanged($event.target.checked, item.id)"
+              />
+              <span></span>
+            </label>
+          </td>
+          <td>
+            <img class="sku-img" [src]="item.imageUrl" alt="无图片信息">
+          </td>
+          <td>
+            <div class="forbidden clearfix">
+              <span class="halt" *ngIf="item.isDiscontinued">停售</span>
+              <span class="stop-production" *ngIf="item.isNoProduction">停产</span>
+              <span class="disabled" *ngIf="item.status=='Disable'">禁用</span>
+              <span class="tort" *ngIf="item.isInfringement">侵权</span>
+              <span class="meybe-tort" *ngIf="item.isSuspectedInfringement">疑侵</span>
+            </div>
+            <span>商品ID：{{item.id}}</span>
+            <span>Sku：{{item.skuCode}}</span>
+            <span>名称：{{item.name}}</span>
+            <span> 采购链接：
+              <div class="btn-group">
+                <span *ngIf="item.purchaseUrls.length==0" class="btn btn-xs btn-danger">无</span>
+                <a *ngIf="item.purchaseUrls.length!=0" title="打开默认链接" href="{{item.purchaseUrls[0]}}" target="_blank" class="btn btn-xs btn-primary">有</a>
+              </div>
+            </span>
+          </td>
+          <td>
+            <span *ngFor="let stock of item.inventories">{{stock.warehouseName}}：{{stock.quantity}}</span>
+          </td>
+          <td style="text-align:center">
+            <div class="attr">
+              <div>
+                <span [ngClass]="{'badge-warning':totalAttr=='电','badge-primary':totalAttr=='普货','badge-danger':totalAttr=='违','badge-info':totalAttr=='液','badge-fang':totalAttr=='仿','badge-fen':totalAttr=='粉末'}"
+                  *ngFor="let totalAttr of item.totalSkuAttr">
+                  {{totalAttr}}
+                </span>
+              </div>
+              <p *ngFor="let attr of item.shippingAttributes">{{attr}}</p>
+            </div>
+          </td>
+          <td>
+            <div>
+              <!-- <p>长：{{item.length}}&nbsp;cm</p>
+              <p>宽：{{item.width}}&nbsp;cm</p>
+              <p>高：{{item.height}}&nbsp;cm</p>
+              <p>预估体积：{{item.length*item.width*item.height}}&nbsp;cm
+                <sup>3</sup>
+              </p> -->
+              <p>重量：{{item.weight}}&nbsp;g</p>
+            </div>
+          </td>
+          <td>
+            <span>添加人员:{{item.createdUserName}}</span>
+            <span>添加时间:{{item.createdTime | amDateFormat: 'YYYY-MM-DD HH:mm'}}</span>
+            <span *ngIf="item.lastModifiedUserName != null">最后修改人员:{{item.lastModifiedUserName}}</span>
+            <span>最后修改时间:{{item.lastModifiedTime | amDateFormat: 'YYYY-MM-DD HH:mm'}}</span>
+          </td>
+          <td style="text-align:center">
+            <div class="btn-group" ngbDropdown>
+              <button type="button" class="btn btn-sm btn-primary" ngbDropdownToggle>
+                操作
+              </button>
+              <ul class="dropdown-menu">
+                <li class="dropdown-item" *ngIf="getCurrentAuthoritiy('Update')">
+                  <a href="javascript:;" (click)="openEditSkuModal(item.id)">编辑</a>
+                </li>
+                <li class="dropdown-item" *ngIf="getCurrentAuthoritiy('Delete')">
+                  <a href="javascript:;" (click)="deleteSku(item.id)">删除</a>
+                </li>
+                <li class="dropdown-item" *ngIf="(item.status!='Disable')&&getCurrentAuthoritiy('Unable')">
+                  <a href="javascript:;" (click)="openForbiddenModal(item.id)">禁用商品</a>
+                </li>
+                <li class="dropdown-item" *ngIf="(item.status=='Disable')&&getCurrentAuthoritiy('Unable')">
+                  <a href="javascript:;" (click)="activateSku(item.id,item.isDiscontinued,item.isNoProduction,item.isInfringement,item.isSuspectedInfringement,item.skuDisableInfo)">激活商品</a>
+                </li>
+                <li class="dropdown-item">
+                  <a href="javascript:;" (click)="printSkuLabel(item.id)">打印标签</a>
+                </li>
+              </ul>
+            </div>
+            <!-- <button class="btn btn-xs btn-info" *ngIf="getCurrentAuthoritiy('Update')" (click)="openEditSkuModal(item.id)">编辑</button>
+            <button class="btn btn-xs btn-danger" *ngIf="getCurrentAuthoritiy('Delete')" (click)="deleteSku(item.id)">删除</button>
+            <button class="btn btn-xs btn-warning" *ngIf="(item.status!='Disable')&&getCurrentAuthoritiy('Unable')" (click)="openForbiddenModal(item.id)">禁用商品</button>
+            <button class="btn btn-xs btn-primary" *ngIf="(item.status=='Disable')&&getCurrentAuthoritiy('Unable')" (click)="activateSku(item.id,item.isDiscontinued,item.isNoProduction,item.isInfringement,item.isSuspectedInfringement,item.skuDisableInfo)">激活商品</button> -->
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{total}}条数据</span>
+      </div>
+    </div>
+  </form>
+</div>

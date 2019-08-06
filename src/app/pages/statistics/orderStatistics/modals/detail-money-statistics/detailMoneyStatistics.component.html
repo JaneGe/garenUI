@@ -1,0 +1,37 @@
+<!-- <form id="formd"> -->
+<div class="pop-content animated fadeIn">
+  <div class="modal-header head">
+    <h4 class="modal-title mytitle">帐号金额对应统计
+      <button class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </h4>
+  </div>
+  <div class="modal-body">
+    <!--<div class="card card-block" *ngFor="let item of Data">-->
+    <!--<h3><span>帐号：</span> {{item.account}}</h3>-->
+    <!--<p><span>订单总单量：</span><i class="blue-text">{{item.orderNum}}</i></p>-->
+    <!--<p><span>订单总金额：</span><i class="money-text">{{item.money}}</i></p>-->
+    <!--</div>-->
+    <div class="card card-block" *ngFor="let t of times;let i=index;">
+      <div class="wrap">
+        <!--<div class="part" *ngFor="let item of Data.slice(i*groupNum,groupNum*(i+1))">-->
+        <!--<h3><span>帐号：</span> {{item.account}}</h3>-->
+        <!--<p><span>订单总单量：</span><i class="blue-text">{{item.orderNum}}</i></p>-->
+        <!--<p><span>订单总金额：</span><i class="money-text">{{item.money}}</i></p>-->
+        <!--</div>-->
+        <div class="part" *ngFor="let item of aLLAccountDescList.slice(i*groupNum,groupNum*(i+1))">
+          <h3><span>帐号：</span> {{item.channelName}}</h3>
+          <h3 *ngIf="item.channelName!='手工订单'"><span>平台：</span> {{item.channelType}}</h3>
+          <p><span>订单总单量：</span><i class="total-text">{{item.orderCount}}</i></p>
+          <p><span>订单总金额：</span><i class="money-text">{{item.totalAmount}}</i></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-warning pull-right"><a href="#" download="帐号金额统计"></a> 导出</button>
+    <button class="btn btn-sm btn-danger pull-right cancel" (click)="closeModal()">关闭</button>
+  </div>
+</div>
+<!-- </form> -->

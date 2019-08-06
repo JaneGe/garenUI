@@ -1,0 +1,139 @@
+body {
+  font-family: Tahoma, 'Malgun Gothic', 'Microsoft Yahei', Arial, Helvetica, simsun, sans-serif;
+  line-height: 1.1;
+  font-size: 9px;
+  font-weight: 0;
+  height: auto;
+}
+.wrapper {
+  width: 120mm;
+  height: 110mm;
+  margin: 0 auto;
+  padding: 0;
+}
+.wrapper .bill-wrapper {
+  width: 100mm;
+  height: auto;
+  min-height: 100mm;
+  border: 1px dotted #ccc;
+  margin: 0 auto;
+}
+.wrapper .bill-wrapper .content {
+  width: 100mm;
+  border-collapse: collapse;
+  border-bottom: none;
+}
+.wrapper .bill-wrapper .content tbody tr td {
+  margin: 0;
+  padding: 2px;
+}
+.wrapper .bill-wrapper .border-bottom {
+  border-bottom: 1px solid #000;
+}
+.wrapper .footer {
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  line-height: 20px;
+}
+.wrapper .border-none {
+  border: none !important;
+}
+.wrapper .border-solid {
+  border: 1px solid #000;
+}
+.wrapper .bill-logo {
+  width: 90px;
+  height: 27px;
+}
+.wrapper .bold {
+  font-weight: bold;
+}
+.wrapper .h2 {
+  font-size: 20px;
+}
+.wrapper .h3 {
+  font-size: 14px;
+}
+.wrapper .text-indent {
+  text-indent: 30px;
+}
+.wrapper .blank {
+  height: 100px;
+}
+.wrapper .block {
+  display: block;
+}
+.wrapper .text-left {
+  text-align: left;
+}
+.wrapper .text-center {
+  text-align: center;
+}
+.wrapper .text-right {
+  text-align: right;
+}
+.wrapper .half {
+  display: inline-block;
+  width: 50%;
+  min-width: 130px;
+  float: left;
+}
+.wrapper .radio {
+  display: none;
+}
+.wrapper .radio + label {
+  background-color: #fff;
+  border: 1px solid #555;
+  padding: 5px;
+  display: inline-block;
+  position: relative;
+}
+.wrapper .radio:checked + label {
+  background-color: #fff;
+  border: 1px solid #000;
+  color: #000;
+}
+.wrapper .radio:checked + label:after {
+  content: '\2715';
+  position: absolute;
+  top: -2.6px;
+  left: -0.3px;
+  color: #000;
+  width: 100%;
+  text-align: center;
+  font-size: 1em;
+  padding: 1px 0 0 0;
+  vertical-align: text-top;
+}
+.wrapper .img-block {
+  display: block;
+  width: 90%;
+  margin: 0 auto;
+}
+.wrapper .border-top-none {
+  border-top: none;
+}
+.wrapper .border-right {
+  border-right: 1px solid #000;
+}
+.wrapper .border-left {
+  border-left: 1px solid #000;
+}
+.wrapper .border-top {
+  border-top: 1px solid #000;
+}
+.wrapper .text-sm {
+  font-size: 9px;
+}
+.wrapper .text-max {
+  font-size: 40px;
+}
+.wrapper .border-text {
+  float: right;
+  border: 2px solid #000;
+}
+.inter-block {
+  display: block;
+  height: 10mm;
+}

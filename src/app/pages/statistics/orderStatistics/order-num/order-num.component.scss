@@ -1,0 +1,17 @@
+.pagination-wrapper .statistics-wrap{
+  position: absolute;
+  right: 0;
+  p{
+    margin-bottom: 0;
+    line-height: 30px;
+    span{
+      display: inline-block;
+      width: 80px;
+    }
+    i{
+      display: inline-block;
+      font-weight: bold;
+      min-width: 100px;
+    }
+  }
+}

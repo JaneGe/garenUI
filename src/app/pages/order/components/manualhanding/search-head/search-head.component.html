@@ -1,0 +1,199 @@
+<div class=".col-md-8 card card-block search-wrapper" *ngFor="let screen of screen">
+  <ul class="search-condition">
+    <li *ngIf="hasWarehouse">
+      <label class="search-title">仓库筛选：</label>
+      <div class="screen-wrapper"*ngFor="let warehouse of suppprtWarehouse;let i = index">
+        <input type="radio"
+          id="warehouse-{{warehouse.warehouseId}}"
+          name="warehouse"
+          class="regular-radio"
+          [checked]="i === 0" />
+        <label for="warehouse-{{warehouse.warehouseId}}"
+          (click)="onSelectWarehouse(warehouse.warehouseId)">
+          {{warehouse.name}}
+        </label>
+      </div>
+
+      <div class="btn-group" role="group" aria-label="...">
+        <button type="button"
+          class="btn"
+          (click)="seekMode(0)"
+          [ngClass]="{'btn-primary':!seekmode,'btn-default':seekmode}">
+          筛选
+        </button>
+        <button type="button"
+          class="btn"
+          (click)="seekMode(1)"
+          [ngClass]="{'btn-primary':seekmode,'btn-default':!seekmode}">
+          搜索
+        </button>
+      </div>
+    </li>
+
+    <li>
+      <label class="search-title">销售渠道：</label>
+      <div class="screen-wrapper" *ngFor="let channel of supportChannelTypes;let i = index">
+        <input type="radio" id="channel-{{channel.code}}" name="channel" class="regular-radio" [checked]="i === 0" />
+        <label for="channel-{{channel.code}}" (click)="onSelectChannelType(channel.code)">{{channel.displayName}}</label>
+      </div>
+      <div *ngIf="!hasWarehouse" class="btn-group" role="group" aria-label="...">
+        <button type="button" class="btn" (click)="seekMode(0)" [ngClass]="{'btn-primary':!seekmode,'btn-default':seekmode}">筛选</button>
+        <button type="button" class="btn" (click)="seekMode(1)" [ngClass]="{'btn-primary':seekmode,'btn-default':!seekmode}">搜索</button>
+      </div>
+    </li>
+
+    <li *ngIf="isShowChannelAccount('Amazon')||isShowChannelAccount('Wish')">
+      <label class="search-title">选择账号：</label>
+      <!-- <div class="screen-wrapper">
+        <input type="radio" id="amazon-all" name="amazon" class="regular-radio" checked/>
+        <label for="amazon-all" (click)="onSelectChannelId('')">所有</label>
+      </div>
+      <div class="screen-wrapper" *ngFor="let amazon of amazonAccounts;">
+        <input type="radio" id="amazon-{{amazon.channelId}}" name="amazon" class="regular-radio" />
+        <label for="amazon-{{amazon.channelId}}" (click)="onSelectChannelId(amazon.channelId)">{{amazon.displayName}}</label>
+      </div> -->
+      <select2 class="country-select" [data]="accountItems" [options]="options" [width]="300" [value]="value" #accountSelect (valueChanged)="onChanged($event,accountSelect)"></select2>
+    </li>
+
+    <li>
+      <label class="search-title">国家筛选：</label>
+      <div class="screen-wrapper" *ngFor="let county of supportFilterCountries;let i = index">
+        <input type="radio"
+          id="county-{{county.value}}"
+          name="county"
+          class="regular-radio"
+          [checked]="i === 0" />
+        <label for="county-{{county.value}}"
+          (click)="onSelectCountry(county.value)">
+          {{county.text}}
+        </label>
+      </div>
+    </li>
+    <li *ngIf="searchMore">
+      <label class="search-title">时段筛选：</label>
+      <div class="screen-wrapper" *ngFor="let timeScreen of suppprtSearchTimeTypes;let i = index">
+        <input type="radio" id="timeScreen{{timeScreen.value}}" name="timeScreen" class="regular-radio" [checked]="i === 0" />
+        <label for="timeScreen{{timeScreen.value}}" (click)="onSelectTimeSearchType(timeScreen.value)">{{timeScreen.text}}</label>
+      </div>
+    </li>
+    <li *ngIf="searchMore">
+      <label class="search-title"></label>
+      <div class="screen-wrapper" *ngFor="let time of suppprtTimeValueTypes;let i = index">
+        <input type="radio" id="search-time{{time.value}}" name="time" class="regular-radio" [checked]="i === 0" />
+        <label for="search-time{{time.value}}" (click)="onSelectTimeValueType(time.value)">{{time.text}}</label>
+      </div>
+      <span *ngIf="selectedTimeValueType == 'Custom'">
+        <!--<span class="datePick-wrap">-->
+        <!--<span class="datePick">-->
+        <!--<ng-datepicker [(ngModel)]="timeSearchStart" [options]="DatepickerOptions"></ng-datepicker>-->
+        <!--</span>-->
+        <!--</span>-->
+        <!-- - -->
+        <!--<span class="datePick-wrap">-->
+        <!--<span class="datePick">-->
+        <!--<ng-datepicker [(ngModel)]="timeSearchEnd" [options]="DatepickerOptions"></ng-datepicker>-->
+        <!--<button class="btn btn-sm btn-primary" (click)="doTimeSearch()">确定</button>-->
+        <!--</span>-->
+        <!--</span>-->
+        <span class="datePick-wrap">
+          <span class="datePick">
+            <!--<ng-datepicker [(ngModel)]="timeSearchStart" [options]="DatepickerOptions"></ng-datepicker>-->
+            <div class="input-group">
+              <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="ngTimeSearchStart" ngbDatepicker #start="ngbDatepicker">
+              <div class="input-group-addon" (click)="start.toggle()">
+                <i class="ion-android-calendar"></i>
+              </div>
+            </div>
+
+          </span>
+        </span>
+        <span class="datePick-wrap">
+          <span class="datePick">
+            <ngb-timepicker [(ngModel)]="ngShortTimeStart" [seconds]="'true'"></ngb-timepicker>
+          </span>
+        </span>
+        -
+        <span class="datePick-wrap">
+          <span class="datePick">
+            <!--<ng-datepicker [(ngModel)]="timeSearchEnd" [options]="DatepickerOptions"></ng-datepicker>-->
+            <div class="input-group">
+              <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="ngTimeSearchEnd" ngbDatepicker #end="ngbDatepicker">
+              <div class="input-group-addon" (click)="end.toggle()">
+                <i class="ion-android-calendar"></i>
+              </div>
+            </div>
+          </span>
+        </span>
+
+        <span class="datePick-wrap">
+          <span class="datePick">
+            <ngb-timepicker [(ngModel)]="ngShortTimeEnd" [seconds]="'true'"></ngb-timepicker>
+          </span>
+        </span>
+
+        <button class="btn btn-sm btn-primary" (click)="doTimeSearch()">确定</button>
+      </span>
+    </li>
+  </ul>
+  <ul class="search-condition" *ngIf="seekmode">
+    <li>
+      <label class="search-title">搜索类型：</label>
+      <div class="screen-wrapper" *ngFor="let searchType of suppprtSearchTypes;let i = index">
+        <input type="radio" id="searchType-{{searchType.value}}" name="searchType" class="regular-radio" [checked]="i === 0" />
+        <label for="searchType-{{searchType.value}}" (click)="onSelectSearchType(searchType.value)">{{searchType.text}}</label>
+      </div>
+    </li>
+    <li>
+      <label class="search-title">搜索内容：</label>
+      <input type="text" class="form-control with-primary-addon search-input" [(ngModel)]="searchText" placeholder="双击可批量查询" (dblclick)="ModalState()">
+      <button class="btn btn-primary" (click)="doSearch()">搜索</button>
+    </li>
+  </ul>
+  <div class="btn-group search-more" role="group" aria-label="...">
+    <button class="btn btn-primary" *ngIf="!searchMore" (click)="SearchMore()">
+      高级筛选
+      <span class="ion-arrow-down-b icon"></span>
+    </button>
+    <button class="btn btn-primary" *ngIf="searchMore" (click)="SearchMore()">
+      收起
+      <span class="ion-arrow-up-b icon"></span>
+    </button>
+  </div>
+</div>
+<div class="batch-modal" *ngIf="modalstate">
+  <div class="pop-content">
+    <div class="modal-header">
+      <h3>批量查询</h3>
+      <a href="javascript:;" (click)="Close()">
+        <i class="ion-close-round"></i>
+      </a>
+    </div>
+    <form>
+      <label class="radio-inline custom-radio nowrap">
+        <input type="radio" name="batchSearchOption" id="inlineRadio3" value="OrderNumber" (click)="onSelectdoOrederBatchSearchType($event.target.value)"
+          checked>
+        <span>按订单编号</span>
+      </label>
+      <label class="radio-inline custom-radio nowrap">
+        <input type="radio" name="batchSearchOption" id="inlineRadio3" value="BuyName" (click)="onSelectdoOrederBatchSearchType($event.target.value)">
+        <span>按客户姓名</span>
+      </label>
+      <!-- <label class="radio-inline custom-radio nowrap">
+        <input type="radio" name="batchSearchOption" id="inlineRadio3" value="InTrackingNumber" (click)="onSelectdoOrederBatchSearchType($event.target.value)">
+        <span>按内部跟踪号</span>
+      </label> -->
+      <label class="radio-inline custom-radio nowrap">
+        <input type="radio" name="batchSearchOption" id="inlineRadio3" value="TrackingNumber" (click)="onSelectdoOrederBatchSearchType($event.target.value)">
+        <span>按跟踪号</span>
+      </label>
+      <label class="modal-desc">每行一个（支持excel复制粘贴）</label>
+      <textarea name="batchSearchOption" id="" cols="60" rows="10" [(ngModel)]="orderBatchsearchText"></textarea>
+      <div class="modal-footer">
+        <div class="btn-group">
+          <button class="btn btn-sm btn-default" type="button" (click)="Close()">关闭</button>
+          <button class="btn btn-sm btn-primary" type="submit" (click)="doOrderBatchSearch()">确定</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

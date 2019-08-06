@@ -1,0 +1,126 @@
+<form id="form">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">更多SKU</h4>
+      <button class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form class="pagination-wrapper">
+        <div class="form-group pages">
+          <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+            autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+            screenReaderCurrentLabel="You're on page">
+          </pagination-controls>
+        </div>
+        <div class="form-group options pages">
+          <div class="input-group input-group-sm">
+            <select class="form-control" style="height: 31px;" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="loadData()">
+              <option>1</option>
+              <option>5</option>
+              <option>10</option>
+              <option>20</option>
+              <option>50</option>
+              <option>100</option>
+              <option>200</option>
+            </select>
+            <span class="input-group-addon addon-right">条/页</span>
+            <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条数据</span>
+          </div>
+        </div>
+      </form>
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr class="black-muted-bg">
+            <th>商品信息</th>
+            <th>数量</th>
+            <th>金额</th>
+            <th class="customTh">
+              <p>7天销量</p>
+              <p>15天销量</p>
+              <p>30天销量</p>
+              <p>90天销量</p>
+            </th>
+            <th>库存</th>
+            <th>状态</th>
+            <th>采购链接</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let I of detail|paginate: { id: 'pager',
+                                                      itemsPerPage:PageInfo.pageSize,
+                                                      currentPage:PageInfo.pageIndex,
+                                                      totalItems:PageInfo.totalCount};let i = index">
+            <td>
+              <img src="{{I.skuImg}}" alt="无SKU图片信息" class="sku-img">
+              <span class="display-block">SKUCode：{{I.skuCode}}</span>
+              <span class="display-block">商品名称：{{I.skuName}}</span>
+            </td>
+            <td>
+              <span class="display-block">欠票数量：{{I.forecastInNumber}}</span>
+              <span class="display-block">建议数量：{{I.actualNumber}}</span>
+              <span class="display-block">多买数量：{{I.buyCount-I.forecastInNumber}}</span>
+              <span class="display-block">下单数量：{{I.buyCount}}</span>
+              <span class="display-block">采购中数量：{{I.purchasingQuantity}}</span>
+            </td>
+            <td class="detail-sales" (mouseover)="checkModal(i,1)" (mouseout)="checkModal(i,0)">
+              <span class="display-block">单价：￥{{I.skuOrderPrice}}</span>
+              <span class="display-block">小计：￥{{(I.skuOrderPrice*I.buyCount).toFixed(2)}}</span>
+              <span class="display-block">
+                <i class="ion-ios-search-strong check-detail-btn"></i>
+                查看月销量</span>
+              <!-- detail-modal  -->
+              <div class="sales-body" style="display:none;">
+                <div class="mark" (mouseover)="checkModal(i,1)" (mouseout)="checkModal(i,0)"></div>
+                <div class="detail-modal-content">
+                  <div class="date-detail" *ngFor="let calitem of I.calculateOrders">
+                    <span class="sales-week">{{calitem.week}}</span>
+                    <label class="sales-date">{{calitem.dateShow}}</label>
+                    <span class="sales-detail">
+                      <span class="sales-number">{{calitem.quantity}}</span>
+                      <span class="platform">{{calitem.typeShow}}</span>
+                    </span>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <ul class="info-wrapper">
+                <li class="info-list">
+                  <label class="list-title">7天：</label>
+                  <span class="yellow-text lg-text">{{I.last7DaySaleQuantity}}</span>
+                </li>
+                <li class="info-list">
+                  <label class="list-title">15天：</label>
+                  <span class="yellow-text lg-text">{{I.last15DaySaleQuantity}}</span>
+                </li>
+                <li class="info-list">
+                  <label class="list-title">30天：</label>
+                  <span class="yellow-text lg-text">{{I.last30DaySaleQuantity}}</span>
+                </li>
+                <li class="info-list">
+                  <label class="list-title">90天：</label>
+                  <span class="yellow-text lg-text">{{I.last90DaySaleQuantity}}</span>
+                </li>
+              </ul>
+            </td>
+            <td>
+              <span class="display-block">当前库存：{{I.currentInventory}}</span>
+              <span class="display-block">可用库存：{{I.availableInventory}}</span>
+              <span class="display-block">在途库存：{{I.waitReceiveQuantity}}</span>
+            </td>
+            <td>{{I.itemStatusShow}}</td>
+            <td>
+              <a href="https://detail.1688.com/offer/{{I.aliOfferId}}.html" target="_blank" class="sku-link">点击查看</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-sm btn-danger pull-right cancel" (click)="closeModal()">关闭</button>
+    </div>
+  </div>
+</form>

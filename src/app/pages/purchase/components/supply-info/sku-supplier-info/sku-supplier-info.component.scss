@@ -1,0 +1,20 @@
+.table-wrap{font-size: 0;}
+.item{border-top: 1px solid white;width: calc((100% - 150px)/3);text-align: center;padding:5px 0;font-size: 14px;height: 30px;}
+.item a{color: white;text-decoration: underline!important;text-align: center;display: inline-block;width: 100%;}
+.item label{display: inline-block;width: 17px;height: 17px;border:1px solid white;margin:0;vertical-align: middle;}
+.mytable{font-size: 14px;}
+#table .item:nth-of-type(2){cursor: pointer;}
+table tbody tr td img{border: 1px solid #c4c4c4;padding:3px;border-radius: 3px;}
+#table thead tr th:first-of-type,.item:first-of-type{width:150px;}
+table tr label{display: flex;justify-content:center;align-items: center;border-radius: 50%;margin:auto;}
+table tr label .myicon{width: 11px;height: 11px;border:1px solid white;border-radius: 50%;background: white; }
+.noneData h4{text-align: center;font-size: 16px;color: black;}
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+table tbody tr td{padding:5px 0;}
+table tbody tr td input{text-align: center;}
+table tbody tr td .input-group,table tbody tr td input{width: 80px;height: 35px;margin:auto;}

@@ -1,0 +1,135 @@
+.wrapper-header {
+    width: 100%;
+    height: auto;
+    .page-desc,
+    .return-list-btn {
+        display: inline-block;
+        width: auto;
+        margin: 0 10px 10px 0;
+    }
+}
+
+.checkbox-inline {
+    margin-top: 8px;
+    margin: 8px 10px 0 0;
+}
+
+.table {
+    .order-btn {
+        color: #006eff;
+        font-size: 16px;
+        &:hover {
+            color: #001aff;
+        }
+    }
+    .thead {
+        padding: 0;
+        margin: 0;
+        li {
+            display: flex;
+            .order-btn {
+                width: auto;
+            }
+            span {
+                flex: 1;
+            }
+        }
+    }
+    td {
+        .info-wrapper {
+            .info-list {
+                text-align: left;
+                padding-left:10px;
+            }
+            .fire {
+                font-size: 15px;
+                color: #f72c51;
+            }
+            .check-detail-btn {
+                font-size: 15px;
+            }
+        }
+    }
+    .detail-sales {
+        position: relative;
+        .mark {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0);
+            top: 0;
+            cursor: pointer;
+        }
+        .detail-modal-body {
+            background: #fff;
+            border: 1px solid #000;
+            width: 710px;
+            height: auto;
+            padding: 5px;
+            position: absolute;
+            bottom: 100%;
+            left: -500px;
+            z-index: 10;
+            color: #333;
+            .detail-modal-content {
+                width: 700px;
+                height: auto;
+                .date-detail {
+                    width: 69px;
+                    height: 150px;
+                    margin: 5px 0;
+                    float: left;
+                    border: 1px solid rgb(187, 186, 186);
+                    .sales-date,
+                    .sales-week {
+                        display: block;
+                        width: 100%;
+                        height: 30px;
+                        line-height: 30px;
+                        text-align: center;
+                        font-weight: bold;
+                        background: #ccc;
+                        border-bottom: 1px solid rgb(187, 186, 186);
+                    }
+                    .sales-week {
+                        background: #ccc;
+                    }
+                    .sales-date {
+                        background: rgb(226, 225, 225);
+                    }
+                    .sales-detail {
+                        display: block;
+                        width: 100%;
+                        height: auto;
+                        text-align: center;
+                        .sales-number {
+                            display: block;
+                            text-align: center;
+                            font-size: 20px;
+                        }
+                        .platform {
+                            display: block;
+                            text-align: center;
+                            font-size: 12px;
+                            margin: 5px 0;
+                            color: rgb(255, 61, 61);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.action {
+    display: flex;
+    align-items: center;
+}
+
+.action label {
+    margin: 0;
+}
+
+.action .item-margin {
+    margin-right: 15px;
+}

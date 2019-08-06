@@ -1,0 +1,40 @@
+<div class="pop-content">
+  <div class="modal-header"  >
+    <span class="modal-title" >{{title}}</span>
+
+    <button type="button" class="close" (click)="closeModal()"><span aria-hidden="true">&times;</span></button>
+  </div>
+  <div class="modal-body">
+    <label class="form-title">虚拟Sku：</label>
+    <input type="text" class="form-control"  [(ngModel)]="virtualSkuCode" />
+    <button class="btn btn-primary" (click)="openModal()">添加SKU</button>
+    <table class="table table-hover table-bordered">
+      <thead>
+      <tr>
+        <th>SKU</th>
+        <th>数量</th>
+        <th>删除</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let info of items">
+        <td>
+          <span>{{info.skuCode}}</span>
+        </td>
+        <td>
+          <input class="text-center" type="text" [(ngModel)]="info.quantity"/>
+        </td>
+        <td>
+          <a href="javascript:;" (click)="deleteItem(info.skuId)">删除</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="closeModal()">关闭</button>
+      <button class="btn btn-primary" (click)="doSave()">{{operationText}}</button>
+    </div>
+  </div>
+</div>

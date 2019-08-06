@@ -1,0 +1,111 @@
+<div class="card card-block">
+  <div class="card card-block">
+    <div class="input-wrapper">
+      <ul>
+        <li>
+          <select class="list-label form-control" [(ngModel)]="scanType">
+            <option value="PackageNumber">包裹号</option>
+            <option value="TrackingNumber">物流跟踪号</option>
+          </select>
+          <input type="text" id="search" class="form-control picking-id" (keyup.enter)="loadData()" [(ngModel)]="storeSearchKey" value={{storeSearchKey}}>
+          <div class="btn-group">
+            <button class="btn btn-primary" (click)="loadData()">查询</button>
+          </div>
+        </li>
+        <li *ngIf="PackageDate">
+          <label class="list-label">全部：</label>
+          <div class="btn-group mybutton-wrap">
+            <button class="btn btn-success mybutton" (click)="Save(false)">确认无误</button>
+            <button class="btn btn-danger mybutton" (click)="Save(true)">异常</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="loadData()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条</span>
+      </div>
+    </div>
+  </form>
+  <div class="table-wrap gap">
+    <table class="table table-hover table-bordered gap" id="table">
+      <thead>
+        <tr class="black-muted-bg">
+          <th>编号</th>
+          <th>图片</th>
+          <th>SKU名称</th>
+          <th>skuCode</th>
+          <th>数量</th>
+          <th>状态</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of PackageDate|paginate: { id: 'pager',
+                                                      itemsPerPage:PageInfo.pageSize,
+                                                      currentPage:PageInfo.pageIndex,
+                                                      totalItems:PageInfo.totalCount};let index=index">
+          <td>{{index+1}}</td>
+          <td>
+            <img src={{item.img}} width="150" height="150" alt="sku图">
+          </td>
+          <td>{{item.skuName}}</td>
+          <td>{{item.skuCode}}</td>
+          <td>{{item.num}}</td>
+          <td>{{item.exceptionText}}</td>
+          <td>
+            <span class="button-wrap">
+              <button class="btn btn-warning" *ngIf="item.isException !== null&&!item.isException" (click)="SaveItem(item.packageItemId,null)">取消确认</button>
+              <button class="btn btn-danger" *ngIf="item.isException!=null&&item.isException" (click)="SaveItem(item.packageItemId,null)">取消异常</button>
+              <button class="btn btn-primary" (click)="SaveItem(item.packageItemId,false)" *ngIf="item.isException === null">
+                <span class="ion-checkmark-round" [ngStyle]="{'color':'#8BD22F'}"></span>确认无误</button>
+              <button class="btn btn-danger" (click)="SaveItem(item.packageItemId,true)" *ngIf="item.isException === null">
+                <span class="ion-close-round" [ngStyle]="{'color':'red'}"></span>异常</button>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="loadData()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条</span>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,25 @@
+.pop-content {
+    width: 500px;
+    margin-top: 200px;
+    padding: 5px;
+    overflow: hidden;
+    .modal-body {
+        max-height: 400px;
+        overflow-y: scroll;
+        .pagination-wrapper {
+            select.form-control {
+                height:35px;
+            }
+        }
+    }
+}
+
+.nav {
+    width: 100%;
+    margin: 0;
+    display: block;
+}
+
+.nav:nth-of-type(2) {
+    width: auto;
+}

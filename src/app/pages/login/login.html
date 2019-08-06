@@ -1,0 +1,29 @@
+<div class="auth-main">
+  <div class="auth-block">
+    <label class="first-title">Demarkt</label>
+    <label class="desc-title">订单管理系统</label>
+    <!--<a routerLink="/register" class="auth-link" translate>{{'login.signup_link'}}</a>-->
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="form-horizontal">
+      <div class="form-group" [ngClass]="{'has-error': (!workerNo.valid && workerNo.touched), 'has-success': (workerNo.valid && workerNo.touched)}">
+        <label for="inputEmail3" class=" control-label">工号</label>
+
+        <input [formControl]="workerNo" type="text" class="form-control" id="inputEmail3" placeholder="请输入工号">
+      </div>
+      <div class="form-group" [ngClass]="{'has-error': (!password.valid && password.touched), 'has-success': (password.valid && password.touched)}">
+        <label for="inputPassword3" class="control-label">密码</label>
+
+        <input [formControl]="password" type="password" class="form-control" id="inputPassword3" placeholder="请输入密码">
+      </div>
+      <div class="form-group">
+        <div class="btn-group">
+          <button *ngIf="!isLoging" [disabled]="!form.valid || submitted" type="submit" class="btn btn-lg btn-primary btn-auth">登录</button>
+          <button *ngIf="isLoging" disabled type="button" class="btn btn-lg btn-primary btn-auth">
+            <i class="fa fa-spinner fa-spin"></i>
+            登录中，请稍后···</button>
+        </div>
+        <!--<a routerLink="/login" class="forgot-pass" translate>{{'login.forgot_password'这这个我的输入法}}</a>-->
+      </div>
+    </form>
+  </div>
+</div>

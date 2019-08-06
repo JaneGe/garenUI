@@ -1,0 +1,60 @@
+<form class="smmodal" (submit)="OnSubmit()">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">{{modalHeader}}
+        <span class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </span>
+      </h4>
+    </div>
+    <div class="modal-body height">
+      <div class="card card-block">
+        <div id="account">
+            <div class="title gap">平台选择:</div>
+          <div>
+            <span class="tag inline">平台：</span>
+            <span class="tag inline"  (click)="addClass($event.target,'platform')"
+                  [ngStyle]="{'background':'Amazon'==item?'#fff':'none',
+                'color':'Amazon'==item?'#2389F2':'white'}"
+                  *ngFor="let item of Platforms">{{item}}
+            </span>
+          </div>
+          <div>
+            <span class="tag inline">国家：</span>
+            <span class="tag inline" #country  (click)="addClass($event.target,'countrys',item)"
+                  [ngStyle]="{'background':'全部'==item?'#fff':'none',
+                'color':'全部'==item?'#2389F2':'white'}"
+                  *ngFor="let item of Countrys">
+              <img *ngIf="item!=='全部'" (click)="addClass(country,'countrys',item)" src="assets/country/{{item}}.svg" alt="country" height="16">
+              {{item}}
+            </span>
+          </div>
+        </div>
+        <div class="input-select">
+          <span class="tag">帐号：</span>
+          <!--<ng2-completer-->
+            <!--id="select"-->
+            <!--[ngModelOptions]="{standalone: true}"-->
+            <!--[(ngModel)]="test"-->
+            <!--[attr.name]="name"-->
+            <!--[datasource]="accountList"-->
+            <!--[clearSelected]="true"-->
+            <!--[minSearchLength]="1"   placeholder="请输入账号名称..." class="form-control" (change)="choose(test)" (keyup.enter)="choose(test)"></ng2-completer>-->
+          <select2 [data]="accountList"  [width]="400"  value="" (valueChanged)="choose($event)" (keyup.enter)="choose($event)"></select2>
+        </div>
+      </div>
+    </div>
+    <div class="select">
+      <h4>选择内容：<span class="tip">(单击删除)</span></h4>
+      <p class="inline box" *ngIf="!selectAll">
+          <span class="result" *ngFor="let item of limitingaccount" (click)="del(item)">
+            ({{item.name}})
+          </span>
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-sm pull-right submit">确定</button>
+      <button class="btn btn-sm pull-right cancel" (click)="closeModal()">取消</button>
+    </div>
+  </div>
+</form>

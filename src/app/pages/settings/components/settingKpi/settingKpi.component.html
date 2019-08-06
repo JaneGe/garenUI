@@ -1,0 +1,145 @@
+<div class=".col-md-8 card card-block">
+  <div class=".col-md-8 card card-block search-wrapper">
+    <ul class="search-condition">
+      <li>
+        <label class="search-title">年份筛选：</label>
+        <div class="screen-wrapper" *ngFor="let item of screenYears;let i = index">
+          <input type="radio" id="screenYears{{item.Id}}" name="screenYears" class="regular-radio" [checked]="i === 0" />
+          <label for="screenYears{{item.Id}}" (click)="onSelect($event.target,'screenYears',item.Id)">{{item.Name}}</label>
+        </div>
+      </li>
+      <li>
+        <label class="search-title">月份筛选：</label>
+        <div class="screen-wrapper" *ngFor="let item of screenMonths;let i = index">
+          <input type="radio" id="screenMonths{{item.Id}}" name="screenMonths" class="regular-radio" [checked]="i === 0" />
+          <label for="screenMonths{{item.Id}}" (click)="onSelect($event.target,'screenMonths',item.Id)">{{item.Name}}</label>
+        </div>
+      </li>
+      <!--<li>-->
+        <!--<label class="search-title">日期筛选：</label>-->
+        <!--<div class="screen-wrapper" *ngFor="let item of timeSpan;let i = index">-->
+          <!--<input type="radio" id="timeSpan{{item.Id}}" name="timeSpan" class="regular-radio" [checked]="i === 0" />-->
+          <!--<label for="timeSpan{{item.Id}}" (click)="onSelect($event.target,'timeSpan',item.Id)">{{item.Name}}</label>-->
+        <!--</div>-->
+        <!--<span *ngIf="isCustom">-->
+          <!--<span class="datePick-wrap">-->
+            <!--<span class="datePick">-->
+              <!--<ng-datepicker [(ngModel)]="timeSearchStart" [options]="DatepickerOptions"></ng-datepicker>-->
+            <!--</span>-->
+          <!--</span>-->
+          <!-- - -->
+          <!--<span class="datePick-wrap">-->
+            <!--<span class="datePick">-->
+              <!--<ng-datepicker [(ngModel)]="timeSearchEnd" [options]="DatepickerOptions"></ng-datepicker>-->
+              <!--<button class="btn btn-sm btn-primary" (click)="doTimeSearch()">确定</button>-->
+            <!--</span>-->
+          <!--</span>-->
+        <!--</span>-->
+      <!--</li>-->
+    </ul>
+    <ul class="search-condition">
+      <li>
+        <label class="search-title">搜索类型：</label>
+        <div class="screen-wrapper" *ngFor="let item of searchTypes;let i = index">
+          <input type="radio" id="searchTypes{{item.Id}}" name="searchTypes" class="regular-radio" [checked]="i === 0" />
+          <label for="searchTypes{{item.Id}}" (click)="onSelectSearchType(item.Id)">{{item.Name}}</label>
+        </div>
+      </li>
+      <li>
+        <label class="search-title">搜索内容：</label>
+        <div class="input-wrapper">
+          <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="搜索员工KPI" (keyup.enter)="doSearch()">
+          <div class="btn-group">
+            <button class="btn btn-primary" (click)="doSearch()">查询</button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="btn-box">
+    <button type="button" class="btn btn-sm btn-primary" (click)="openInKpiModal()">导入员工KPI</button>
+    <button type="button" class="btn btn-sm btn-primary" (click)="openAddKpiModal(null)">添加员工KPI</button>
+  </div>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{total}}条</span>
+      </div>
+    </div>
+  </form>
+  <table class="table table-hover table-bordered">
+    <thead>
+      <tr>
+        <th>员工工号</th>
+        <th>员工姓名</th>
+        <th>所属组别</th>
+        <th>任务量
+          <br>[订单数量]</th>
+        <th>任务量
+          <br>[金额]</th>
+        <th>开始时间</th>
+        <th>结束时间</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of items | paginate: { id: 'pager',
+        itemsPerPage: pageSize,
+        currentPage: pageNumber,
+        totalItems: total};let i = index">
+        <td>{{item.workNumber}}</td>
+        <td>{{item.name}}</td>
+        <td>亚马逊-张周三组(暂未处理数据)</td>
+        <td>{{item.taskOrderQuantity}} 单</td>
+        <td>{{item.taskOrderAmount}} $</td>
+        <td>{{item.taskStartTime | date: 'y年/MM月/d日/H:mm:ss'}}</td>
+        <td>{{item.taskEedTime | date: 'y年/MM月/d日/H:mm:ss'}}</td>
+        <td>
+          <button class="btn btn-sm btn-primary btn-with-icon" (click)="openAddKpiModal(item.id)">
+            <i class="ion-compose"></i>编辑</button>
+          <button class="btn btn-sm btn-danger btn-with-icon" (click)="deleteEmployeeKPI(item.id)">
+            <i class="ion-trash-b"></i>删除</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{total}}条</span>
+      </div>
+    </div>
+  </form>
+</div>

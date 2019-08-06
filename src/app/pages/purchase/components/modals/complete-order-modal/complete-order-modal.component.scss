@@ -1,0 +1,21 @@
+.pop-content{
+    width:1200px;
+    margin:100px -5px -5px -400px;
+    padding:5px;
+    overflow: hidden;
+    .modal-body{
+        .short-form-control{
+            width:100px;
+            height:30px;
+            border:1px solid #fff;
+            border-radius: 3px;
+            background: rgba(255,255,255,.1);
+            color:#fff;
+            font-size: 15px;
+        }
+        .form-control{
+            height:40px;
+            margin:5px 0;
+        }
+    }
+}

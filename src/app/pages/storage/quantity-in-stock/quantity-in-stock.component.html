@@ -1,0 +1,61 @@
+<div class="card card-block">
+  <div class="card card-block">
+    <!--<div class="operate gap sepLine">
+      <div class="searchPart">
+        <span class="title moregap">操作：</span>
+        <div class="buttonpart">
+          <span class="tag" (click)="addClass1($event.target)">库存清单</span>
+          <span class="tag" (click)="addClass1($event.target)">报损</span>
+          <span class="tag" (click)="addClass1($event.target)">报溢</span>
+        </div>
+      </div>
+    </div>-->
+    <div class="operate gap">
+      <div class="searchPart">
+        <span class="title">选择仓库：</span>
+        <div class="buttonpart">
+          <span class="tag" *ngFor="let item of storageData" (click)="addClass1($event.target,'warehouse', item.name)">{{item.name}}</span>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="selectedOperate=='库存清单'">
+      <div class="operate gap sepLine">
+        <div class="searchPart">
+          <span class="title">货架类型：</span>
+          <div class="buttonpart">
+            <span class="tag" (click)="addClass1($event.target,'locationlist',-1)">全部</span>
+            <span class="tag" (click)="addClass1($event.target,'locationlist',0)">良品</span>
+            <span class="tag" (click)="addClass1($event.target,'locationlist',1)">次品</span>
+            <span class="tag" (click)="addClass1($event.target,'locationlist',2)">异常</span>
+          </div>
+        </div>
+      </div>
+      <div class="operate gap sepLine">
+        <div class="searchPart">
+          <span class="title">货架状态：</span>
+          <div class="buttonpart">
+            <span class="tag" (click)="addClass1($event.target,'lockedType',-1)">全部</span>
+            <span class="tag" (click)="addClass1($event.target,'lockedType',0)">未锁定</span>
+            <span class="tag" (click)="addClass1($event.target,'lockedType',1)">已锁定</span>
+          </div>
+        </div>
+      </div>
+      <div class="operate gap">
+        <div class="searchPart">
+          <span class="title">搜索类型：</span>
+          <div class="buttonpart">
+            <span class="tag" (click)="addClass1($event.target,'type',0)">货架</span>
+            <span class="tag" (click)="addClass1($event.target,'type',1)">SKU</span>
+          </div>
+        </div>
+      </div>
+      <div class="operate search">
+        <span class="title">搜索内容：</span>
+        <input type="search" name="name" [(ngModel)]="storeSearchKey" value={{storeSearchKey}}>
+        <button class="btn btn-sm btn-primary" (click)="getChildEvent({pageIndex:0,pageSize:10})">搜索</button>
+      </div>
+    </div>
+  </div>
+  <app-stock-list [StockList]="stockList" [PageInfo]="PageInfo" (childEvent)="getChildEvent($event)"
+                  *ngIf="selectedOperate=='库存清单'"></app-stock-list>
+</div>

@@ -1,0 +1,53 @@
+<div class="pop-content">
+  <div class="modal-header">
+    <span class="modal-title">添加员工KPI</span>
+    <button type="button" class="close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form">
+      <ul>
+        <li>
+          <span class="must">必填</span>
+          <label class="list-label">员工工号</label>
+          <!--<select2 [data]="employeeItem" [width]="470" [value]="value" (valueChanged)="onChanged($event)"></select2>-->
+          <select2 [width]="470" [data]="allUsers" [value]="selectPurchaseUserId" (valueChanged)="onChangePurchaseUserChanged($event)"></select2>
+        </li>
+        <li>
+          <span class="must">必填</span>
+          <label class="list-label">任务时间</label>
+          <div class="date-wrap">
+            <span class="datePick-wrap">
+              <span class="datePick">
+                <ng-datepicker [(ngModel)]="timeSearchStart" [options]="DatepickerOptions"></ng-datepicker>
+              </span>
+            </span>
+            -
+            <span class="datePick-wrap">
+              <span class="datePick">
+                <ng-datepicker [(ngModel)]="timeSearchEnd" [options]="DatepickerOptions"></ng-datepicker>
+              </span>
+            </span>
+          </div>
+        </li>
+        <li>
+          <span class="must">必填</span>
+          <label class="list-label">任务订单数量</label>
+          <input type="text" [(ngModel)]="taskOrderQuantity" class="form-control" placeholder="请输入任务订单数量">
+        </li>
+        <li>
+          <span class="must">必填</span>
+          <label class="list-label">任务订单金额</label>
+          <input type="text" [(ngModel)]="taskOrderAmount" class="form-control" placeholder="请输入任务订单金额">
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-default" (click)="closeModal()">取消</button>
+      <button class="btn btn-primary" (click)="save()">保存</button>
+    </div>
+  </div>
+</div>

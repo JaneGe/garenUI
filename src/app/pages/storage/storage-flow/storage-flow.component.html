@@ -1,0 +1,197 @@
+<div class="card card-block">
+  <div class="card card-block">
+    <div class="operate gap sepLine">
+      <div class="searchPart">
+        <span class="title">记录类型：</span>
+        <div class="buttonpart">
+          <span class="tag" (click)="addClass1($event.target,'recordKind',-1)">全部</span>
+          <span class="tag" *ngFor="let item of recordKind" (click)="addClass1($event.target,'recordKind',item.id)">{{item.text}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="operate gap">
+      <div class="searchPart">
+        <span class="title">选择仓库：</span>
+        <div class="buttonpart">
+          <span class="tag" *ngFor="let item of storageData" (click)="addClass1($event.target,'storageData',item.name)">{{item.name}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="operate gap sepLine">
+      <div class="searchPart">
+        <span class="title">时段筛选：</span>
+        <div class="buttonpart">
+          <span class="tag" (click)="addClass1($event.target,'time',0)">全部</span>
+          <span class="tag" (click)="addClass1($event.target,'time',1)">今天</span>
+          <span class="tag" (click)="addClass1($event.target,'time',2)">昨天</span>
+          <span class="tag" (click)="addClass1($event.target,'time',3)">7天以内</span>
+          <span class="tag" (click)="addClass1($event.target,'time',4)">30天以内</span>
+          <span class="tag" (click)="addClass1($event.target,'time',5)">自定义</span>
+          <span *ngIf="timeSelect=='自定义'">
+            <!--从-->
+            <!--<span class="datePick-wrap">-->
+              <!--<span class="datePick">-->
+                <!--<ng-datepicker [(ngModel)]="fromdate" [options]="DatepickerOptions"></ng-datepicker>-->
+              <!--</span>-->
+            <!--</span>-->
+            <!--到-->
+            <!--<span class="datePick-wrap">-->
+              <!--<span class="datePick">-->
+                <!--<ng-datepicker [(ngModel)]="todate" [options]="DatepickerOptions"></ng-datepicker>-->
+                <!--<button class="btn btn-sm btn-primary" (click)="loadData()">确认</button>-->
+              <!--</span>-->
+            <!--</span>-->
+            <span class="datePick-wrap">
+            <span class="datePick">
+              <div class="input-group" style="width: auto;">
+                <input class="form-control"  placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="ngTimeSearchStart" ngbDatepicker
+                       #start="ngbDatepicker">
+                <div class="input-group-addon" (click)="start.toggle()">
+                  <i class="ion-android-calendar"></i>
+                </div>
+              </div>
+
+            </span>
+          </span>
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <ngb-timepicker [(ngModel)]="ngShortTimeStart" [seconds]="'true'"></ngb-timepicker>
+            </span>
+          </span>
+          -
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <!--<ng-datepicker [(ngModel)]="timeSearchEnd" [options]="DatepickerOptions"></ng-datepicker>-->
+              <div class="input-group" style="width: auto;">
+                <input class="form-control"  placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="ngTimeSearchEnd" ngbDatepicker
+                       #end="ngbDatepicker">
+                <div class="input-group-addon" (click)="end.toggle()">
+                  <i class="ion-android-calendar"></i>
+                </div>
+              </div>
+            </span>
+          </span>
+
+           <span class="datePick-wrap">
+            <span class="datePick">
+              <ngb-timepicker [(ngModel)]="ngShortTimeEnd" [seconds]="'true'"></ngb-timepicker>
+            </span>
+           </span>
+
+           <button class="btn btn-sm btn-primary" (click)="doTimeSearch()">确定</button>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="operate gap">
+      <div class="searchPart">
+        <span class="title">搜索类型：</span>
+        <div class="buttonpart">
+          <span class="tag" (click)="addClass1($event.target,'type',0)">货架</span>
+          <span class="tag" (click)="addClass1($event.target,'type',1)">SKU</span>
+        </div>
+      </div>
+    </div>
+    <div class="operate search">
+      <span class="title">搜索内容：</span>
+      <input type="search" name="name" [(ngModel)]="storeSearchKey" value={{storeSearchKey}}>
+      <button class="btn btn-sm btn-primary" (click)="loadData()">搜索</button>
+    </div>
+  </div>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="topage">
+      <p>跳至</p>
+    </div>
+    <div class="topage" style="width: 60px;">
+      <div class="inputPage">
+        <p>
+          <input type="number" name="to" [(ngModel)]="Topage" (keyup.enter)="topage()">
+        </p>
+      </div>
+    </div>
+    <div class="topage">
+      <p>页</p>
+    </div>
+    <div class="topage out" style="margin-left: 0;" (click)="tolast()">
+      <p>尾页</p>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="loadData()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条数据</span>
+      </div>
+    </div>
+  </form>
+  <div class="table-wrap">
+    <table class="table table-hover table-bordered gap" id="stockNum">
+      <thead>
+        <tr class="black-muted-bg">
+          <th>时间</th>
+          <th>商品SKU</th>
+          <th>变更数量</th>
+          <th>预留库存</th>
+          <th>可用库存</th>
+          <th>货架位</th>
+          <th>操作类型</th>
+          <th>操作人</th>
+          <th>备注</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let i of stockOverFlow|paginate: { id: 'pager',
+                                                      itemsPerPage:PageInfo.pageSize,
+                                                      currentPage: PageInfo.pageIndex,
+                                                      totalItems: PageInfo.totalCount}">
+          <td>{{i.time}}</td>
+          <td>{{i.sku}}</td>
+          <td class="fa-2x" [style.color]="(i.change)>=0?'#228b22':'#ff4500'">{{i.change}}</td>
+          <td>{{i.prepared}}</td>
+          <td>{{i.available}}</td>
+          <td>{{i.shelf}}</td>
+          <td>{{i.operateKind}}</td>
+          <td>{{i.operator}}</td>
+          <td>{{i.remark}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <form class="pagination-wrapper" *ngIf="PageInfo.pageSize>=20">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="loadData()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条数据</span>
+        <span class="input-group-addon addon-right out">导出</span>
+      </div>
+    </div>
+  </form>
+</div>

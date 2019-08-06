@@ -1,0 +1,155 @@
+.select {
+    margin-top: -25px;
+}
+
+.content {
+    margin-bottom: 15px;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+}
+
+.tt {
+    display: inline-block;
+    width: 110px;
+    font-size: 14px;
+}
+
+.tag {
+    border: 1px solid white;
+    border-left: none;
+    width: 10%;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.tag:nth-of-type(1),
+.tag:nth-of-type(1) label {
+    border-left: 1px solid white;
+    border-radius: 5px 0 0 5px;
+}
+
+.tag:last-of-type,
+.tag:last-of-type label {
+    border-radius: 0 5px 5px 0;
+}
+
+.tag:hover {
+    background: #318cca;
+    transition: .3s ease;
+}
+
+.tag label {
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    margin-bottom: 0;
+    padding: 5px;
+}
+
+input[type='radio']:checked+label {
+    background: #318cca;
+}
+
+input[type='radio'] {
+    display: none;
+}
+
+table thead tr th,
+table tbody tr td {
+    padding: 3px;
+}
+
+table thead tr th:nth-of-type(7) {
+    width: 116px;
+}
+
+.contact {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.mytable {
+    margin-bottom: 15px
+}
+
+//pageNavigation导航
+.options,
+.input-group {
+    margin: 0;
+}
+
+.input-group .addon-right {
+    background: transparent;
+    border-color: white;
+    color: white;
+}
+
+.input-group>select {
+    height: 31px!important;
+}
+
+.pagination-wrapper {
+    display: inline-block;
+    height: 30px;
+}
+
+.search-condition {
+    float: left;
+    height: auto;
+    overflow: hidden;
+    padding: 0 5px;
+    li {
+        width: 100%;
+        float: left;
+        .search-title {
+            width: 110px;
+            font-weight: bold;
+            float: left;
+            margin: 7px 0;
+        }
+        .screen-wrapper {
+            float: left;
+            margin: 5px 2px;
+            .regular-radio {
+                display: none;
+            }
+            .regular-radio+label {
+                -webkit-appearance: none;
+                padding: 3px;
+                background-color: transparent;
+                display: inline-block;
+                position: relative;
+                cursor: pointer;
+                margin-right: 10px;
+            }
+            .regular-radio:hover+label {
+                background-color: #fff;
+                color: #2389F2;
+            }
+            .regular-radio:checked+label {
+                background-color: #fff;
+                color: #2389F2;
+            }
+        }
+        .input-group {
+            width: 400px;
+            height: 30px;
+            float: left;
+            .btn-group {
+                .btn {
+                    border-radius: 0 3px 3px 0;
+                }
+            }
+        }
+    }
+}
+
+.search-condition {
+    padding: 0;
+    margin-bottom: 0;
+    margin-top: 10px;
+}

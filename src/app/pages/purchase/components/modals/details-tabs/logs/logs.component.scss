@@ -1,0 +1,24 @@
+div.slide-wrap{
+  height: 310px;
+  overflow: hidden;
+  overflow-y: auto;
+  table{
+    tr th{
+      padding:6px;
+    }
+    td.slide{
+      padding:0;
+      >div{
+        display: flex;
+        justify-content: center;
+        align-items:center;
+        height: 100%;
+        overflow-y: auto;
+        >p{
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+

@@ -1,0 +1,99 @@
+<div class="pop-content" id="form">
+  <div class="modal-header">
+    <span class="modal-title">拣货任务清单</span>
+  </div>
+  <div class="modal-body">
+    <div class="print-body">
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <td colspan="5">
+              <h3>拣货清单</h3>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" width="340px">
+              <ul style="text-align:left;">
+                <li>
+                  <label class="list-label">时间：</label>
+                  <span class="detail">{{pickTaskModel.pickTimeDesc}}</span>
+                </li>
+                <li>
+                  <label class="list-label">仓库：</label>
+                  <span class="detail">{{pickTaskModel.warehouseName}}</span>
+                </li>
+                <li>
+                  <label class="list-label">类型：</label>
+                  <span class="detail">{{pickTaskModel.pickingType == 'ByPackage'? pickTaskModel.pickingTypeTypeDesc: pickTaskModel.packTypeDesc}}</span>
+                </li>
+              </ul>
+            </td>
+            <td colspan="3" width="340px">
+              <div style="display: flex;flex-direction: row;flex-wrap: nowrap;justify-content: space-around;">
+                <div id="barcodeTarget" class="barcodeTarget" style="margin-top:20px;"></div>
+                <ul style="text-align:left;">
+                  <li>
+                    <label class="list-label">拣货人：</label>
+                    <span class="detail">{{pickTaskModel.pickUser}}</span>
+                  </li>
+                  <li>
+                    <label class="list-label">工号：</label>
+                    <span class="detail">{{pickTaskModel.workNo}}</span>
+                  </li>
+                  <li>
+                    <label class="list-label">拣货任务编号：</label>
+                    <span class="detail">{{pickTaskModel.pickNumber}}</span>
+                  </li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="5" class="border-bottom-none">
+              <label>SKU总数：</label>
+              <span style="margin-right:40px;">{{pickTaskModel.skuTotalCount}}</span>
+              <label>产品总数：</label>
+              <span>{{pickTaskModel.productTotal}}</span>
+            </td>
+          </tr>
+          <tr>
+            <td>编号</td>
+            <td>包裹号</td>
+            <td>SKU</td>
+            <td>货架位</td>
+            <td>数量</td>
+          </tr>
+          <tr  *ngFor="let item of pickPrintDetails;let i = index">
+            <td *ngIf="i==0">{{i+1}}</td>
+            <td *ngIf="i>0"> </td>
+            <td *ngIf="i==0">{{pickTaskModel.packageNumber}}</td>
+            <td *ngIf="i>0"></td>
+            <td>{{item.skuCode}}</td>
+            <td>{{item.locationLabel}}</td>
+            <td>{{item.quantity}}</td>
+          </tr>
+          <!--<tr>-->
+            <!--<td></td>-->
+            <!--<td></td>-->
+            <!--<td>DMT123456789</td>-->
+            <!--<td>M01C01</td>-->
+            <!--<td>12</td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td></td>-->
+            <!--<td></td>-->
+            <!--<td>DMT123456789</td>-->
+            <!--<td>M01C01</td>-->
+            <!--<td>12</td>-->
+          <!--</tr>-->
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="printPDF()">打印面单</button>
+      <button class="btn btn-primary" (click)="closeModal()">取消</button>
+    </div>
+  </div>
+</div>

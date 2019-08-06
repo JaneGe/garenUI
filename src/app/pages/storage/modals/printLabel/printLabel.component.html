@@ -1,0 +1,38 @@
+<div class="pop-content">
+  <div class="modal-header">
+    <span class="modal-title">选择标签类型</span>
+  </div>
+  <div class="modal-body">
+    <label class="radio-inline custom-radio nowrap" (click)="onSelect($event.target)">
+      <input type="radio" name="code" id="bar-code" checked/>
+      <span>10*30 二维条码</span>
+    </label>
+    <label class="radio-inline custom-radio nowrap" (click)="onSelect($event.target)">
+      <input type="radio" name="code" id="qr-code" />
+      <span>30*40 条形条码</span>
+    </label>
+    <span>已选择{{codeStyle}}</span>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="closeModal()">打印标签</button>
+      <button class="btn btn-default" (click)="closeModal()">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="wrapper">
+  <button (click)="AA()">sas</button>
+  <div class="pppp">
+    <div class="qr-wrapper" style="width:385mm;height:150mm;margin-top:15mm;" *ngFor="let item of print">
+      <img src="/assets/print/QR.png" alt="QRCode" class="qr-code" style="height:100%;margin-top:10mm;">
+      <ul class="code-info" style="margin:1% 0;">
+        <li style="font-size:26mm;">D28C03</li>
+        <li style="font-size:26mm;">LMS00384F</li>
+        <li style="font-size:26mm;">247912</li>
+        <li style="font-size:26mm;">1-8888</li>
+      </ul>
+      <label class="num-percent" style="font-size:23mm;">1/30</label>
+    </div>
+  </div>
+</div> -->

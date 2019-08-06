@@ -1,0 +1,57 @@
+.pop-content {
+    width: 800px;
+    height: auto;
+    background: #fff;
+    color: #000;
+    font-size: 13px;
+    margin: -5px;
+    margin-left: -200px;
+    .modal-header,
+    .modal-footer {
+        height: 50px;
+        line-height: 50px;
+    }
+    .modal-header {
+        border-bottom: 1px solid rgba(0, 0, 0, .2) !important;
+        font-size: 20px;
+        font-weight: bold;
+    }
+    .modal-footer {
+        border-top: 1px solid rgba(0, 0, 0, .2);
+    }
+    .modal-body {
+        .print-body {
+            max-height: 700px;
+            overflow-x: hidden;
+        }
+    }
+}
+
+.table-bordered>tbody>tr>td {
+    border: 1px solid #000;
+    padding-right: 0 !important;
+}
+
+.border-bottom-none {
+    border-bottom: 0 !important;
+}
+
+.border-none td {
+    border: 0 !important;
+    border-right: 1px solid #000 !important;
+}
+
+.table-left:nth-child(odd) {
+    border-right: 2px solid #000 !important;
+}
+
+.table-left>tbody>tr>td {
+    vertical-align: middle;
+}
+
+.table-right>tbody>tr>td {
+    vertical-align: middle;
+    &:last-child {
+        border-right: 0 !important;
+    }
+}

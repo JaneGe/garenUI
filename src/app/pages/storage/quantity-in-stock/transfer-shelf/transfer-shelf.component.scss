@@ -1,0 +1,17 @@
+.head{padding:5px 0;border-radius: 5px 5px 0 0;}
+.mytitle{font-size: 16px;margin:0 15px;border-bottom: 1px solid white;color: white;}
+.submit{background-color: #c78100;border: 1px solid #c78100;color: whitesmoke;}
+.cancel{background-color: transparent;border: 1px solid whitesmoke;color: whitesmoke;}
+.transfer{display: flex;}
+.transfer .table-wrap{width: 47%;}
+.transfer .arrow{width: 6%;}
+.card{margin-bottom: 0;}
+table thead tr th,table{text-align: center;color: white;vertical-align: middle;font-size: 14px;}
+table thead tr th{padding:8px;}
+table tbody tr td input{height: 23px;width: 200px;}
+table tbody tr td{position: relative;}
+input[type='text']{background:rgba(255,255,255,.1)!important;color:white;border:1px solid rgba(255,255,255,.5);border-top-left-radius: 3px;border-bottom-left-radius: 3px;}
+.ng-pristine /deep/ .completer-holder .completer-input{height: 23px;width: 200px;
+  background:rgba(255,255,255,.1);color:white;border:1px solid rgba(255,255,255,.5);border-top-left-radius: 3px;border-bottom-left-radius: 3px;}
+.ng-pristine /deep/ .completer-holder .completer-dropdown-holder .completer-dropdown{width: 200px;left: 50%;margin-left:-103px;max-height: 360px;overflow: scroll;}
+.ng-pristine /deep/ .completer-holder .completer-dropdown-holder .completer-row {width: 100%;height: 35px;padding:0;margin:0;}

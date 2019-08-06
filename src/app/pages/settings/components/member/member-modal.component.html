@@ -1,0 +1,132 @@
+<div class="pop-content">
+  <div class="modal-header">
+    <h4 class="modal-title">{{modalHeader}}</h4>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="form-horizontal">
+  <div class="modal-body">
+
+      <div class="form-group row">
+        <label for="inputWorkerNo" class="col-sm-2">工号*</label>
+        <div class="col-sm-10">
+          <input type="text" formControlName="workerNo" class= "form-control" id="inputWorkerNo" style="color: white!important;"  placeholder="工号">
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="!this.memberId">
+        <label for="inputPassword" class="col-sm-2">密码*</label>
+        <div class="col-sm-10">
+          <input type="password"  formControlName="passWord" class="form-control" id="inputPassword" placeholder="密码">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="inutUserName" class="col-sm-2">姓名</label>
+        <div class="col-sm-10">
+          <input type="text" formControlName="userName" class="form-control" id="inutUserName" placeholder="姓名">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="inputEmail" class="col-sm-2">email</label>
+        <div class="col-sm-10">
+          <input type="text" formControlName="email" class="form-control" id="inputEmail" placeholder="Email">
+        </div>
+      </div>
+      <div class="form-group row">
+      <label for="selectParentDepartment" class="col-sm-2">部门*</label>
+      <div class="col-sm-10">
+        <select class="form-control" formControlName="department" id="selectParentDepartment"   #department>
+          <option *ngFor="let pdpartment of allDepartments"  value="{{pdpartment.id}}" >{{pdpartment.name}}</option>
+        </select>
+      </div>
+    </div>
+
+      <div class="form-group row">
+        <label for="selectParentDepartment" class="col-sm-2">平台*</label>
+        <div class="col-sm-10">
+          <select class="form-control" formControlName="selectAccount" id="selectAccount" [(ngModel)]="selectedPlatform" (change)="GetChannelAccount()"   #selectAccount>
+            <option *ngFor="let plateform of plateformList"   value="{{plateform.id}}" >{{plateform.name}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="item-wrap">
+        <div class="title">成员对应帐号：</div>
+        <div class="content">
+          <div class="add">
+            <select2 #Channels [data]="allDropChannels" [width]="400"
+                     (valueChanged)="onChannelChange($event,Channels)"
+                     (keyup.enter)="onChannelChange($event,Channels)"></select2>
+            <button type="button" class="btn btn-warning btn-sm" (click)="cleanSelectChannels(Channels)">清空</button>
+          </div>
+          <div class="select-wrap">
+              <span class="item" *ngFor="let item of selectedChannels">{{item.text}}<i class="ion-trash-a"
+                                                                                       (click)="deleteChannel(item.id)"></i></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="item-wrap" *ngIf="department.value==10055">
+        <div class="title">采购对应帐号：</div>
+        <div class="content">
+          <div class="add" [ngStyle]="{'marginBottom':selectedPurchase && selectedPurchase.length==0?'0':'10px'}">
+            <select2 #Channels [data]="allDropPurchase" [width]="400"
+                     (valueChanged)="onPurchaseChange($event,Channels)"
+                     (keyup.enter)="onPurchaseChange($event,Channels)"></select2>
+            <button type="button" class="btn btn-warning btn-sm" (click)="cleanSelectPurchase(Channels)">清空</button>
+          </div>
+          <div class="select-wrap">
+              <span class="item" *ngFor="let item of selectedPurchase">{{item.text}}<i class="ion-trash-a"
+                                                                                       (click)="deletePurchase(item.id)"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row bdb custom-item">
+        <label class="col-sm-2">仓库*</label>
+        <div class="col-sm-10 row">
+          <div class="col-sm-3" *ngFor="let item of Warehouse">
+            <label class="checkbox-inline custom-checkbox nowrap">
+              <input type="checkbox"  (change)="onWarehouseCheckChanged($event.target.checked, item.id)"  [checked]="isWarehouseChecked(item.id)" value="{{item.id}}"><span>{{item.name}}</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="item-wrap bdb custom-item-wrap">
+        <div class="title" style="width: 142px;">角色*：</div>
+        <div class="content">
+          <div class="deliverTime-wrap">
+            <span class="item" *ngFor="let item of userRoles">
+              <div class="customRadio-wrap" (click)="selectedRoleId=item.id">
+                <div class="customRadio"><span
+                [ngClass]="{'none':selectedRoleId !=item.id}"></span>
+                </div>
+              </div>
+              <label (click)="selectedRoleId=item.id">{{item.name}}</label>
+            </span>
+            <!--<span class="item">-->
+              <!--<div class="customRadio-wrap" (click)="selectedRoleId=1"><div class="customRadio"><span-->
+                <!--[ngClass]="{'none':selectedRoleId!=1}"></span></div></div>-->
+              <!--<label (click)="selectedRoleId=1">B</label>-->
+            <!--</span>-->
+            <!--<span class="item">-->
+              <!--<div class="customRadio-wrap" (click)="selectedRoleId=2"><div class="customRadio">-->
+                <!--<span [ngClass]="{'none':selectedRoleId!=2}"></span></div></div>-->
+              <!--<label (click)="selectedRoleId=2">C</label>-->
+            <!--</span>-->
+          </div>
+        </div>
+      </div>
+      <!--<div class="form-group row">-->
+        <!--<div class="offset-sm-5 col-sm-6">-->
+
+        <!--</div>-->
+      <!--</div>-->
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-info" (click)="closeModal()">关闭</button>
+    <button type="submit" [disabled]="!form.valid || submitted " class="btn btn-warning">保存</button>
+  </div>
+  </form>
+</div>

@@ -1,0 +1,333 @@
+<div class="pop-content clearfix">
+  <div class="modal-header">
+    <span class="modal-title">{{title}}</span>
+    <button type="button" class="close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body clearfix">
+    <div class="tab-header">
+      <ul>
+        <li *ngFor="let tab of tabs;let i = index" (click)="tabChoose(i)" [class.tab-selected]="tab.selected">
+          <span *ngIf="(tab.name!='采购信息')||(skuId)">{{tab.name}}</span>
+        </li>
+      </ul>
+    </div>
+    <div class="tab-child" *ngIf="selectStepIndex === 0">
+      <form [formGroup]="basicInfoForm" (ngSubmit)="onSaveBasicInfo(basicInfoForm.value)">
+        <ul>
+          <li>
+            <label class="list-label">
+              <span class="must">必填</span>商品名称</label>
+            <input type="text" class="form-control short-input" id="inputname" placeholder="商品名称不可为空" formControlName="skuName" />
+          </li>
+          <li>
+            <label class="list-label">
+              <span class="must">必填</span>商品SKU</label>
+            <input type="text" [readonly]="skuId > 0" class="form-control short-input" placeholder="SKUCode最大长度为10位" id="inputsku" formControlName="skuCode"
+            />
+          </li>
+          <li>
+            <label class="list-label">
+              <span class="must">必填</span>长</label>
+            <div class="input-group">
+              <input type="text" class="form-control with-primary-addon short-input" formControlName="length" />
+              <span class="input-group-addon addon-right input-group-addon-primary">cm</span>
+            </div>
+          </li>
+          <li>
+            <label class="list-label">
+              <span class="must">必填</span>宽</label>
+            <div class="input-group">
+              <input type="text" class="form-control short-input" formControlName="width" />
+              <span class="input-group-addon addon-right input-group-addon-primary">cm</span>
+            </div>
+          </li>
+          <li>
+            <label class="list-label">
+              <span class="must">必填</span>高</label>
+            <div class="input-group">
+              <input type="text" class="form-control with-primary-addon short-input" formControlName="height" />
+              <span class="input-group-addon addon-right input-group-addon-primary">cm</span>
+            </div>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <label class="list-label">
+              <span class="must">必填</span>重量</label>
+            <div class="input-group" style="margin-bottom:10px;">
+              <input type="text" class="form-control with-primary-addon short-input" formControlName="weight" />
+              <span class="input-group-addon addon-right input-group-addon-primary" style="text-indent: 0;">g</span>
+            </div>
+            <p style="margin:10px 0 10px 100px;">*此重量将用于发货核重，如果您的商品外包装较重，请适增加数值填写。</p>
+          </li>
+          <li>
+            <label class="list-label">
+              <span class="must">必填</span>组合商品</label>
+            <label class="radio-inline custom-radio nowrap">
+              <input type="radio" name="isComponent" id="no" [disabled]="disabled&&_isComponent" value="false" formControlName="isComponent"
+                checked>
+              <span translate>否</span>
+            </label>
+            <label class="radio-inline custom-radio nowrap">
+              <input type="radio" name="isComponent" id="yes" [disabled]="disabled&&_isComponent" value="true" formControlName="isComponent"
+                [checked]="_isComponent">
+              <span translate>是</span>
+            </label>
+          </li>
+          <li>
+            <label class="list-label">
+              <span class="explain">选填</span>物流属性</label>
+            <!-- <select name="shippingAttributeType" class="form-control" formControlName="shippingAttribute">
+                <option selected value="Normal">普货</option>
+                <option value="Battery">纯电池</option>
+                <option value="InternalBattery">带内置电池</option>
+                <option value="ExternalBattery">带外置电池</option>
+              </select> -->
+            <select2 [data]="shippmentTypes" [options]="options" [width]="360" [value]="value" (valueChanged)="onChanged($event)"></select2>
+          </li>
+          <li>
+            <label class="list-label">
+              <span class="explain">选填</span> 采购价</label>
+            <div class="input-group">
+              <input type="text" class="form-control with-primary-addon short-input" formControlName="purchasePrice">
+              <span class="input-group-addon addon-right input-group-addon-primary">CNY</span>
+            </div>
+          </li>
+          <li>
+            <label class="list-label">
+              <span class="explain">选填</span>图片URL</label>
+            <div class="input-group">
+              <input type="text" class="form-control short-input" formControlName="imageUrl">
+              <span style="cursor: pointer;" class="input-group-addon addon-right input-group-addon-primary" (click)="openImgUploadModal()">上传</span>
+            </div>
+          </li>
+        </ul>
+        <div class="attrBox-wrapper" *ngIf="basicInfoForm.controls.isComponent.value=='true'">
+          <span>已选组合商品属性：</span>
+          <div class="attrBox">
+            <span class="attrItem" *ngFor="let item of ComponentAttrItems" (click)="delComponentAttr(item)">
+              <i class="ion-android-close"></i> {{item}}</span>
+          </div>
+          <span>输入商品属性：</span>
+          <div class="inputArrBox">
+            <input type="text" class="form-control" formControlName="componentAttr" #componentAttr (keyup.enter)="addComponentAttr(componentAttr.value)">
+          </div>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-default" (click)="closeModal()">关闭</button>
+          <button type="button" class="btn btn-primary" (click)="Validators(basicInfoForm)" *ngIf="isOnlyShowBasicInfo">保存</button>
+          <button type="button" class="btn btn-primary" (click)="onSaveSku()" *ngIf="!isOnlyShowBasicInfo">保存</button>
+        </div>
+      </form>
+    </div>
+    <div class="tab-child" *ngIf="selectStepIndex === 1 ">
+      <form [formGroup]="declarationForm" (ngSubmit)="onSaveSku(declarationForm.value)">
+        <ul>
+          <li>
+            <label class="list-label">
+              <span class="explain">选填</span>英文名称</label>
+            <input type="text" class="form-control short-input" formControlName="decEnName" placeholder="填写英文报关名称" />
+          </li>
+          <li>
+            <label class="list-label">
+              <span class="explain">选填</span>中文名称</label>
+            <input type="text" class="form-control short-input" formControlName="decCnName" placeholder="填写中文报关名称" />
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <label class="list-label">
+              <span class="explain">选填</span>申报价值</label>
+            <div class="input-group">
+              <input type="text" class="form-control with-primary-addon short-input" formControlName="decValue" placeholder="填写报关申报价值"
+              />
+              <span class="input-group-addon addon-right input-group-addon-primary">USD</span>
+            </div>
+          </li>
+          <li>
+            <label class="list-label">
+              <span class="explain">选填</span>海关编码</label>
+            <div class="input-group">
+              <input type="text" class="form-control short-input" formControlName="hsCode" placeholder="填写报关海关编码" />
+            </div>
+          </li>
+        </ul>
+        <div class="btn-group">
+          <button type="button" class="btn btn-default" (click)="closeModal()">关闭</button>
+          <button type="button" class="btn btn-primary" (click)="prevStep()">上一步</button>
+          <button type="button" class="btn btn-primary" (click)="nextStep()" *ngIf="isOnlyShowBasicInfo">保存</button>
+          <button type="button" class="btn btn-primary" (click)="onSaveSku()" *ngIf="!isOnlyShowBasicInfo">保存</button>
+        </div>
+      </form>
+    </div>
+    <div class="tab-child" *ngIf="(selectStepIndex === 2)">
+      <div>
+        <button class="btn btn-primary" (click)="openAddModal(false,false,content,null)">添加主要采购链接</button>
+        <button class="btn btn-primary" *ngIf="_isComponent" (click)="openAddModal(true,false,content,null)">添加组合商品备用采购链接分组</button>
+      </div>
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th width="50px">采购链接</th>
+            <th style="width: 300px;">商品标题</th>
+            <th>属性</th>
+            <th *ngIf="_isComponent">零件属性</th>
+            <th style="width: 200px;">备注</th>
+            <th style="width: 100px;">比例
+              <br>平台 : 1688</th>
+            <th style="width: 170px;">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of natures;let i = index">
+            <td>
+              <a [href]="item.url" target="_blank">点此跳转</a>
+            </td>
+            <td>{{item.title}}</td>
+            <td>
+              <span class="btn-xs btn-info natures" *ngFor="let attr of item.purchaseUrlAttr">{{attr}}</span>
+            </td>
+            <td *ngIf="_isComponent">
+              <span class="btn-xs  natures" style="background-color: #de615b;">{{item.compositeAttr}}</span>
+            </td>
+            <td>
+              <div>
+                <p>{{item.note}}</p>
+              </div>
+            </td>
+            <td>
+              {{item.amQuantityRratio}} : {{item.quantityRratio1688}}
+            </td>
+            <td>
+              <button type="button" class="btn btn-xs" [ngClass]="{'btn-danger':item.isDefault,'btn-primary':!item.isDefault}" (click)="settingDefault(item.id,item.isDefault)">{{item.isDefault?'解除默认':'设置默认'}}</button>
+              <button type="button" class="btn btn-xs btn-primary" (click)="edit(item.id,false,null,content)">编辑</button>
+              <button type="button" class="btn btn-xs btn-danger" (click)="delUrl(item.id)">删除</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="_isComponent">
+        <table class="table table-bordered table-hover" *ngFor="let group of spareLinkGroup;let i=index;">
+          <thead>
+            <tr class="black-muted-bg">
+              <td colspan="7">
+                <button class="btn btn-primary" style="float: left;" (click)="openAddModal(true,false,content,group.groupSortId)">添加链接</button>
+                <button class="btn btn-primary" style="float: left;" *ngIf="!editModal" (click)="setMailPurchaseUrl(group.groupSortId)">设置为主要链接</button>
+                <span style="display: inline-block;height: 30px;line-height: 30px;">备用链接分组{{group.groupSortId}}</span>
+              </td>
+            </tr>
+            <tr>
+              <th width="50px">采购链接</th>
+              <th style="width: 300px;">商品标题</th>
+              <th>属性</th>
+              <th>零件</th>
+              <th style="width: 200px;">备注</th>
+              <th style="width: 100px;">比例
+                <br>平台 : 1688</th>
+              <th style="width: 170px;">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of group.purchaseUrls">
+              <td>
+                <a [href]="item.url" target="_blank">点此跳转</a>
+              </td>
+              <td>{{item.title}}</td>
+              <td>
+                <span class="btn-xs btn-info natures" *ngFor="let attr of item.purchaseUrlAttr">{{attr}}</span>
+              </td>
+              <td>
+                <span class="btn-xs natures" style="background-color: #de615b;">零件</span>
+              </td>
+              <td>
+                <div>
+                  <p>{{item.note}}</p>
+                </div>
+              </td>
+              <td>
+                {{item.amQuantityRratio}} : {{item.quantityRratio1688}}
+              </td>
+              <td>
+                <button type="button" class="btn btn-xs" [ngClass]="{'btn-danger':item.isDefault,'btn-primary':!item.isDefault}" (click)="settingDefault(item.id,item.isDefault)">{{item.isDefault?'解除默认':'设置默认'}}</button>
+                <button type="button" class="btn btn-xs btn-primary" (click)="edit(item.id,true,group.groupSortId,content)">编辑</button>
+                <button type="button" class="btn btn-xs btn-danger" (click)="delUrl(item.id)">删除</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary" (click)="prevStep()">上一步</button>
+        <button type="button" class="btn btn-default" (click)="closeModal()">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="pop-content clearfix myModal">
+    <div class="modal-header">
+      <span *ngIf="isBackUp&&groupSortId" class="modal-title">添加备用采购链接{{groupSortId}}</span>
+      <span *ngIf="isBackUp&&(!groupSortId)" class="modal-title">添加备用采购链接</span>
+      <span *ngIf="!isBackUp" class="modal-title">添加主要采购链接</span>
+      <button type="button" class="close" (click)="c()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body clearfix">
+      <form id="addPurchase" [formGroup]="purchaseForm">
+        <ul style="width:100%;">
+          <input type="text" formControlName="id" style="display: none">
+          <input type="text" formControlName="default" style="display: none">
+          <input type="text" formControlName="isBackUp" style="display: none">
+          <input type="text" formControlName="groupSortId" style="display: none">
+          <li>
+            <label class="list-label">
+              <span class="must">必填</span>采购链接</label>
+            <input type="text" class="form-control" formControlName="purchaseLink" maxlength="1024">
+          </li>
+          <li>
+            <label class="list-label">
+              <span class="explain">选填</span>属性</label>
+            <input type="text" class="form-control" placeholder="属性间以英文;隔开" formControlName="nature" maxlength="500">
+          </li>
+
+          <li style="margin-bottom: 0;" *ngIf="_isComponent">
+            <label class="list-label" style="width: 100%;">
+              <span class="must">必填</span>组合商品零件</label>
+            <label style="margin-left: 5px;margin-bottom: 8px;" for="{{c}}" class="custom-radio" *ngFor="let c of ComponentAttrItems;let i=index;">
+              <input type="radio" id={{c}} formControlName="componentPart" [(ngModel)]="componentPart" value={{c}} [checked]="componentPart==c">
+              <span>{{c}}</span>
+            </label>
+          </li>
+
+          <li class="tinput">
+            <label class="list-label" style="width: 100%;">
+              <span class="must">必填</span>比例 平台订单 : 1688订单</label>
+            <div>
+              <p class="item">
+                <span>平台订单：</span>
+                <input type="number" class="form-control" placeholder="订单比例必须为数字" formControlName="AMZ" maxlength="4">
+              </p>
+              <p class="item">
+                <span>1688订单：</span>
+                <input type="number" class="form-control" placeholder="订单比例必须为数字" formControlName="one688" maxlength="6">
+              </p>
+            </div>
+          </li>
+          <li>
+            <label class="list-label">备注</label>
+            <textarea class="form-control" name="remark" id="remark" formControlName="remark"></textarea>
+          </li>
+          <li>
+            <div class="btn-group">
+              <button class="btn btn-default" (click)="c()">取消</button>
+              <button class="btn btn-primary" type="submit" [disabled]="!purchaseForm.valid" (click)="onSavePurchase(editModal,c)">保存</button>
+            </div>
+          </li>
+        </ul>
+      </form>
+    </div>
+  </div>
+</ng-template>

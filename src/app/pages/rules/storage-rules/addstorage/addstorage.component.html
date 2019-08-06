@@ -1,0 +1,146 @@
+<form id="form">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">{{modalHeader}}
+        <span class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-visible="true">&times;</span>
+      </span>
+      </h4>
+    </div>
+    <div class="modal-body">
+      <div class="card card-block">
+        <p>规则类型：<span class="blank">自动分配发货仓库</span></p>
+        <p>规则名称：<input type="text" class="blank"  name="name" [(ngModel)]="name"  maxlength="32" value={{name}}>
+          <input type="text"  name="ifModify" style="display: none" [(ngModel)]="ifModify" value={{ifModify}}>
+          <input type="text"  name="id" style="display: none" [(ngModel)]="id" value={{id}}>
+          <span class="badge badge-danger">必填</span>
+        </p>
+        <p class="smgap">匹配仓库：
+          <select name="storage" style="margin-left: 16px;" value={{storage}}  [(ngModel)]="storage">
+          <option *ngFor="let item of storageData" value={{item.warehouseId}}
+                  [style.color]="item.warehouseId==storage?'red':'green'">{{item.name}}
+          </option>
+        </select>
+          <span class="badge badge-danger">必填</span>
+        </p>
+      </div>
+      <div class="mycard-wrap">
+        <div class="width mycard">
+          <h4 class="smhead">条件描述 (满足条件的自动分配到选中仓库)</h4>
+          <div class="item" *ngIf="selectedRules.indexOf('limitingmoney')>=0">
+            <span class="tittle">订单金额在</span>
+            <button  *ngIf="limitingmoney.currency==''&&limitingmoney.min==null&&limitingmoney.max==null" class="btn btn-xs btn-primary" (click)="oppenAppointmoneyModal()">指定范围之内</button>
+            <a href="javascript:;" *ngIf="limitingmoney.currency!=''&&limitingmoney.min!=null&&limitingmoney.max!=null" (click)="oppenAppointmoneyModal()">{{limitingmoney.currency}} : {{limitingmoney.min}} ~ {{limitingmoney.max}}</a>
+          </div>
+          <div class="item" *ngIf="selectedRules.indexOf('limitingcommodity')>=0">
+            <span class="tittle">订单商品包含</span>
+            <button  *ngIf="limitingcommodity.length==0" class="btn btn-xs btn-primary" (click)="oppenAppoincommodityModal()">指定商品</button>
+            <a href="javascript:;" class="goods" (click)="oppenAppoincommodityModal()" *ngFor="let item of limitingcommodity">{{item}}</a>
+          </div>
+          <div class="item"  *ngIf="selectedRules.indexOf('limitingcountry')>=0">
+            <span class="tittle">订单目的地为</span>
+            <button *ngIf="limitingcountry.length==0" class="btn btn-xs btn-primary" (click)="oppenLimitingcountryModal()">指定国家</button>
+             <a href="javascript:;" (click)="oppenLimitingcountryModal()" *ngFor="let item of limitingcountry">{{item}}</a>
+          </div>
+          <div class="item" *ngIf="selectedRules.indexOf('limitingaccount')>=0">
+            <span class="tittle">订单来源为</span>
+            <button *ngIf="limitingaccount.length==0" class="btn btn-xs btn-primary" (click)="oppenLimitingaccountModal()">指定平台帐号</button>
+            <a href="javascript:;" (click)="oppenLimitingaccountModal()" *ngFor="let item of limitingaccount">{{item.name}}</a>
+          </div>
+          <div class="item" *ngIf="selectedRules.indexOf('limitingPlatform')>=0">
+            <span class="tittle">订单来源为</span>
+            <button *ngIf="seletedPlatform==''" class="btn btn-xs btn-primary"
+                    (click)="oppenLimitingPlatformModal()">指定平台</button>
+            <a href="javascript:;" *ngIf="seletedPlatform!=''" (click)="oppenLimitingPlatformModal()">{{seletedPlatform}}</a>
+          </div>
+          <div class="item"  *ngIf="selectedRules.indexOf('limitinglogistics')>=0">
+            <span class="tittle">买家选择的物流方式为</span>
+            <button  *ngIf="limitinglogistics.length==0" class="btn btn-xs btn-primary" (click)="oppenLimitinglogisticsModal()">指定物流方式</button>
+            <a href="javascript:;" (click)="oppenLimitinglogisticsModal()" *ngFor="let item of limitinglogistics">({{item.platform}})({{item.stations}})({{item.logistics}})</a>
+          </div>
+          <div class="item"  *ngIf="selectedRules.indexOf('allorders')>=0"><span class="tittle">所有订单</span></div>
+          <div class="item" *ngIf="selectedRules.indexOf('outrangecountry')>=0">
+            <span class="tittle">订单目的地为</span>
+            <button *ngIf="outrangecountry.length==0" class="btn btn-xs btn-primary" (click)="oppenOutrangecountryModal()">指定国家</button>
+            <a href="javascript:;" (click)="oppenOutrangecountryModal()" *ngFor="let item of outrangecountry">{{item}}</a>
+            <span [style.color]="true?'#FF0000':''">之外</span>
+          </div>
+          <div class="item" *ngIf="selectedRules.indexOf('outrangeattr')>=0">
+            <span class="tittle">商品属性</span>
+            <button class="btn btn-xs btn-primary" *ngIf="outrangeAttr.length==0"
+                    (click)="oppenOutrangeAttrModal()">指定属性
+            </button>
+            <a href="javascript:;" (click)="oppenOutrangeAttrModal()" *ngFor="let item of outrangeAttr">{{item.text}}</a>
+            <span [style.color]="true?'#FF0000':''">之外</span>
+          </div>
+          <div class="item" *ngIf="selectedRules.indexOf('attrlimiting')>=0">
+            <span class="tittle">商品属性</span>
+            <button class="btn btn-xs btn-primary" *ngIf="limitingAttr.length==0"
+                    (click)="oppenLimitingAttrModal()">指定属性
+            </button>
+            <a href="javascript:;"  (click)="oppenLimitingAttrModal()"  *ngFor="let item of limitingAttr">{{item.text}}</a>
+          </div>
+        </div>
+        <div class="width mycard">
+          <h4 class="smhead">选择规则</h4>
+          <div class="item"><input type="checkbox" id="limitingmoney">
+            <span class="box" (click)="ifchecked('limitingmoney')"><span class="ion-checkmark" [ngStyle]="{visibility:selectedRules.indexOf('limitingmoney')>=0?'visible':'hidden'}"></span></span>
+            <label for="limitingmoney" (click)="ifchecked('limitingmoney')">
+              订单金额在<span>指定范围之内</span>
+            </label></div>
+          <div class="item"><input type="checkbox" id="limitingcommodity">
+            <span class="box" (click)="ifchecked('limitingcommodity')"><span class="ion-checkmark" [ngStyle]="{visibility:selectedRules.indexOf('limitingcommodity')>=0?'visible':'hidden'}"></span></span>
+            <label for="limitingcommodity" (click)="ifchecked('limitingcommodity')">
+              订单商品<span>包含指定商品</span>
+            </label></div>
+          <div class="item"><input type="checkbox" id="limitingcountry">
+            <span class="box" (click)="ifchecked('limitingcountry')"><span class="ion-checkmark" [ngStyle]="{visibility:selectedRules.indexOf('limitingcountry')>=0?'visible':'hidden'}"></span></span>
+            <label for="limitingcountry" (click)="ifchecked('limitingcountry')">
+              订单目的地为<span>指定国家</span>
+            </label></div>
+          <div class="item"><input type="checkbox" id="limitingaccount">
+            <span class="box" (click)="ifchecked('limitingaccount')"><span class="ion-checkmark" [ngStyle]="{visibility:selectedRules.indexOf('limitingaccount')>=0?'visible':'hidden'}"></span></span>
+            <label for="limitingaccount" (click)="ifchecked('limitingaccount')">
+              订单来源为<span>指定平台帐号</span>
+            </label></div>
+          <div class="item"><input type="checkbox" id="limitingPlatform">
+            <span class="box" (click)="ifchecked('limitingPlatform')">
+              <span class="ion-checkmark" [ngStyle]="{visibility:selectedRules.indexOf('limitingPlatform')>=0?'visible':'hidden'}"></span></span>
+              <label for="limitingPlatform" (click)="ifchecked('limitingPlatform')">订单来源为<span>指定平台</span></label></div>
+          <div class="item"><input type="checkbox" id="limitinglogistics">
+            <span class="box" (click)="ifchecked('limitinglogistics')"><span class="ion-checkmark" [ngStyle]="{visibility:selectedRules.indexOf('limitinglogistics')>=0?'visible':'hidden'}"></span></span>
+            <label for="limitinglogistics" (click)="ifchecked('limitinglogistics')">
+              买家选择的物流方式为<span>指定物流方式</span>
+            </label></div>
+          <div class="item"><input type="checkbox" id="allorders">
+            <span class="box" (click)="ifchecked('allorders')"><span class="ion-checkmark" [ngStyle]="{visibility:selectedRules.indexOf('allorders')>=0?'visible':'hidden'}"></span></span>
+            <label for="allorders" (click)="ifchecked('allorders')">
+              <span>所有订单</span>
+            </label></div>
+          <div class="item"><input type="checkbox" id="outrangecountry">
+            <span class="box" (click)="ifchecked('outrangecountry')"><span class="ion-checkmark" [ngStyle]="{visibility:selectedRules.indexOf('outrangecountry')>=0?'visible':'hidden'}"></span></span>
+            <label for="outrangecountry" (click)="ifchecked('outrangecountry')">
+              订单目的地为<span>指定国家之外</span>
+            </label>
+            </div>
+          <div class="item"><input type="checkbox" id="outrangeattr">
+            <span class="box" (click)="ifchecked('outrangeattr')"><span class="ion-checkmark"
+                                                                        [ngStyle]="{visibility:selectedRules.indexOf('outrangeattr')>=0?'visible':'hidden'}"></span></span>
+            <label for="outrangeattr" (click)="ifchecked('outrangeattr')">
+              商品属性<span>指定属性之外</span>
+            </label></div>
+          <div class="item"><input type="checkbox" id="attrlimiting">
+            <span class="box" (click)="ifchecked('attrlimiting')"><span class="ion-checkmark"
+                                                                        [ngStyle]="{visibility:selectedRules.indexOf('attrlimiting')>=0?'visible':'hidden'}"></span></span>
+            <label for="attrlimiting" (click)="ifchecked('attrlimiting')">
+              商品属性<span>指定属性之内</span>
+            </label></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-sm pull-right submit" (click)="onSubmit()">提交</button>
+        <button class="btn btn-sm pull-right cancel" (click)="closeModal()">取消</button>
+      </div>
+    </div>
+  </div>
+</form>

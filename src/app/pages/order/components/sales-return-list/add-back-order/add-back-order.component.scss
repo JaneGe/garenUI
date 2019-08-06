@@ -1,0 +1,132 @@
+.head {
+    padding: 5px 0;
+    border-radius: 5px 5px 0 0;
+}
+
+.mytitle {
+    font-size: 16px;
+    padding-left: 15px;
+}
+
+.submit {
+    background-color: #c78100;
+    border: 1px solid #c78100;
+    color: whitesmoke;
+}
+
+.cancel {
+    background-color: transparent;
+    border: 1px solid whitesmoke;
+    color: whitesmoke;
+}
+
+.close {
+    margin-right: 10px;
+}
+
+.gap {
+    margin-bottom: 15px;
+}
+
+.operate {
+    height: 35px;
+    display: flex;
+    align-items: center;
+    text-align: left;
+    flex-wrap: wrap;
+    font-size: 14px;
+}
+
+.search button {
+    height: 100%;
+    border-radius: 0 5px 5px 0;
+}
+
+.search input[type='search'] {
+    border: 1px solid rgba(255, 255, 255, .5);
+    height: 100%;
+    box-sizing: border-box;
+    border-radius: 5px 0 0 5px;
+    font-size: 18px;
+    width: 252px;
+    background: rgba(255, 255, 255, .1);
+    color: white;
+}
+
+.search input[type='search']:focus {
+    border: 1px solid #2389F2;
+}
+
+.sepLine {
+    border-bottom: 1px solid white;
+}
+
+.title {
+    font-size: 14px;
+    margin-right: 15px;
+}
+
+.moregap {
+    margin-right: 41px;
+}
+
+.searchPart .buttonpart {
+    display: inline-block;
+}
+.searchPart .buttonpart span{
+  font-size: 14px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.tag {
+    padding: 3px;
+    color:#061f1c;
+    background-color: #fff;
+}
+
+table thead tr th,
+table tbody tr td {
+    text-align: center;
+    vertical-align: middle;
+    color: white;
+    font-size: 14px;
+}
+
+table thead tr th {
+    padding: 8px 0;
+}
+
+table tbody tr td .pop {
+    float: right;
+    width: 60px;
+    background: #2389F2;
+    border: 1px solid #2389F2;
+    border-radius: 5px 0 0 5px;
+    height: 100%;
+}
+
+table tbody tr td .myimg {
+    margin: 5px 0;
+}
+
+.pages select {
+    height: 100%!important;
+}
+
+.pagination-wrapper {
+    height: 55px;
+    margin-top: -15px;
+}
+
+.pagination-wrapper .my-pagination {
+    color: white;
+}
+
+.pagination-wrapper .pages:nth-of-type(1) {
+    float: right;
+}
+
+.pagination-wrapper .pages:nth-of-type(2) {
+    float: left;
+}

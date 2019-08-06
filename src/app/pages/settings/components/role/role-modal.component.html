@@ -1,0 +1,109 @@
+<div class="pop-content">
+  <div class="modal-header">
+    <h4 class="modal-title">角色设置</h4>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="form-horizontal">
+      <div class="form-group row">
+        <label for="inputEmail3" class="col-sm-2">角色名称</label>
+        <div class="col-sm-10">
+          <input type="text" formControlName="roleName" class="form-control" id="inputEmail3"
+                 placeholder="角色名称">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="departmentDescription" class="col-sm-2">角色描述</label>
+        <div class="col-sm-10">
+          <textarea placeholder="角色描述" formControlName="description" class="form-control"
+                    id="departmentDescription"></textarea>
+        </div>
+      </div>
+      <p style="color: white; ">权限</p>
+      <div class="permissions">
+
+        <div class="row" *ngFor="let resource of allResources">
+          <div class="col-sm-2 align-right">
+            <label class="checkbox-inline custom-checkbox nowrap">
+              <input type="checkbox" [checked]="isResourceChecked(resource.id)" (change)="onResouceChanged($event.target.checked, resource)"><span>{{resource.name}}</span>
+            </label>
+          </div>
+
+          <div class="col-sm-10 opeation-pannel">
+            <div class="row" *ngFor="let childResource of resource.childrens">
+              <div class="col-sm-2">
+                <label class="nowrap">{{childResource.name}}:</label>
+              </div>
+              <div class="col-sm-10 row">
+                <div class="col-sm-2" *ngFor="let permission of childResource.permissions">
+                  <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" (change)="onPermissionChanged($event.target.checked, permission)" [checked]="isPermissionChecked(permission.id)" value="{{permission.id}}"><span>{{permission.name}}</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--<div class="row">-->
+        <!--<div class="col-sm-2 align-right">-->
+        <!--<label class="checkbox-inline custom-checkbox nowrap">-->
+        <!--<input type="checkbox" value="Check 1"><span>设置:</span>-->
+        <!--</label>-->
+        <!--</div>-->
+        <!--<div class="col-sm-10 row opeation-pannel">-->
+        <!--<div class="col-sm-2">-->
+        <!--<label class="nowrap">部门管理:</label></div>-->
+        <!--<div class="col-sm-10 row">-->
+        <!--<div class="col-sm-2">-->
+        <!--<label class="checkbox-inline custom-checkbox nowrap">-->
+        <!--<input type="checkbox" value="Check 1"><span>权限1</span>-->
+        <!--</label>-->
+        <!--</div>-->
+        <!--<div class="col-sm-2">-->
+        <!--<label class="checkbox-inline custom-checkbox nowrap">-->
+        <!--<input type="checkbox" value="Check 1"><span>权限1</span>-->
+        <!--</label>-->
+        <!--</div>-->
+        <!--<div class="col-sm-2">-->
+        <!--<label class="checkbox-inline custom-checkbox nowrap">-->
+        <!--<input type="checkbox" value="Check 1"><span>权限1</span>-->
+        <!--</label>-->
+        <!--</div>-->
+        <!--<div class="col-sm-2">-->
+        <!--<label class="checkbox-inline custom-checkbox nowrap">-->
+        <!--<input type="checkbox" value="Check 1"><span>权限1</span>-->
+        <!--</label>-->
+        <!--</div>-->
+        <!--<div class="col-sm-2">-->
+        <!--<label class="checkbox-inline custom-checkbox nowrap">-->
+        <!--<input type="checkbox" value="Check 1"><span>权限1</span>-->
+        <!--</label>-->
+        <!--</div>-->
+        <!--<div class="col-sm-2">-->
+        <!--<label class="checkbox-inline custom-checkbox nowrap">-->
+        <!--<input type="checkbox" value="Check 1"><span>权限1</span>-->
+        <!--</label>-->
+        <!--</div>-->
+        <!--<div class="col-sm-2">-->
+        <!--<label class="checkbox-inline custom-checkbox nowrap">-->
+        <!--<input type="checkbox" value="Check 1"><span>权限1</span>-->
+        <!--</label>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+      </div>
+
+      <div class="form-group row">
+        <div class="offset-sm-5 col-sm-6">
+          <button class="btn btn-info" (click)="closeModal()">关闭</button>
+          <button type="submit" [disabled]="!form.valid || submitted" class="btn btn-warning">保存</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer"></div>
+</div>

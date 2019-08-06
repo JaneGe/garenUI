@@ -1,0 +1,7 @@
+.blank{display: inline-block;width: 32px;}
+.form-wrap textarea{vertical-align: top;}
+.form-wrap p{font-size: 16px;}
+.form-wrap p input{border-radius: 5px;width:80%;}
+.form-wrap p textarea{width: 80%;}
+.form-wrap p input:focus,
+.form-wrap p textarea:focus {background-color: lightblue;}

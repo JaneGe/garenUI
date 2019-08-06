@@ -1,0 +1,148 @@
+<div class="pop-content">
+  <div class="modal-header">
+    <span class="modal-title">采购历史</span>
+  </div>
+  <div class="modal-body">
+    <div class="card card-block search-wrapper">
+      <ul class="search-condition">
+        <li style="margin-bottom:10px;" *ngIf="is1688Order">
+          <label class="search-title">选择SKU：</label>
+          <select2 class="country-select" [width]="200" [data]="skuItems" (valueChanged)="onSkuChanged($event)"></select2>
+        </li>
+        <li style="margin-bottom:10px;">
+          <label class="search-title">消单人员：</label>
+          <select2 [width]="200" class="country-select" [data]="eliminationPurchaseOrderUesrItems" (valueChanged)="onChangeEliminationPurchaseOrderUesrChanged($event)"></select2>
+        </li>
+        <li>
+          <label class="search-title">下单人员：</label>
+          <select2 [width]="200" class="country-select" [data]="allUsers" (valueChanged)="onChangePurchaseUserChanged($event)"></select2>
+        </li>
+      </ul>
+    </div>
+    <div class="card card-block">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>供应商名称</th>
+            <th>当前采购价</th>
+            <th>运费</th>
+            <th>SKU采购成本</th>
+            <th>下单时间</th>
+            <th>消单人员</th>
+            <th>下单人员</th>
+            <th>采购数量</th>
+            <th>采购耗时</th>
+            <th>质检耗时</th>
+            <th>入库耗时</th>
+          </tr>
+        </thead>
+        <tbody class="table-body">
+          <tr>
+            <td colspan="11">最高采购价</td>
+          </tr>
+          <tr *ngFor="let item of theMaxMin; let i = index">
+            <td *ngIf="i==purchaseHistoryList.length-1">
+              {{item.supplierName}}
+              <a href="https://amos.alicdn.com/getcid.aw?v=3&uid={{item.sellerLoginId}}&site=cnalichn&groupid=0&charset=UTF-8" target="_blank" class="alwangwang"></a>
+            </td>
+            <td class="font-lg" *ngIf="i==purchaseHistoryList.length-1">￥{{item.skuOrderPrice}}</td>
+            <td class="font-lg" *ngIf="i==purchaseHistoryList.length-1">￥{{item.unitShippingFee}}</td>
+            <td class="font-lg" *ngIf="i==purchaseHistoryList.length-1">￥{{item.skuOrderPrice+item.unitShippingFee | number:'1.1-2'}}</td>
+            <td *ngIf="i==purchaseHistoryList.length-1">
+              <span class="block">{{item.creatPurchaseOrderTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</span>
+            </td>
+            <td *ngIf="i==purchaseHistoryList.length-1 && item.eliminationPurchaseOrderUesrName!=null">{{item.eliminationPurchaseOrderUesrName}}</td>
+            <td *ngIf="i==purchaseHistoryList.length-1 && item.eliminationPurchaseOrderUesrName==null">暂未消单</td>
+            <td *ngIf="i==purchaseHistoryList.length-1">{{item.creatPurchaseOrderUesrName}}</td>
+            <td *ngIf="i==purchaseHistoryList.length-1">{{item.purchaseOrderQuantity}}</td>
+            <td *ngIf="i==purchaseHistoryList.length-1">{{item.purchasingTime}}</td>
+            <td *ngIf="i==purchaseHistoryList.length-1">{{item.qualityInspectioTime}}</td>
+            <td *ngIf="i==purchaseHistoryList.length-1">{{item.inboundTime}}</td>
+          </tr>
+          <tr>
+            <td colspan="11">最低采购价</td>
+          </tr>
+          <tr *ngFor="let item of theMaxMin; let i = index">
+            <td *ngIf="i==0">
+              {{item.supplierName}}
+              <!--<a href="https://amos.alicdn.com/getcid.aw?v=3&uid=晶品新电&site=cnalichn&groupid=0&charset=UTF-8" target="_blank" class="alwangwang"></a>-->
+              <a href="https://amos.alicdn.com/getcid.aw?v=3&uid={{item.sellerLoginId}}&site=cnalichn&groupid=0&charset=UTF-8" target="_blank" class="alwangwang"></a>
+            </td>
+            <td class="font-lg" *ngIf="i==0">￥{{item.skuOrderPrice}}</td>
+            <td class="font-lg" *ngIf="i==0">￥{{item.unitShippingFee}}</td>
+            <td class="font-lg" *ngIf="i==0">￥{{item.skuOrderPrice+item.unitShippingFee | number:'1.1-4'}}</td>
+            <td *ngIf="i==0">
+              <span class="block">{{item.creatPurchaseOrderTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</span>
+            </td>
+            <td *ngIf="i==0 && item.eliminationPurchaseOrderUesrName!=null">{{item.eliminationPurchaseOrderUesrName}}</td>
+            <td *ngIf="i==0 && item.eliminationPurchaseOrderUesrName==null">暂未消单</td>
+            <td *ngIf="i==0">{{item.creatPurchaseOrderUesrName}}</td>
+            <td *ngIf="i==0">{{item.purchaseOrderQuantity}}</td>
+            <td *ngIf="i==0">{{item.purchasingTime}}</td>
+            <td *ngIf="i==0">{{item.qualityInspectioTime}}</td>
+            <td *ngIf="i==0">{{item.inboundTime}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="history-price card card-block">
+      <label class="history-title">历史采购价</label>
+
+      <div class="table-wrapper">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>供应商名称</th>
+              <th>当前采购价</th>
+              <th>当前折扣价</th>
+              <th>运费</th>
+              <th>SKU采购成本</th>
+              <th>SKU折扣采购成本</th>
+              <th>下单时间</th>
+              <th>消单人员</th>
+              <th>下单人员</th>
+              <th>采购数量</th>
+              <th>采购耗时</th>
+              <th>质检耗时</th>
+              <th>入库耗时</th>
+            </tr>
+          </thead>
+          <tbody class="table-body">
+            <tr *ngFor="let item of purchaseHistoryList">
+              <td>{{item.supplierName}}
+                <!--<a href="https://amos.alicdn.com/getcid.aw?v=3&uid=晶品新电&site=cnalichn&groupid=0&charset=UTF-8" target="_blank" class="alwangwang"></a>-->
+                <a href="https://amos.alicdn.com/getcid.aw?v=3&uid={{item.sellerLoginId}}&site=cnalichn&groupid=0&charset=UTF-8" target="_blank" class="alwangwang"></a>
+              </td>
+              <td class="font-lg">￥{{item.skuOrderPrice | number:'1.1-4'}}</td>
+              <td class="font-lg">￥{{item.disCountPrice | number:'1.1-4'}}</td>
+              <td class="font-lg">￥{{item.unitShippingFee | number:'1.1-4'}}</td>
+              <td class="font-lg">￥{{item.skuOrderPrice+item.unitShippingFee | number:'1.1-4'}}</td>
+              <td class="font-lg">￥{{item.disCountPrice+item.unitShippingFee | number:'1.1-4'}}</td>
+              <td class="short-info">
+                <span class="block">{{item.creatPurchaseOrderTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</span>
+              </td>
+              <td *ngIf="item.eliminationPurchaseOrderUesrName!=null">{{item.eliminationPurchaseOrderUesrName}}</td>
+              <td *ngIf="item.eliminationPurchaseOrderUesrName==null">暂未消单</td>
+              <td>{{item.creatPurchaseOrderUesrName}}</td>
+              <td>{{item.purchaseOrderQuantity}}</td>
+              <td>{{item.purchasingTime}}</td>
+              <td>{{item.qualityInspectioTime}}</td>
+              <td>{{item.inboundTime}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="loadData(skuId,1)">低价在上</button>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="loadData(skuId,2)">高价在上</button>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="closeModal()">关闭</button>
+    </div>
+  </div>
+</div>

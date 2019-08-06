@@ -1,0 +1,23 @@
+.pop-content {
+    width: 700px;
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.search-condition {
+    float: left;
+    height: auto;
+    padding: 0 5px;
+    li {
+        width: 100%;
+        float: left;
+        .search-title {
+            width: 80px;
+            font-weight: bold;
+            float: left;
+            margin: 6px 0;
+        }
+    }
+}

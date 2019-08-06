@@ -1,0 +1,35 @@
+<form (submit)="Onsubmit(storage.value,logistic.value)" id="form">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">{{modalHeader}}
+        <button class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </h4>
+    </div>
+    <div class="modal-body">
+      <p class="tip" *ngIf="selectOrderNum != null">您选择了 {{selectOrderNum}} 个订单，将他们统一分配到：</p>
+      <p class="tip" *ngIf="selectOrderNum == null">您选择了 所有页 的订单，将他们统一分配到：</p>
+      <div class="card card-block">
+        <div class="opt-wrap">
+          <span>发货仓库：</span>
+          <select name="storage" #storage>
+            <option *ngFor="let item of allWarehouses;let i=index" value={{item.warehouseId}} [selected]="i==0">{{item.name}}</option>
+          </select>
+        </div>
+        <div class="opt-wrap">
+          <span>物流方式：</span>
+          <select name="logistics" #logistic>
+            <option *ngFor="let item of warehouseAllShippingService;let i=index" value={{item.ssid}} [selected]="i==0" >{{item.name}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-sm pull-right submit">提交</button>
+      <button class="btn btn-sm pull-right cancel" (click)="closeModal()">取消</button>
+    </div>
+  </div>
+</form>
+
+

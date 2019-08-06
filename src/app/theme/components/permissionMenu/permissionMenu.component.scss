@@ -1,0 +1,38 @@
+ul {
+    padding: 0 15px;
+}
+
+li {
+    padding: 5px 0;
+    list-style: none;
+    font-size: 12px;
+}
+
+.trees-items {
+    &:hover {
+        cursor: pointer;
+        .ico {
+            color: lighten(#fff, 10%);
+        }
+    }
+}
+
+.file-ico {
+    display: inline-block;
+    width: 15px;
+    text-align: left;
+    .ico {
+        font-size: 12px;
+        color: #fff;
+        margin: 0;
+    }
+}
+
+.item-children {
+    overflow: hidden;
+}
+
+.custom-checkbox {
+    float: left;
+    margin: 1px;
+}

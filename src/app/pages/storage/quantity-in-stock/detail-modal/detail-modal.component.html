@@ -1,0 +1,67 @@
+<form>
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">{{modalHeader}}
+        <button class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </h4>
+    </div>
+    <div class="modal-body">
+      <div class="card card-block">
+        <div class="detail">
+          <table class="table table-hover table-bordered">
+            <tbody>
+            <tr>
+              <td class="black-muted-bg">
+                <span *ngIf="reportInfo.operateKind=='0'">报损状态：</span>
+                <span *ngIf="reportInfo.operateKind=='1'">报溢状态：</span>
+              </td>
+              <td [ngClass]="{'text-success':reportInfo.status=='已确认'}">{{reportInfo.status}}</td>
+            </tr>
+            <tr>
+              <td class="black-muted-bg">
+               <span *ngIf="reportInfo.operateKind=='0'">报损货架：</span>
+               <span *ngIf="reportInfo.operateKind=='1'">报溢货架：</span>
+              </td>
+              <td>{{reportInfo.SKU}}</td>
+            </tr>
+            </tbody>
+          </table>
+          <div class="info">
+            <p class="remark">{{reportInfo.time}} xxxx 对SKU【{{reportInfo.SKU}}】做了
+              <span *ngIf="reportInfo.operateKind=='0'">报损 {{reportInfo.num}}</span>
+              <span *ngIf="reportInfo.operateKind=='1'">报溢{{reportInfo.num}}</span>
+              个操作。原因是 "{{reportInfo.reason}}"。
+            </p>
+          </div>
+        </div>
+      </div>
+      <table class="table table-hover table-bordered">
+       <thead>
+       <tr class="black-muted-bg">
+         <th>商品SKU</th>
+         <th>系统存量</th>
+         <th>实际数量</th>
+         <th>操作</th>
+       </tr>
+       </thead>
+        <tbody>
+        <tr>
+          <td>{{reportInfo.SKU}}</td>
+          <td>{{reportInfo.total}}</td>
+          <td>{{reportInfo.available}}</td>
+          <td>
+            <button class="btn btn-sm btn-default" (click)="changeStatus(reportInfo.SKU)">确认</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-sm pull-right submit" (click)="openRemarksModal(reportInfo.SKU)"><span class="ion-plus-round icon"></span>添加备注</button>
+      <button class="btn btn-sm pull-right cancel" (click)="closeModal()">取消</button>
+    </div>
+  </div>
+</form>
+

@@ -1,0 +1,37 @@
+<div class="pop-content">
+  <div class="modal-header head">
+    <h4 class="modal-title mytitle">{{modalHeader}}
+      <button class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </h4>
+  </div>
+  <div class="modal-body">
+    <div class="card card-block">
+      <div class="inputpart form-group">
+        <h4>单品单个</h4>
+        <p>当包裹数达到 <input type="text" [(ngModel)]="pickingPackageCountForOneSkuOneItem" id="singleone"/>时，自动生成拣货任务</p>
+      </div>
+      <div class="inputpart form-group">
+        <h4>单品多个</h4>
+        <p>当包裹数达到 <input type="text" [(ngModel)]="pickingPackageCountForOneSkuMoreItems" id="singlemore"/>时，自动生成拣货任务</p>
+      </div>
+      <div class="inputpart form-group">
+        <h4>多品</h4>
+        <p>当包裹数达到 <input type="text" [(ngModel)]="pickingPackageCountForMoreSkus" id="multiple"/>时，自动生成拣货任务</p>
+      </div>
+      <div class="inputpart form-group">
+        <h4>按包裹拣货</h4>
+        <p>当包裹数达到 <input type="text" [(ngModel)]="pickingPackageCountForPickingByPackage" id="pickingByPakcage"/>时，自动生成拣货任务</p>
+      </div>
+      <div class="inputpart form-group">
+        <h4>最大Sku数量[单个订单购买过多]</h4>
+        <p><input type="text" [(ngModel)]="pickingMaxSkuQuantity" id="maxsku"/></p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-sm pull-right cancel" (click)="closeModal()">取消</button>
+      <button type="button" class="btn btn-sm pull-right submit" (click)="saveSetting()">提交</button>
+    </div>
+  </div>
+</div>

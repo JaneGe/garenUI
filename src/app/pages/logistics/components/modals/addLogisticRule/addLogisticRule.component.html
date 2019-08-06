@@ -1,0 +1,92 @@
+<div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <h3 class="modal-title">{{modalTitle}}</h3>
+    <button type="button" class="close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body clearfix">
+    <div>
+      <ul class="newselect-list">
+        <li>
+          <label class="list-label">
+            <span class="must">必填</span>规则名称 :</label>
+          <input type="text" class="form-control" placeholder="物流规则名称" [(ngModel)]="ruleInfo.ruleName" name="ruleName">
+        </li>
+        <li>
+          <label class="list-label">
+            <span class="must">必选</span>选择国家 :</label>
+          <select2 class="country-select" [data]="countryName" [options]="options" [width]="600" [value]="value" (valueChanged)="onChanged($event)"></select2>
+          <button class="btn btn-sm btn-primary" (click)="openInModal()">国家批量导入</button>
+        </li>
+        <li>
+          <label class="list-label">
+            <span class="must">必填</span>费用折扣 :&nbsp;&nbsp;(85折&nbsp;请输入0.85)</label>
+          <input type="text" placeholder="费用折扣" [(ngModel)]="ruleInfo.ruleDiscountRate" name="ruleDiscountRate" class="form-control">
+        </li>
+        <li>
+          <label class="list-label">
+            <span class="must">必选</span>添加区间价格 :</label>
+          <div class="btn-group">
+            <button class="btn btn-primary" (click)="addRule()">添加</button>
+            <button class="btn btn-primary" (click)="clearRules()">清空</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <table class="table table-hover table-bordered">
+      <tbody>
+        <tr *ngFor="let item of ruleItems">
+          <td>最小重量</td>
+          <td>
+            <input type="text" class="tab-input" [(ngModel)]="item.minWeight" />
+          </td>
+          <td>最大重量</td>
+          <td>
+            <input type="text" class="tab-input" [(ngModel)]="item.maxWeight" />
+          </td>
+          <td>
+            <select class="tab-input tab-select" [(ngModel)]="item.calcType">
+              <option value="0">单克价格</option>
+              <option value="1">固定价格</option>
+            </select>
+          </td>
+          <td>
+            <input type="text" *ngIf="item.calcType == 0" class="tab-input" [(ngModel)]="item.unitPrice">
+            <input type="text" *ngIf="item.calcType == 1" class="tab-input" [(ngModel)]="item.fixedFee">
+          </td>
+          <td>固定燃油费用</td>
+          <td>
+            <input type="text" class="tab-input" [(ngModel)]="item.fuelCost" />
+          </td>
+          <td>燃油费率</td>
+          <td>
+            <input type="text" class="tab-input" [(ngModel)]="item.fuelRate">
+          </td>
+          <td>操作费</td>
+          <td>
+            <input type="text" class="tab-input" [(ngModel)]="item.handlingFee" />
+          </td>
+          <td>其他费用</td>
+          <td>
+            <input type="text" class="tab-input" [(ngModel)]="item.otherFee">
+          </td>
+          <td>费用折扣</td>
+          <td>
+            <input type="text" class="tab-input" [(ngModel)]="item.discountRate">
+          </td>
+          <td>
+            <a href="javascript:;" class="edit-btn" (click)="deleteRuleItem(item)">
+              <i class="ion-trash-a"></i>
+              <span>删除</span>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="btn-footer">
+      <button class="btn btn-sm btn-default" type="button" (click)="closeModal()">关闭</button>
+      <button class="btn btn-sm btn-primary" type="submit" (click)="onSave()">保存</button>
+    </div>
+  </div>
+</div>

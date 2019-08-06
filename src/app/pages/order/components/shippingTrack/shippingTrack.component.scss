@@ -1,0 +1,59 @@
+.search-wrapper {
+    .search-condition {
+        li {
+            line-height: 1em;
+            .search-input {
+                display: inline-block;
+                width: 300px;
+                height: 30px;
+                margin-left: 0;
+            }
+            .margin-left {
+                float: left;
+                width: 90%;
+            }
+            .search-title{
+                width:100px;
+            }
+        }
+        .dot {
+            padding: 0 5px;
+            display: block;
+            border: none;
+            border-radius: 5px;
+            background: #209e91;
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 12px;
+        }
+    }
+}
+
+@media (max-width:1280px) {
+    //Mac Pro 13英寸
+    .search-wrapper {
+        font-size: 12px;
+        .search-condition {
+            li {
+                .margin-left {
+                    width: 80%;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width:1440px) {
+    //Mac Pro 15英寸 
+    .search-wrapper {
+        font-size: 12px;
+        .search-condition {
+            li {
+                .margin-left {
+                    width: 80%;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,32 @@
+<div style="position: relative;min-height: 100vh">
+<canvas class="canvas"></canvas>
+<div class="overlay">
+  <div class="tabs">
+    <div class="tabs-panels">
+      <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+      <ul class="tabs-panel">
+        <li class="row-wrap form-title">顶麦堂ERP</li>
+        <li class="row-wrap">
+          <span class="row-title">用户名</span>
+          <input type="text" [formControl]="workerNo" placeholder="请输入用户名">
+        </li>
+        <li class="row-wrap">
+          <span class="row-title">密码</span>
+          <input type="password" [formControl]="password" placeholder="请输入密码">
+        </li>
+        <li class="row-wrap">
+          <button class="customBtn" *ngIf="!isLoging" [disabled]="!form.valid || submitted">登录</button>
+          <button class="customBtn" *ngIf="isLoging">
+            <i class="fa fa-spinner fa-spin"></i>
+            登录中，请稍后···
+          </button>
+        </li>
+        <li class="row-wrap">
+          <span class="row-title tip">Tip:如有疑问，请联系管理员</span>
+        </li>
+      </ul>
+      </form>
+    </div>
+  </div>
+</div>
+</div>

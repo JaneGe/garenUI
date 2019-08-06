@@ -1,0 +1,15 @@
+.pop-content {
+    width: 600px;
+    margin-left: -50px;
+    .modal-body {
+        [class*=col-md] {
+            margin: 10px 0;
+        }
+        .col-md-3 {
+            text-align: right;
+        }
+        .select2 {
+            margin: 5px 0 5px 1px;
+        }
+    }
+}

@@ -1,0 +1,28 @@
+<div class="pop-content">
+  <div class="modal-header">
+    <h4 class="modal-title">编辑收货地址</h4>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="card card-block">
+      <ul>
+        <li>
+          <label class="list-label">AddressCode:</label>
+          <input type="text" class="form-control" [(ngModel)]="addressCode">
+        </li>
+        <li>
+          <label class="list-label">AddressId:</label>
+          <input type="text" class="form-control" [(ngModel)]="addressId">
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-default" (click)="closeModal()">取消</button>
+      <button class="btn btn-primary" (click)="saveAddress()">保存</button>
+    </div>
+  </div>
+</div>

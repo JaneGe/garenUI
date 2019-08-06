@@ -1,0 +1,67 @@
+<form #addForm="ngForm" (ngSubmit)="onsubmit(addForm.value)">
+  <div class="pop-content">
+    <div class="modal-header">
+      <span class="modal-title">添加刷单用户信息</span>
+      <button type="button" class="close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="card card-block">
+        <ul>
+          <li>
+            <span class="must">必填</span>
+            <label class="list-label">收件人</label>
+            <input type="text" class="form-control" placeholder="请输入收件人名称" name="buyerName">
+          </li>
+          <li>
+            <span class="must">必填</span>
+            <label class="list-label">地址1</label>
+            <input type="text" class="form-control" placeholder="请输入地址" name="addressLine1">
+          </li>
+          <li>
+            <span class="explain">选填</span>
+            <label class="list-label">地址2</label>
+            <input type="text" class="form-control" placeholder="请输入地址"  name="addressLine2">
+          </li>
+          <li>
+            <span class="must">必填</span>
+            <label class="list-label">城市</label>
+            <input type="text" class="form-control" placeholder="请输入收件城市" name="city">
+          </li>
+        </ul>
+      </div>
+      <div class="card card-block">
+        <ul>
+          <li>
+            <span class="must">必填</span>
+            <label class="list-label">省州</label>
+            <input type="text" class="form-control" placeholder="请输入收件省州" name="stateOrProvince">
+          </li>
+          <li>
+            <span class="must">必填</span>
+            <label class="list-label">国家</label>
+            <select2 *ngIf="countryName.length > 0" class="country-select" [data]="countryName" [width]="312"
+                     [value]="value" (valueChanged)="onChangeCountryChanged($event)"></select2>
+          </li>
+          <li>
+            <span class="must">必填</span>
+            <label class="list-label">邮编</label>
+            <input type="text" class="form-control" placeholder="请输入邮编"  name="postalCode">
+          </li>
+          <li>
+            <span class="must">必填</span>
+            <label class="list-label">电话</label>
+            <input type="text" class="form-control" placeholder="请输入电话"  name="phoneNumber1">
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="btn-group">
+        <button class="btn btn-default" (click)="closeModal()">取消</button>
+        <button class="btn btn-primary" >添加</button>
+      </div>
+    </div>
+  </div>
+</form>

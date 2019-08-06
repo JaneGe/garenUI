@@ -1,0 +1,88 @@
+.mb15 {
+    margin-bottom: 15px;
+}
+
+div.deliverTime-wrap {
+    span.item {
+        display: inline-block;
+        width: calc(33.33% - 15px);
+        margin-right: 15px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        position: relative;
+        .customRadio-wrap {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            margin-top: -10px;
+        }
+    }
+}
+
+.customRadio {
+    width: 20px;
+    height: 20px;
+    border: 1px solid white;
+    border-radius: 50%;
+    background-color: transparent;
+    position: relative;
+    >span {
+        position: absolute;
+        top: 50%;
+        margin-top: -7px;
+        left: 50%;
+        margin-left: -7px;
+        width: 14px;
+        height: 14px;
+        background-color: white;
+        border-radius: 50%;
+    }
+}
+
+.none {
+    display: none;
+}
+
+.mycard {
+    padding: 0;
+    .mywrapper {
+        margin: 0;
+    }
+}
+
+.myoption {
+    display: flex;
+    align-items: center;
+    >label {
+        width: 110px;
+    }
+    .form-control {
+        width: calc( 100% - 110px);
+    }
+}
+
+.badge-danger {
+    padding: 3px;
+    border-radius: 2px;
+}
+
+div.screen-wrapper {
+    margin-right: 10px;
+}
+
+.alone-info {
+    text-align: left;
+    display: block;
+    width: 100%;
+}
+
+.modal-footer {
+    margin-top: 20px;
+}
+
+.tag.inline {
+    padding: 2px 4px;
+    margin: 0 5px;
+    cursor: pointer;
+}

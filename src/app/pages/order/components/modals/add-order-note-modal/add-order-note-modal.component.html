@@ -1,0 +1,15 @@
+<div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <span class="modal-title">添加备注</span>
+    <button type="button" class="close" (click)="closeModal()"><span aria-hidden="true">&times;</span></button>
+  </div>
+  <div class="modal-body">
+    <textarea rows="5" [(ngModel)]="noteContent" class="form-control"></textarea>
+  </div>
+  <div class="modal-footer clearfix">
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="closeModal()">关闭</button>
+      <button class="btn btn-primary" (click)="saveOrderNote()">添加</button>
+    </div>
+  </div>
+</div>

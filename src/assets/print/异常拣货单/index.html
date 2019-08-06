@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .sku-bill-wrap {
+            width: 99mm;
+            font-size: 3mm;
+            border-collapse: collapse;
+            border: 1px solid #000;
+            margin: 2mm 1mm;
+        }
+
+        h2 {
+            font-size: 3.5mm;
+        }
+
+        .display-block {
+            display: block;
+            text-align: center;
+        }
+
+        .qr-code {
+            display: block;
+            margin: 0 auto;
+            width: 10mm;
+        }
+    </style>
+</head>
+
+<body>
+    <table border="1" class="sku-bill-wrap">
+        <thead>
+            <tr>
+                <th colspan="5">
+                    <h2>异常拣货单</h2>
+                </th>
+            </tr>
+            <tr>
+                <th>SKUCode
+                    <br>货架位</th>
+                <th>是否已扫描</th>
+                <th>总数</th>
+                <th>实际</th>
+                <th>缺少</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <span class="display-block">DMT123456</span>
+                    <span class="display-block">M12C006</span>
+                </td>
+                <td>
+                    <span class="display-block">是</span>
+                </td>
+                <td>
+                    <span class="display-block">120</span>
+                </td>
+                <td>
+                    <span class="display-block">110</span>
+                </td>
+                <td>
+                    <span class="display-block">10</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="display-block">DMT123456</span>
+                    <span class="display-block">M12C006</span>
+                </td>
+                <td>
+                    <span class="display-block">是</span>
+                </td>
+                <td>
+                    <span class="display-block">120</span>
+                </td>
+                <td>
+                    <span class="display-block">110</span>
+                </td>
+                <td>
+                    <span class="display-block">10</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="display-block">DMT123456</span>
+                    <span class="display-block">M12C006</span>
+                </td>
+                <td>
+                    <span class="display-block">是</span>
+                </td>
+                <td>
+                    <span class="display-block">120</span>
+                </td>
+                <td>
+                    <span class="display-block">110</span>
+                </td>
+                <td>
+                    <span class="display-block">10</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="display-block">DMT123456</span>
+                    <span class="display-block">M12C006</span>
+                </td>
+                <td>
+                    <span class="display-block">是</span>
+                </td>
+                <td>
+                    <span class="display-block">120</span>
+                </td>
+                <td>
+                    <span class="display-block">110</span>
+                </td>
+                <td>
+                    <span class="display-block">10</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="display-block">DMT123456</span>
+                    <span class="display-block">M12C006</span>
+                </td>
+                <td>
+                    <span class="display-block">是</span>
+                </td>
+                <td>
+                    <span class="display-block">120</span>
+                </td>
+                <td>
+                    <span class="display-block">110</span>
+                </td>
+                <td>
+                    <span class="display-block">10</span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <span class="display-block">包裹号：DGI1D00001</span>
+                    <img src="./QR.png" alt="包裹号" class="qr-code">
+                </td>
+                <td colspan="3">
+                    <span class="display-block">异常货架位：M12C006</span>
+                    <img src="./QR.png" alt="异常货架位" class="qr-code">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <span class="display-block">打印时间：</span>
+                    <span class="display-block">2018-01-18 12:02:03</span>
+                </td>
+                <td colspan="3">
+                    <span class="display-block">打印人：张牛犇</span>
+                    <span class="display-block">拣货批次号：123456789</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>

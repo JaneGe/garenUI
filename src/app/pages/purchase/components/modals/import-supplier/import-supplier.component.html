@@ -1,0 +1,24 @@
+<form id="form" (submit)="Onsubmit()">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">{{modalHeader}}</h4>
+      <button class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div>
+        <p><span>请下载提供的{{text}}导入模版，填写好后上传</span><a href="assets/files/{{text}}.xls" download>下载{{text}}模板</a></p>
+        <div class="input" (click)="InputFile()">
+          <input class="inputfile" type="file" id="input">
+          <a href="javascript:;" class="btn btn-sm btn-primary">选择文件</a>
+          <div class="text"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-sm pull-right submit">导入</button>
+      <a href="javascript:;"  class="btn btn-sm pull-right cancel" (click)="closeModal()">取消</a>
+    </div>
+  </div>
+</form>

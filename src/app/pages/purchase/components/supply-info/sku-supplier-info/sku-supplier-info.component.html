@@ -1,0 +1,139 @@
+
+  <app-supply-info-head
+    [status]="status"
+    [searchKind]="searchKind"
+    (eimtstatu)="selectStatu($event)"
+    (eimtsearchKind)="selectsearchKind($event)"
+  ></app-supply-info-head>
+
+  <div class="action">
+    <div class="checkbox" (click)="SelectedThisPage()">
+    <span id="iconall" class="ion-checkmark-round icon"
+          [ngClass]="{'hidden':selectedThisPage==false,'show':selectedThisPage==true}"></span>
+    </div>
+    <label for="selectall" class="selectall" (click)="SelectedThisPage()">
+      <span>当前页面全选</span>
+    </label>
+    <input type="checkbox" id="selectall">
+    <button class="btn btn-sm btn-primary" *ngIf="slidedownAll==true" (click)="toggleAllTalbe(1)">展开所有 <span class="ion-arrow-down-b icon"></span></button>
+    <button class="btn btn-sm btn-primary" *ngIf="slidedownAll==false" (click)="toggleAllTalbe(0)">收起所有 <span class="ion-arrow-up-b icon"></span></button>
+    <button class="btn btn-sm btn-primary" (click)="addSupplierModal()"><span class="ion-plus-round icon"></span>添加供应商</button>
+  </div>
+
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager"
+                           (pageChange)="pageChanged($event)"
+                           maxSize="9"
+                           directionLinks="true"
+                           autoHide="true"
+                           previousLabel="上一页"
+                           nextLabel="下一页"
+                           screenReaderPaginationLabel="Pagination"
+                           screenReaderPageLabel="page"
+                           screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="to" *ngIf="totalCount>pageSize">
+      <div class="topage"><p>跳至</p></div>
+      <div class="topage" style="width: 60px;">
+        <div class="inputPage"><p><input type="search" class="form-control" name="to" #toPage
+                                         (keyup.enter)="topage(toPage.value)"></p></div>
+      </div>
+      <div class="topage"><p>页</p></div>
+      <div class="topage out" (click)="tolast()"><p>尾页</p></div>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{totalCount}}条数据</span>
+      </div>
+    </div>
+  </form>
+  <div class="table-wrap" id="table" *ngFor="let item of SKUSupplyInfo|paginate: { id: 'pager',
+                                                      itemsPerPage:pageSize,
+                                                      currentPage:pageIndex,
+                                                      totalItems:totalCount}">
+    <div class="item inline">
+      <label for="sku{{item.id}}" (click)="selectSigle(item.id)">
+             <span class="ion-checkmark-round icon"
+                   [ngClass]="{'hidden':selectedSigleid.indexOf(item.id)==-1,'show':selectedSigleid.indexOf(item.id)!=-1}"></span>
+      </label>
+      <input type="checkbox" id="sku{{item.id}}">
+    </div>
+    <div class="item inline" (click)="selectSigle(item.id)"><span>{{item.skuCode}}</span></div>
+    <div class="item inline"><a href='javascript:;' data-toggle="collapse" (click)="toggleTalbe(item.id)" title="点击查看供应商详情">
+      {{item.skuName}}</a></div>
+    <div class="item inline"><a href='javascript:;' data-toggle="collapse" (click)="toggleTalbe(item.id)" title="点击查看供应商详情">
+      历史平均采购价：{{item.averagePrice}}</a></div>
+    <!--折叠table-->
+    <div id="table{{item.id}}" class="collapse mytable" *ngIf="item.supplierInfo.length>0">
+      <table class="table table-bordered table-hover">
+        <thead>
+        <tr class="black-muted-bg">
+          <th>SKU图片</th>
+          <th>首选</th>
+          <th>供应商</th>
+          <th>报价</th>
+          <th>最低采购数</th>
+          <th>交期</th>
+          <th>更新时间</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let I of item.supplierInfo;let i=index">
+          <td><img *ngIf="i==0" src={{item.img}} alt="sku图片" width="100" height="100"></td>
+          <td>
+            <label for="supplier{{item.id}}" (click)="selectSiglefirstID(item.id,I.id)">
+             <span class="myicon"
+                   [ngClass]="{'hidden':I.id!==item.firstSupplierId,'show':I.id==item.firstSupplierId}"></span>
+            </label>
+            <input type="checkbox" id="supplier{{item.id}}">
+          </td>
+          <td>{{I.supplierName}}</td>
+
+          <td>
+            <span *ngIf="editstatu==false">{{I.price}}</span>
+            <div class="input-group input-group-sm" *ngIf="editstatu==true">
+              <input  type="text" class="form-control" value={{I.price}} (change)="getEditChange(price.value,'price')"  name="price" #price>
+              <span class="input-group-addon">￥</span>
+            </div>
+          </td>
+          <td>
+            <span *ngIf="editstatu==false">{{I.minPurchase}}</span>
+            <input *ngIf="editstatu==true" type="number" class="form-control" value={{I.minPurchase}} (change)="getEditChange(minPurchase.value,'minPurchase')"  name="minPurchase" #minPurchase>
+          </td>
+          <td>
+            <span *ngIf="editstatu==false">{{I.getday}}</span>
+            <div class="input-group input-group-sm" *ngIf="editstatu==true">
+            <input *ngIf="editstatu==true" type="number" class="form-control" value={{I.getday}} (change)="getEditChange(getday.value,'getday')"  name="getday" #getday>
+              <span class="input-group-addon">天</span>
+            </div>
+          </td>
+
+          <td>{{I.upDateTime}}</td>
+          <td>
+            <a href='javascript:;' *ngIf="editstatu==false" (click)="editSupplier(item.id)">编辑</a>
+            <a href='javascript:;' *ngIf="editstatu==false" (click)="del(item.id,I.id)">删除</a>
+            <a href='javascript:;' *ngIf="editstatu==true" (click)="cancle()">取消</a>
+            <a href='javascript:;' *ngIf="editstatu==true" (click)="save(item.id,I.id)">保存</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--无供应商数据时-->
+    <div class="collapse noneData" *ngIf="item.supplierInfo==0" id="table{{item.id}}">
+      <h4>还没有为该SKU设置供应商</h4>
+    </div>
+  </div>

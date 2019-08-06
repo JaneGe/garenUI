@@ -1,0 +1,331 @@
+<div class=".col-md-8 card card-block">
+  <div class=".col-md-8 card card-block search-wrapper">
+    <ul class="search-condition">
+      <li>
+        <label class="search-title">选择仓库：</label>
+        <div class="screen-wrapper" *ngFor="let types of allWarehouses;let i = index">
+          <input type="radio" id="warahouser-{{types.warehouseId}}" name="warahouser" class="regular-radio" [checked]="i === 0" />
+          <label for="warahouser-{{types.warehouseId}}" (click)="onWarehouseSelect(types.warehouseId)">{{types.name}}</label>
+        </div>
+        <div class="btn-group" role="group" aria-label="...">
+          <button type="button" class="btn" (click)="seekMode(0)" [ngClass]="{'btn-primary':!seekmode,'btn-default':seekmode}">筛选
+          </button>
+          <button type="button" class="btn" (click)="seekMode(1)" [ngClass]="{'btn-primary':seekmode,'btn-default':!seekmode}">搜索
+          </button>
+        </div>
+      </li>
+    </ul>
+    <ul class="search-condition" *ngIf="!seekmode && searchMore">
+      <li>
+        <label class="search-title">物流承运商：</label>
+        <div class="margin-left">
+          <div class="screen-wrapper">
+            <input type="radio" id="ShippingMerchantAll" name="ShippingMerchant" class="regular-radio" [checked]="checkedAllMerchant"
+            />
+            <label for="ShippingMerchantAll" (click)="onSelectShippingMerchant(null)">全部</label>
+          </div>
+          <div class="screen-wrapper" *ngFor="let types of warehouseShippingMerchant;let i = index">
+            <input type="radio" id="Merchant-{{types.spid}}" name="ShippingMerchant" class="regular-radio" [checked]="selectwarehouseShippingMerchant==types.spid"
+            />
+            <label for="Merchant-{{types.spid}}" (click)="onSelectShippingMerchant(types.spid)">{{types.spName}}</label>
+          </div>
+        </div>
+      </li>
+      <li>
+        <label class="search-title">物流方式：</label>
+        <div class="margin-left">
+          <div class="screen-wrapper">
+            <input type="checkbox" name="ShippingService" class="regular-radio" [checked]="checkedAll" />
+            <label (click)="onSelectShippingService(null)">全部</label>
+          </div>
+          <div class="screen-wrapper" *ngFor="let types of warehouseAllShippingService;let i = index">
+            <input type="checkbox" name="ShippingService" class="regular-radio" [checked]="selectShippingServiceIdArray.indexOf(types.ssid)!==-1"
+            />
+            <label (click)="onSelectShippingService(types.ssid)">{{types.name}}</label>
+          </div>
+        </div>
+      </li>
+
+      <li>
+        <label class="search-title">时间类型：</label>
+        <div class="margin-left">
+          <div class="screen-wrapper" *ngFor="let types of suppprtTimeTypes;let i = index">
+            <input type="radio" id="suppprtTimeTypes-{{types.value}}" name="suppprtTimeTypes" class="regular-radio" [checked]="i === 0"
+            />
+            <label for="suppprtTimeTypes-{{types.value}}" (click)="onSelectTimeType(types.value)">{{types.text}}</label>
+          </div>
+        </div>
+      </li>
+
+      <li>
+        <label class="search-title">时间筛选</label>
+        <div class="screen-wrapper" *ngFor="let time of suppprtTimeValueTypes;let i = index">
+          <input type="radio" id="search-time{{time.value}}" name="time" class="regular-radio" [checked]="i === 0" />
+          <label for="search-time{{time.value}}" (click)="onSelectTimeValueType(time.value)">{{time.text}}</label>
+        </div>
+        <!-- <div class="custom" style="float:left;" *ngIf="selectedTimeValueType == 'Custom'">
+          <input type="date" [(ngModel)]="timeSearchStart" /> -
+          <input type="date" [(ngModel)]="timeSearchEnd" />
+          <div class="btn-group">
+            <button class="btn btn-primary" (click)="doTimeSearch()">确定</button>
+          </div>
+        </div> -->
+        <span *ngIf="selectedTimeValueType == 'Custom'">
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <!--<ng-datepicker [(ngModel)]="timeSearchStart" [options]="DatepickerOptions"></ng-datepicker>-->
+              <div class="input-group" style="width: auto;">
+                <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="ngTimeSearchStart" ngbDatepicker #start="ngbDatepicker">
+                <div class="input-group-addon" (click)="start.toggle()">
+                  <i class="ion-android-calendar"></i>
+                </div>
+              </div>
+
+            </span>
+          </span>
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <ngb-timepicker [(ngModel)]="ngShortTimeStart" [seconds]="'true'"></ngb-timepicker>
+            </span>
+          </span>
+          -
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <!--<ng-datepicker [(ngModel)]="timeSearchEnd" [options]="DatepickerOptions"></ng-datepicker>-->
+              <div class="input-group" style="width: auto;">
+                <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="ngTimeSearchEnd" ngbDatepicker #end="ngbDatepicker">
+                <div class="input-group-addon" (click)="end.toggle()">
+                  <i class="ion-android-calendar"></i>
+                </div>
+              </div>
+            </span>
+          </span>
+
+          <span class="datePick-wrap">
+            <span class="datePick">
+              <ngb-timepicker [(ngModel)]="ngShortTimeEnd" [seconds]="'true'"></ngb-timepicker>
+            </span>
+          </span>
+
+          <button class="btn btn-sm btn-primary" (click)="doTimeSearch()">确定</button>
+        </span>
+      </li>
+    </ul>
+    <ul class="search-condition" *ngIf="seekmode">
+      <li>
+        <label class="search-title">搜索类型：</label>
+        <div class="screen-wrapper" *ngFor="let type of types;let i = index">
+          <input type="radio" id="type-{{i}}" name="type" class="regular-radio" [checked]="i === 0" />
+          <label for="type-{{i}}" (click)="onSearchTypeSelect($event.target,type.value)">{{type.name}}</label>
+        </div>
+      </li>
+      <li>
+        <label class="search-title">搜索内容：</label>
+        <input type="text" class="form-control with-primary-addon search-input" [(ngModel)]="searchText" placeholder="查询" >
+        <button class="btn btn-primary" (click)="doSearch()">搜索</button>
+      </li>
+    </ul>
+    <div class="btn-group search-more" role="group" aria-label="..." *ngIf="!seekmode">
+      <button class="btn btn-primary" [innerHtml]="!searchMore?'高级筛选':'收起'" (click)="SearchMore()">
+      </button>
+    </div>
+  </div>
+  <div class="batch-modal" *ngIf="modalstate">
+    <div class="pop-content">
+      <div class="modal-header">
+        <h3>批量查询</h3>
+        <a href="javascript:;" (click)="ModalState()">
+          <i class="ion-close-round"></i>
+        </a>
+      </div>
+      <form>
+        <label class="radio-inline custom-radio nowrap">
+          <input type="radio" name="batchSearchOption" id="inlineRadio3" value="OrderNumber" (click)="onSelectdoBatchSearchType($event.target.value)"
+            checked>
+          <span>按订单编号</span>
+        </label>
+        <label class="radio-inline custom-radio nowrap">
+          <input type="radio" name="batchSearchOption" id="inlineRadio3" value="PackageNumber" (click)="onSelectdoBatchSearchType($event.target.value)">
+          <span>按包裹单号</span>
+        </label>
+        <label class="radio-inline custom-radio nowrap">
+          <input type="radio" name="batchSearchOption" id="inlineRadio3" value="BuyName" (click)="onSelectdoBatchSearchType($event.target.value)">
+          <span>按客户姓名</span>
+        </label>
+        <!-- <label class="radio-inline custom-radio nowrap">
+          <input type="radio" name="batchSearchOption" id="inlineRadio3" value="InTrackingNumber" (click)="onSelectdoBatchSearchType($event.target.value)">
+          <span>按内部跟踪号</span>
+        </label> -->
+        <label class="radio-inline custom-radio nowrap">
+          <input type="radio" name="batchSearchOption" id="inlineRadio3" value="TrackingNumber" (click)="onSelectdoBatchSearchType($event.target.value)">
+          <span>按跟踪号</span>
+        </label>
+
+        <label class="radio-inline custom-radio nowrap">
+          <input type="radio" name="batchSearchOption" id="inlineRadio3" value="SpPackageId" (click)="onSelectdoBatchSearchType($event.target.value)">
+          <span>按转单号</span>
+        </label>
+        <label class="modal-desc">每行一个（支持excel复制粘贴）</label>
+        <textarea name="packageBatchSearch" id="" cols="60" rows="10" [(ngModel)]="batchsearchText"></textarea>
+        <div class="modal-footer">
+          <div class="btn-group">
+            <button class="btn btn-sm btn-default" type="button" (click)="ModalState()">关闭</button>
+            <button class="btn btn-sm btn-primary" type="submit" (click)="doBatchSearch()">确定</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="btn-box">
+    <div class="checkbox">
+      <label class="checkbox-inline custom-checkbox nowrap">
+        <input type="checkbox" [checked]="isCheckAllPages" (change)="onCheclAllPageChange($event.target.checked)">
+        <span>选中所有页</span>
+      </label>
+    </div>
+    <button type="button" class="btn btn-primary" *ngIf="checkChildAuthority(1)" (click)="openOutputModal()">导出</button>
+  </div>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{total}}条</span>
+      </div>
+    </div>
+  </form>
+  <table class="table table-hover table-bordered">
+    <thead>
+      <tr>
+        <th>
+          <label class="checkbox-inline custom-checkbox nowrap">
+            <input type="checkbox" [checked]="selectPackageIds.length == items.length && items.length > 0" (change)="onCheckAllPackageChanged($event.target.checked)">
+            <span></span>
+          </label>
+        </th>
+        <th>订单信息</th>
+        <th>订单内容</th>
+        <th>重量</th>
+        <th>运费</th>
+        <th>收件人信息</th>
+        <th>包裹状态</th>
+        <th>
+          <p>配货时间</p>
+          <p style="margin-bottom: 0">发货时间</p>
+        </th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let packageInfo of items | paginate: { id: 'pager',
+            itemsPerPage:pageSize,
+            currentPage:pageNumber,
+            totalItems:total};let i = index">
+        <!--<tr *ngFor="let item of items | paginate: { id: 'pager',-->
+        <!--itemsPerPage: pageSize,-->
+        <!--currentPage: pageNumber,-->
+        <!--totalItems: total}">-->
+
+        <td>
+          <label class="checkbox-inline custom-checkbox nowrap">
+            <input type="checkbox" [checked]="selectPackageIds.indexOf(packageInfo.id) >= 0" (change)="onCheckPackageChanged($event.target.checked, packageInfo.id)">
+            <span></span>
+          </label>
+        </td>
+        <td>
+          <span class="display-block">包裹号：
+            <a href="javascript:;" class="packageNumber-text" (click)="openPackageDetailModal(packageInfo.id,packageInfo.orderNumber,packageInfo.status)">{{packageInfo.packageNumber}}</a>
+          </span>
+          <span class="display-block">订单号：
+            <a href="javascript:;" class="orderNumber-text" (click)="openOrderDetailModal(packageInfo.orderId)">{{packageInfo.orderNumber}}</a>
+          </span>
+        </td>
+        <td class="short-info">
+          <span *ngFor="let packageItem of packageInfo.packageItems;let i = index" class="skucom">
+            <span *ngIf="i != 0" class="skucom"> &nbsp;
+              <br/> </span>
+            {{packageItem.skuCode}} *{{packageItem.quantity}}
+          </span>
+        </td>
+        <td>
+          <span class="display-block" *ngIf="packageInfo.estimateWeight != null">预估重量：{{packageInfo.estimateWeight}}&nbsp;g</span>
+          <span class="display-block" *ngIf="packageInfo.estimateWeight == null">预估重量：无</span>
+          <span class="display-block" *ngIf="packageInfo.shipWeight != null && packageInfo.status=='Shipped'">实际重量：{{packageInfo.shipWeight}}&nbsp;g
+          </span>
+          <span class="display-block" *ngIf="packageInfo.shipWeight == null">实际重量：无</span>
+          <span class="display-block">异常重量：{{packageInfo.exceptionWeight}}&nbsp;g</span>
+        </td>
+        <td>
+          <span class="display-block" *ngIf="packageInfo.estimateShippingFee != null">预估运费：{{packageInfo.estimateShippingFee}}&nbsp;￥</span>
+          <span class="display-block" *ngIf="packageInfo.estimateShippingFee == null">预估运费：无</span>
+          <span class="display-block" *ngIf="packageInfo.shipShippingFee != null">实际运费：{{packageInfo.shipShippingFee}}&nbsp;￥</span>
+          <span class="display-block" *ngIf="packageInfo.shipShippingFee == null">实际运费：无</span>
+        </td>
+        <td>
+          <span class="display-block">收件人：{{packageInfo.buyerName}}</span>
+          <span class="display-block">国家：{{packageInfo.countryCode}}</span>
+          <span class="display-block">物流方式：{{packageInfo.shippingService}}</span>
+          <div *ngIf="isOnlyDisplayText(packageInfo);then onlyText else navText"></div>
+          <ng-template #onlyText>
+            <span class="display-block" *ngIf="getDisplayText(packageInfo) && getDisplayText(packageInfo).length > 0">跟踪号：
+              <span class="traceNumber-text">{{getDisplayText(packageInfo)}}</span>
+            </span>
+          </ng-template>
+          <ng-template #navText>
+            <span class="display-block">跟踪号：
+              <a href="javascript:;" class="traceNumber-text" (click)="openPackageDetailModal(packageInfo.id,packageInfo.orderNumber,packageInfo.status)">{{getDisplayText(packageInfo)}}</a>
+            </span>
+          </ng-template>
+          <span class="display-block">物流转单号：{{packageInfo.spPackageId}}</span>
+        </td>
+        <td class="short-info">{{packageInfo.statusDesc}}</td>
+        <td class="short-info">
+          <p style="margin-bottom: 0">{{packageInfo.createdTime| amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</p>
+          <p style="margin-bottom: 0" *ngIf="packageInfo.shippedTime">{{packageInfo.shippedTime| amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</p>
+          <p style="margin-bottom: 0;" *ngIf="!packageInfo.shippedTime">暂未发货</p>
+        </td>
+        <td class="short-info">
+          <a href="javascript:;" (click)="openPackageDetailModal(packageInfo.id,packageInfo.orderNumber,packageInfo.status)">详细</a>
+          <a *ngIf="packageInfo.spPackageId &&packageInfo.spPackageId.length > 0" href="{{getDownloadLabelUrl(packageInfo.id, packageInfo.packageNumber)}}"
+            target="_blank">打印面单</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{total}}条</span>
+      </div>
+    </div>
+  </form>
+</div>

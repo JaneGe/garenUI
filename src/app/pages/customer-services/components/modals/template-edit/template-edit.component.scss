@@ -1,0 +1,32 @@
+.pop-content {
+    width: 900px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+input.form-control {
+    margin-bottom: 10px;
+}
+
+select.form-control {
+    line-height: 20px !important;
+}
+
+textarea.form-control {
+    height: 385px;
+}
+
+.tags-wrap {
+    padding-bottom: 10px;
+    .tags {
+        display: block;
+        padding: 0px 3px;
+        border-radius: 5px;
+        background: #fff;
+        color: #000;
+        margin: 5px 5px;
+        font-size: 12px;
+        float: left;
+    }
+}

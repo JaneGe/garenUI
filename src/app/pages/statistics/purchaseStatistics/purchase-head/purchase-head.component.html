@@ -1,0 +1,125 @@
+<div class="card card-block select-part">
+  <div class="select bdb">
+    <div class="part-wrap">
+      <span class="title">仓库：</span>
+    </div>
+    <div class="option-wrap">
+      <span class="option" *ngFor="let item of warehouse" (click)="selectedWarehouse=item.id" [ngClass]="{'tag':item.id==selectedWarehouse}">{{item.text}}</span>
+    </div>
+    <div class="toggle">
+      <div class="btn-group" style="margin-bottom:5px">
+        <button class="btn btn-sm" (click)="clicktop=0" [ngClass]="{'btn-primary':clicktop==0,'btn-default':clicktop==1}">筛选
+        </button>
+        <button class="btn btn-sm" (click)="clicktop=1" [ngClass]="{'btn-primary':clicktop==1,'btn-default':clicktop==0}">搜索
+        </button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="clicktop==0">
+    <div class="select">
+      <div class="part-wrap">
+        <span class="title">1688账号：</span>
+      </div>
+      <div class="option-wrap">
+        <span class="option" *ngFor="let item of Accounts" (click)="selectedAccounts=item.id" [ngClass]="{'tag':item.id==selectedAccounts}">{{item.text}}</span>
+      </div>
+    </div>
+    <div class="select">
+      <div class="part-wrap">
+        <span class="title">国家：</span>
+      </div>
+      <div class="option-wrap">
+        <span class="option" *ngFor="let item of country" (click)="selectedcountry=item.id" [ngClass]="{'tag':item.id==selectedcountry}">{{item.text}}</span>
+      </div>
+    </div>
+    <div class="select" [ngClass]="{'bdb':clickbottom==1}">
+      <div class="part-wrap">
+        <span class="title">是否完全退款：</span>
+      </div>
+      <div class="option-wrap">
+        <span class="option" *ngFor="let item of ifallback" (click)="selectedifallback=item.id" [ngClass]="{'tag':item.id==selectedifallback}">{{item.text}}</span>
+      </div>
+    </div>
+
+
+    <div *ngIf="clickbottom==1">
+
+
+      <div class="select">
+        <div class="part-wrap">
+          <span class="title">时间筛选内容：</span>
+        </div>
+        <div class="option-wrap">
+          <span class="option" *ngFor="let item of ordertimesearch" (click)="selectedordertimesearch=item.id" [ngClass]="{'tag':item.id==selectedordertimesearch}">{{item.text}}</span>
+        </div>
+      </div>
+
+      <div class="select bdb">
+        <div class="part-wrap">
+          <span class="title">时间筛选：</span>
+        </div>
+        <div class="option-wrap">
+          <span class="option" *ngFor="let item of orderTime" (click)="selectorder(item.id)" [ngClass]="{'tag':item.id==selectedorder}">{{item.text}}</span>
+
+          <span class="option option-nobot" *ngIf="selectedorder==3">
+            <ng-datepicker [(ngModel)]="timeSearchStart" [options]="DatepickerOptions"></ng-datepicker>
+          </span>
+          <span class="option timegap option-nobot" *ngIf="selectedorder==3">~</span>
+          <span class="option option-nobot" [ngClass]="{'unvisible':selectedorder!=3}">
+            <ng-datepicker [(ngModel)]="timeSearchEnd" [options]="DatepickerOptions"></ng-datepicker>
+          </span>
+          <span class="option option-nobot">
+            <button *ngIf="selectedorder==3" class="btn btn-primary" (click)="OnUserSetTimeQuery()">确定</button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="clicktop==1">
+    <div class="select">
+      <div class="part-wrap">
+        <span class="title">订单金额：</span>
+      </div>
+      <div class="part-wrap">
+        <div class="section-search">
+          <input type="number" class="form-control">
+          <span>~</span>
+          <div class="btn-group">
+            <input type="number" class="form-control">
+            <span class="input-group-btn">
+              <button class="btn btn-danger">搜索</button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="select">
+      <div class="part-wrap">
+        <span class="title">搜索条件：</span>
+      </div>
+      <div class="option-wrap">
+        <span class="option" *ngFor="let item of searchopt" (click)="selectedsearchopt=item.id" [ngClass]="{'tag':item.id==selectedsearchopt}">{{item.text}}</span>
+      </div>
+    </div>
+    <div class="select">
+      <div class="part-wrap">
+        <span class="title">搜索内容：</span>
+      </div>
+      <div class="part-wrap">
+        <div class="input-group  input">
+          <input type="search" class="form-control">
+          <span class="input-group-btn">
+            <button class="btn btn-sm btn-danger" (click)="OnQuery()">搜索</button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="toggle-select">
+    <button *ngIf="clickbottom==0&&clicktop==0" class="btn btn-primary btn-sm" (click)="toggle1(0)">
+      <span class="icon ion-arrow-down-b"></span>高级筛选</button>
+    <button *ngIf="clickbottom==1&&clicktop==0" class="btn btn-primary btn-sm" (click)="toggle1(1)">
+      <span class="icon ion-arrow-up-b"></span>收起</button>
+  </div>
+</div>

@@ -1,0 +1,60 @@
+<div class="pop-content">
+  <div class="modal-header">
+    <span class="modal-title">采购订单详情</span>
+  </div>
+  <div class="modal-body">
+
+    <form class="pagination-wrapper">
+      <div class="form-group pages">
+        <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+          autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+          screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
+      </div>
+      <div class="form-group options pages">
+        <div class="input-group input-group-sm">
+          <select class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+            <option>1</option>
+            <option>5</option>
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+            <option>200</option>
+          </select>
+          <span class="input-group-addon addon-right">条/页</span>
+          <span class="input-group-addon addon-right">共{{total}}条数据</span>
+        </div>
+      </div>
+    </form>
+    <div style="height: 30px;" *ngIf="total>pageSize"></div>
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>订单号</th>
+          <th>SKU数量</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of purchaseSkuOrderDetail | paginate: { id: 'pager',
+              itemsPerPage:pageSize,
+              currentPage:pageNumber,
+              totalItems:total};let i = index">
+        <tr>
+          <td>
+            <span>
+              <a href="javascript:;" (click)="openOrderDetailModal(item.orderId)">{{item.orderNumber}}</a>
+            </span>
+          </td>
+          <td>
+            <span>{{item.skuQuantity}}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="closeModal()">关闭</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,145 @@
+<div class="card card-block">
+  <div class="card card-block search-wrapper">
+    <div class="gap">
+      <div class="searchPart" style="border-bottom: 1px solid white;">
+        <span class="title">选择仓库：</span>
+        <div class="buttonpart">
+          <span class="tag"  *ngFor="let item of warehose" (click)="addClass1($event.target,'warehouse',item)">{{item.name}}</span>
+        </div>
+      </div>
+      <div class="searchToggle btn-group">
+      <button class="btn btn-sm" (click)="issearchToggle=1;selecteddaysort=null;loadData();" [ngClass]="{'btn-default':issearchToggle==1,'btn-primary':issearchToggle==0||issearchToggle==2}">操作</button>
+      <button class="btn btn-sm" (click)="issearchToggle=0;selecteddaysort=null;loadData();" [ngClass]="{'btn-default':issearchToggle==0,'btn-primary':issearchToggle==1||issearchToggle==2}">搜索</button>
+      <button class="btn btn-sm" (click)="issearchToggle=2;this.searchParam.OrderTimeSpan=1;loadData();" [ngClass]="{'btn-default':issearchToggle==2,'btn-primary':issearchToggle==1||issearchToggle==0}">筛选</button>
+        <!--<span class="fa fa-caret-down" *ngIf="issearchToggle"></span>-->
+        <!--<span class="fa fa-caret-up" *ngIf="!issearchToggle"></span>-->
+      </div>
+    </div>
+    <div *ngIf="issearchToggle==1">
+      <div class="bigbox" id="receive">
+        <select class="title" style="height: 60px;" (change)="receiveWayChange(select.value)" #select>
+          <option *ngFor="let item of receiveWay" value="{{item.id}}">{{item.text}}</option>
+        </select>
+        <input *ngIf="selectedReceiveWayId==1" type="text" id="tracenum"  class="big" autofocus  placeholder="请输入跟踪号" #tracenum [(ngModel)]="tracenumber" (keyup.enter)="add()">
+        <input *ngIf="selectedReceiveWayId==2" type="text" id="purchasenum" class="big"   placeholder="请输入下单号" #purchasenum [(ngModel)]="purchasenumer" (keyup.enter)="add()">
+        <button class="btn btn-lg btn-primary search" type="button"  (click)="add()">确认</button>
+      </div>
+      <div class="bigbox">
+        <span class="title">重量：</span>
+        <input type="text" class="big" id="weight"  placeholder="请输入重量" [(ngModel)]="weight"  value={{weight}} (keyup.enter)="recordWeight(weight)">
+        <button class="btn btn-lg  btn-primary search" type="button" (click)="recordWeight(weight)">确定</button>
+      </div>
+    </div>
+    <div id="search" *ngIf="issearchToggle==0">
+      <div class="searchPart" style="margin-bottom: 25px;">
+        <span class="title">搜索类型：</span>
+        <div class="buttonpart">
+          <span class="tag"  *ngFor="let item of searchType" (click)="addClass1($event.target,'searchType',item)">{{item.text}}</span>
+        </div>
+      </div>
+      <div class="bigbox">
+        <span class="title">搜索内容：</span>
+        <input type="text" class="big"  placeholder="请输入跟踪号" [(ngModel)]="storeSearchKey"  value={{storeSearchKey}} (keyup.enter)="loadData()">
+        <button class="btn btn-lg  btn-danger search" type="button" (click)="loadData()">搜索</button>
+      </div>
+      <!--<div class="bigbox">-->
+        <!--<span class="title">核对包裹：</span>-->
+        <!--<input type="text" class="big"  placeholder="请输入跟踪号" [(ngModel)]="confirmTraceNum"  value={{confirmTraceNum}} (keyup.enter)="confirmReceive(confirmTraceNum)">-->
+        <!--<button class="btn btn-lg  btn-danger search" type="button" (click)="confirmReceive(confirmTraceNum)">搜索</button>-->
+      <!--</div>-->
+    </div>
+    <div class="searchPart" style="margin-bottom: 25px;" *ngIf="issearchToggle==2">
+      <span class="title">日期筛选：</span>
+      <div class="buttonpart">
+        <span class="tag"  *ngFor="let item of daysort" (click)="addClass1($event.target,'daysort',item)">{{item.text}}</span>
+        <span class="tag tag-nopd" *ngIf="selecteddaysort==5">
+            <ng-datepicker [(ngModel)]="timeSearchStart" [options]="DatepickerOptions"></ng-datepicker>
+        </span>
+        <span *ngIf="selecteddaysort==5" class="whiteSpace"></span>
+        <span class="tag tag-nopd" *ngIf="selecteddaysort==5">
+            <ng-datepicker [(ngModel)]="timeSearchEnd" [options]="DatepickerOptions"></ng-datepicker>
+        </span>
+        <span class="tag tag-nopd" *ngIf="selecteddaysort==5"><button class="btn btn-primary" (click)="QueryForDate()">确定</button></span>
+      </div>
+    </div>
+  </div>
+
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="loadData()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条</span>
+      </div>
+    </div>
+  </form>
+  <div class="table-wrap">
+    <table class="table table-hover table-bordered gap" id="table">
+      <thead>
+      <tr class="black-muted-bg">
+        <th>编号</th>
+        <th style="width: 250px">跟踪号</th>
+        <th style="width: 250px">下单号</th>
+        <th>收货状态</th>
+        <th>重量&nbsp;(g)</th>
+        <th>收货员</th>
+        <th>扫描次数</th>
+        <th style="width: 200px">时间</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of record|receiveRecord:selectName|paginate: { id: 'pager',
+                                                      itemsPerPage: PageInfo.pageSize,
+                                                      currentPage: PageInfo.pageIndex,
+                                                      totalItems: PageInfo.totalCount}">
+        <td>{{item.id}}</td>
+        <td class="traceNumber-text">{{item.traceNum}}</td>
+        <td>{{item.purchaseNumber}}</td>
+        <td *ngIf="item.status =='Yes'">已收货</td>
+        <td *ngIf="item.status =='No'">未收货</td>
+        <td>{{item.weight}}</td>
+        <td>{{item.operator}}</td>
+        <td>{{item.scanNumber}}</td>
+        <td>{{item.timeShow}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+                           autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                           screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="loadData()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条</span>
+      </div>
+    </div>
+  </form>
+</div>

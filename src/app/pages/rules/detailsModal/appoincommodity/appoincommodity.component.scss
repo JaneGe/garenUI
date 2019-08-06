@@ -1,0 +1,57 @@
+.modal-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+}
+form{
+  min-height: 450px;
+}
+.card div .inline:nth-of-type(1) {
+    width: 15%
+}
+
+.card div .inline:nth-of-type(2) {
+    width: 85%
+}
+
+.card div .inline:nth-of-type(2) select {
+    width: 100%;
+}
+
+.result {
+    background: #fff;
+    color: #2389F2;
+    display: inline-block;
+    margin: 0 10px 10px 0;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.box {
+    height: 450px;
+    width: 100%;
+    overflow: auto;
+  >span.result>i.badge-danger{
+    color: white;
+    border-radius: 5px;
+    height: 20px;
+    width: 24px;
+  }
+}
+
+.tip {
+    font-size: 14px;
+}
+
+.completerstyle {
+    width: 600px;
+}
+.search-input-wraper{
+  display: flex;
+  /deep/ .dropdown-menu{
+    width: 400px;
+    font-size: 16px;
+  }
+}

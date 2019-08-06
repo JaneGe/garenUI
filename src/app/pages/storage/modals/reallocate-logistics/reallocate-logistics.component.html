@@ -1,0 +1,18 @@
+<div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <span class="modal-title">重新分配物流方式</span>
+  </div>
+  <div class="modal-body">
+    <select class="form-control" [(ngModel)]="selectedSsId">
+      <option *ngFor="let warehouseShippingService of logistics" [value]="warehouseShippingService.ssid">
+        {{warehouseShippingService.name}}
+      </option>
+    </select>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="doAllocate()">分配</button>
+      <button class="btn btn-default" (click)="closeModal()">取消</button>
+    </div>
+  </div>
+</div>

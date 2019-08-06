@@ -1,0 +1,131 @@
+<form id="formd">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">{{modalHeader}}
+        <button class="close" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </h4>
+    </div>
+    <div class="modal-body">
+      <div class="card card-block">
+        <div class="header">
+          <span>
+            <i>订单号：</i>
+            <b>{{info.orderNumber}}</b>
+          </span>
+          <span>
+            <i>卖家：</i>
+            <b>{{info.sellerName}}</b>
+          </span>
+          <span>
+            <i>金额：</i>
+            <b>{{info.payAmount}}</b>
+          </span>
+          <span>
+            <i>订单状态：</i>
+            <b>{{info.orderStatusText}}</b>
+          </span>
+        </div>
+      </div>
+      <div class="content-wrap">
+        <div class="item detail">
+          <table class="table table-hover table-bordered">
+            <tbody>
+              <tr>
+                <td class="black-muted-bg">下单时间：</td>
+                <td>{{info.orderTimeShow}}</td>
+              </tr>
+              <tr>
+                <td class="black-muted-bg">下单号：</td>
+                <td>{{info.purchaseNumber}}</td>
+              </tr>
+              <tr>
+                <td class="black-muted-bg">付款时间：</td>
+                <td>{{info.payTimeShow}}</td>
+              </tr>
+              <tr>
+                <td class="black-muted-bg">收货人：</td>
+                <td>{{info.buyerName}}</td>
+              </tr>
+              <tr>
+                <td class="black-muted-bg">收货地址：</td>
+                <td>{{info.buyerAddress}}</td>
+              </tr>
+              <tr>
+                <td class="black-muted-bg">物流公司：</td>
+                <td>{{info.logisticsName}}</td>
+              </tr>
+              <tr style="height: 72px;">
+                <td class="black-muted-bg" style="position: relative;">运单号：</td>
+                <td>
+                  <div class="addlogisticsNum">
+                    <p class="p" *ngFor="let item of info.waybillNumbers;let index=index" [style.border]="info.waybillNumbers.length==1?'none':''">
+                      <span class="logi">{{item.logisticsCompanyName}}</span>
+                     
+                      <span *ngIf=" item.createdByUserId==0" class="data">{{item.wayBillNumber}}</span>
+       
+                    </p>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="black-muted-bg">物流编号：</td>
+                <td>
+                  {{info.logisticsNumber}}
+                </td>
+              </tr>
+              <tr>
+                <td class="black-muted-bg">发货时间：</td>
+                <td>{{info.deliverTime}}</td>
+              </tr>
+              <tr class="remarks">
+                <td class="black-muted-bg">买家备注：</td>
+                <td>
+                  <div>
+                    <p>
+                      {{info.buyerremarks}}
+                    </p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="item">
+          <div class="card card-block">
+            <ul class="clearfix">
+              <li class="line"></li>
+              <li (click)="toggelTab(0)">订单详情</li>
+              <li (click)="toggelTab(1)">物流</li>
+              <li (click)="toggelTab(2)">日志</li>
+            </ul>
+            <div class="tab" *ngIf="tab==0&&orderDetails.items.length>0">
+              <app-order-details [orderDetails]="orderDetails">
+              </app-order-details>
+            </div>
+            <div class="tab" *ngIf="tab==0&&orderDetails.items.length==0">
+              <app-order-details [orderDetails]="orderDetails">
+              </app-order-details>
+            </div>
+            <div class="tab" *ngIf="tab==1&&logisticsList.length>0">
+              <app-logistics [logisticsList]="logisticsList"></app-logistics>
+            </div>
+            <div class="tab" *ngIf="tab==1&&logisticsList.length==0">
+              <app-logistics [logisticsList]="logisticsList"></app-logistics>
+            </div>
+            <div class="tab" *ngIf="tab==2&&notes.length>0">
+              <app-logs [notes]="notes"></app-logs>
+            </div>
+            <div class="tab" *ngIf="tab==2&&notes.length==0">
+              <app-logs [notes]="notes"></app-logs>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-sm btn-primary" (click)="closeModal()">关闭</button>
+    </div>
+  </div>
+</form>

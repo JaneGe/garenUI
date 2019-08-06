@@ -1,0 +1,109 @@
+<div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <h3 class="modal-title">{{modalHeader}}</h3>
+    <button type="button" class="close" (click)="closeModal()"><span aria-hidden="true">&times;</span></button>
+  </div>
+  <div class="modal-body">
+    <div class="card card-block">
+        <div class="action">
+          <button class="btn btn-default" (click)="openAddTraceNumBymanual(content)">手动添加跟踪号</button>
+          <button class="btn btn-primary" (click)="openImportModal(importContent)">导入跟踪号</button>
+        </div>
+    </div>
+    <form class="pagination-wrapper">
+      <div class="form-group pages">
+        <pagination-controls class="my-pagination" id="page" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+                             autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                             screenReaderCurrentLabel="You're on page">
+        </pagination-controls>
+      </div>
+      <div class="form-group options pages">
+        <div class="input-group input-group-sm">
+          <select style="height: 31px" class="form-control" name="pageChangedName" [(ngModel)]="pageSize" (ngModelChange)="loadData()">
+            <option>1</option>
+            <option>5</option>
+            <option>10</option>
+            <option>20</option>
+            <option>50</option>
+            <option>100</option>
+            <option>200</option>
+          </select>
+          <span class="input-group-addon addon-right">条/页</span>
+          <span class="input-group-addon addon-right">共{{total}}条</span>
+        </div>
+      </div>
+    </form>
+    <table class="table table-hover table-bordered">
+      <thead>
+      <tr>
+        <th>跟踪号</th>
+        <th style="width: 150px">导入时间</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let date of item| paginate: { id: 'page',
+                        itemsPerPage: pageSize,
+                        currentPage: pageNumber,
+                        totalItems: total}">
+        <td>{{date.trackingNumber}}</td>
+        <td>{{date.createdTime| amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</td>
+      </tr>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-sm btn-default right" type="button" (click)="closeModal()">关闭</button>
+  </div>
+</div>
+<ng-template #content let-c="close" let-d="dismiss" >
+  <div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <h4 class="modal-title">手动添加跟踪号</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" style="min-height: 350px">
+    <div class="form-group">
+      <label class="mylabel">跟踪号：</label>
+      <div class="input-group">
+        <input type="text" class="form-control myinput" id="TraceNumByManual" name="TraceNumByManual" [ngModel]="TraceNumByManual" (keyup.enter)="DoImport()">
+        <span class="input-group-btn">
+        <button class="btn btn-primary" type="button" (click)="DoImport()">导入</button>
+      </span>
+      </div>
+    </div>
+    <div class="result">
+      <p class="green-text" id="succes" hidden>添加成功！</p>
+      <p class="red-text" id="filed" hidden>添加失败！{{errormes}}</p>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="c('Close click')">关闭</button>
+  </div>
+  </div>
+</ng-template>
+
+<ng-template #importContent let-c="close" let-d="dismiss" >
+<div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <span class="modal-title">导入物流跟踪号</span>
+    <button type="button" class="close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" style="min-height: 350px">
+    <span class="explain">说明</span>
+    <p>请下载提供的物流跟踪号导入模版，填写好后上传模版
+      <a href="/assets/download/templates/物流跟踪号导入模板.xlsx"  download="物流跟踪号导入模板.xlsx">下载</a>
+    </p>
+    <div class="card card-block">
+      <ba-file-uploader [fileUploaderOptions]="fileUploaderOptions" (onFileUploadCompleted)="uploadCompleted($event)"></ba-file-uploader>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-default" (click)="c('Close click')">取消</button>
+    </div>
+  </div>
+</div>
+</ng-template>

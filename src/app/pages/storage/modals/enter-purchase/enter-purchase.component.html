@@ -1,0 +1,33 @@
+<div class="pop-content animated fadeIn" id="form">
+  <div class="modal-header">
+    <span class="modal-title">确认采购数量</span>
+  </div>
+  <div class="modal-body">
+    <table class="table table-hover table-bordered">
+      <thead>
+        <tr>
+          <th>SKU</th>
+          <th>数量</th>
+          <th>缺少数量</th>
+          <th>采购数量</th>
+        </tr>
+      </thead>
+      <tbody  *ngIf="detailModel != null">
+        <tr *ngFor="let item of detailModel.items">
+          <td>{{item.skuCode}}</td>
+          <td>{{item.quantity}}</td>
+          <td>{{item.lackQuantity}}</td>
+          <td width="30px">
+            <input type="text" class="form-control form-control-sm" [(ngModel)]="item.purchaseQty"/>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="doPurchase()">采购</button>
+      <button class="btn btn-default" (click)="closeModal()">取消</button>
+    </div>
+  </div>
+</div>

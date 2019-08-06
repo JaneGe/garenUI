@@ -1,0 +1,14 @@
+<div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <span class="modal-title">设置退件原因</span>
+  </div>
+  <div class="modal-body">
+    <textarea id="" cols="30" rows="10" class="form-control" [(ngModel)]="note" placeholder="填写退件原因"></textarea>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="saveData()">保存原因</button>
+      <button class="btn btn-default" (click)="closeModal()">取消</button>
+    </div>
+  </div>
+</div>

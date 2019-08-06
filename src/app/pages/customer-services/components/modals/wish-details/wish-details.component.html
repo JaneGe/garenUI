@@ -1,0 +1,168 @@
+<div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <h1>wish邮件详情</h1>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-8 details-left">
+        <div class="header">
+          <div>
+            <h4>客户问题</h4>
+            <h5>客户问题编号：</h5>
+            <h5>开启日期：</h5>
+            <h5>最近的更新时间：</h5>
+            <h5>状态：</h5>
+            <h5>标签：</h5>
+          </div>
+          <div>
+            <h4>交易</h4>
+            <h5>成交ID：</h5>
+            <h5>购买日期：</h5>
+            <h5>要求付款日期：</h5>
+            <h5>自购买日期开始的时间：</h5>
+          </div>
+          <div>
+            <h4>地址</h4>
+            <p>Payen Lecurion Maththilde</p>
+            <p>116 rue casmisr delabiger</p>
+            <p>Le Havre, 76000</p>
+            <p>法国</p>
+            <p>0699211320</p>
+          </div>
+        </div>
+        <section>
+          <p [ngClass]="{'bottom-raduis':isSwitch1}">受影响的产品
+            <span *ngIf="isSwitch1" (click)="isSwitch1 = !isSwitch1">+</span>
+            <span *ngIf="!isSwitch1" (click)="isSwitch1 = !isSwitch1">-</span>
+          </p>
+          <table class="table" *ngIf="!isSwitch1">
+            <thead>
+              <tr>
+                <th>产品</th>
+                <th>订单ID</th>
+                <th>SKU</th>
+                <th>变量</th>
+                <th>州</th>
+                <th>总成本</th>
+                <th>物流追踪信息</th>
+                <th>外部物流跟踪链接</th>
+                <th>标记发货</th>
+                <th>已标记为退款</th>
+                <th>配送时长</th>
+                <th>详情</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let o of effectProduct">
+                <td>
+                  <span>{{o.name}}</span>
+                  <span>
+                    <img src="" alt="">
+                  </span>
+                </td>
+                <td>{{o.productId}}</td>
+                <td>{{o.SKU}}</td>
+                <td>
+                  <span>{{o.size}}</span>
+                  <span>{{o.color}}</span>
+                </td>
+                <td>{{o.city}}</td>
+                <td>{{o.totalMoney}}</td>
+                <td>
+                  <span>{{o.state}}</span>
+                  <span>{{o.updateData}}</span>
+                </td>
+                <td>{{o.logisticsInfo}}</td>
+                <td>{{o.deliverGoods}}</td>
+                <td>{{o.drawback}}</td>
+                <td>{{o.spentTime}}</td>
+                <td>查看</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section>
+          <p [ngClass]="{'bottom-raduis':isSwitch2}">订单详情
+            <span *ngIf="isSwitch2" (click)="isSwitch2 = !isSwitch2">+</span>
+            <span *ngIf="!isSwitch2" (click)="isSwitch2 = !isSwitch2">-</span>
+          </p>
+          <table class="table" *ngIf="!isSwitch2">
+            <thead>
+              <tr>
+                <th></th>
+                <th>产品ID</th>
+                <th>SKU</th>
+                <th>变量</th>
+                <th>成本</th>
+                <th>配送费</th>
+                <th>数量</th>
+                <th>总成本</th>
+                <th>州</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let o of productDetails">
+                <td>{{o.img}}</td>
+                <td>{{o.productId}}</td>
+                <td>{{o.SKU}}</td>
+                <td>
+                  <span>{{o.size}}</span>
+                  <span>{{o.color}}</span>
+                </td>
+                <td>{{o.cost}}</td>
+                <td>{{o.fee}}</td>
+                <td>{{o.num}}</td>
+                <td>{{o.totalMoney}}</td>
+                <td>{{o.city}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section>
+          <p [ngClass]="{'bottom-raduis':isSwitch3}">退款详情
+            <span *ngIf="isSwitch3" (click)="isSwitch3 = !isSwitch3">+</span>
+            <span *ngIf="!isSwitch3" (click)="isSwitch3 = !isSwitch3">-</span>
+          </p>
+          <table class="table" *ngIf="!isSwitch3">
+            <thead>
+              <tr>
+                <th>日期</th>
+                <th>数量</th>
+                <th>商户成本</th>
+                <th>退款理由</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let o of drawbackDetails">
+                <td>{{o.data}}</td>
+                <td>{{o.num}}</td>
+                <td>{{o.cost}}</td>
+                <td>{{o.reason}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+      <div class="col-md-4">  
+        <section id="scrollbar">
+          <div class="info-container">
+              <div class="info-details" *ngFor="let arr of infos; let i = index" [ngClass]="{'text-right': i%2 === 1}">
+                  <ul>
+                    <li *ngIf="i%2 === 1">客户问题更新</li>
+                    <li *ngIf="i%2 === 0">发件人</li>
+                    <li *ngFor="let info of arr"><span>{{info}}</span></li>
+                    <li class="data-li">2018-4-20 10:40:30</li>
+                  </ul>
+                </div>
+          </div>         
+          <input type="text" #newInfo placeholder="按Enter键发送消息"
+          (keyup.enter)="sendInfo(newInfo.value);newInfo.value=''"
+          (blur)="newInfo.value=''">
+        </section>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-default" (click)="closeModal()">关闭</button>
+  </div>
+</div>

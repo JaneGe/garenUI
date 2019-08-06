@@ -1,0 +1,62 @@
+<div class="pop-content animated fadeIn">
+  <div class="modal-header">
+    <span class="modal-title">模板内容编辑</span>
+    <button type="button" class="close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div name="templateform" class="row">
+      <div class="col-md-6">
+        <div class="card card-block">
+          <label>
+            <span class="must">必填</span>模板名称</label>
+          <input type="text" id="name" name="name" class="form-control" placeholder="模板名称" [(ngModel)]="templateName">
+          <label>
+            <span class="must">必填</span>选择模板语言</label>
+          <select class="form-control" style="margin-bottom:10px;height: 38px;line-height: 38px;"  [(ngModel)]="language">
+            <option value="1">英语</option>
+            <option value="2">意大利</option>
+            <option value="3">德语</option>
+            <option value="4">法语</option>
+            <option value="5">西班牙语</option>
+            <option value="6">日语</option>
+          </select>
+          <label>
+            <span class="must">必填</span>选择平台</label>
+          <select class="form-control" [(ngModel)]="platformModel" (change)="checkPlatform()" style="margin-bottom:10px;height: 38px;line-height: 38px;">
+            <option value="1">Amazon</option>
+            <!--<option value="2">Wish</option>-->
+          </select>
+          <label>
+            <span class="explain">选填</span>选择账号</label>
+          <select2 [data]="accounts" [width]="379" [value]="value" (valueChanged)="onChanged($event)" style="margin-bottom:10px"></select2>
+          <label>
+            <span class="explain">选填</span>选择模板标签</label>
+          <div class="tags-wrap clearfix">
+            <a href="javascript:;" class="tags" (click)="checkTags($event.target)">#买家姓名: [buyer]#</a>
+            <!--<a href="javascript:;" class="tags" (click)="checkTags($event.target)">#卖家姓名: [seller]#</a>-->
+            <a href="javascript:;" class="tags" (click)="checkTags($event.target)">#付款时间: [paidtime]#</a>
+            <a href="javascript:;" class="tags" (click)="checkTags($event.target)">#发货时间: [expresstime]#</a>
+            <a href="javascript:;" class="tags" (click)="checkTags($event.target)">#跟踪单号: [tracknumber]#</a>
+            <a href="javascript:;" class="tags" (click)="checkTags($event.target)">#SKU: [sku]#</a>
+            <a href="javascript:;" class="tags" (click)="checkTags($event.target)">#买家地址: [buyer_address]#</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card card-block">
+          <label for="content">
+            <span class="must">必填</span>模板内容</label>
+          <textarea name="content" id="content" class="form-control" placeholder="输入模板内容，可粘贴HTML代码。" [(ngModel)]="templateContent"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-default" (click)="closeModal()">关闭</button>
+      <button class="btn btn-primary" (click)="saveTemplate()">保存</button>
+    </div>
+  </div>
+</div>

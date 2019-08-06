@@ -1,0 +1,54 @@
+.brand-items-wrap {
+    padding: 20px 0;
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    .brand-item {
+        width: 200px;
+        padding: 10px;
+        margin-right: 20px;
+        .brand-logo {
+            width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+    }
+}
+
+.search-wrapper {
+    .search-condition {
+        float: left;
+        height: auto;
+        padding: 0 5px;
+        li {
+            width: 100%;
+            float: left;
+            .search-title {
+                width: 120px;
+                font-weight: bold;
+                float: left;
+                margin: 7px 0;
+            }
+            .input-wrapper {
+                width: 500px;
+                float: left;
+                .form-control {
+                    display: inline-block;
+                    width: 430px;
+                    float: left;
+                    border-radius: 3px 0 0 3px;
+                }
+                .btn-group {
+                    float: left;
+                    height: 35px;
+                    .btn {
+                        border-radius: 0 3px 3px 0;
+                    }
+                }
+            }
+        }
+    }
+}

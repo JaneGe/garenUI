@@ -1,0 +1,14 @@
+<div class="circle-box logistics">
+  <div class="title">最近物流信息：</div>
+
+  <div class="content"  *ngIf="logisticsList.length!=0">
+
+    <p  *ngFor="let item of logisticsList">{{item.arrivedTimeShow }}--{{item.note}}</p>
+
+  </div>
+  <div class="content"  *ngIf="logisticsList.length==0">
+
+    <p >无</p>
+
+  </div>
+</div>

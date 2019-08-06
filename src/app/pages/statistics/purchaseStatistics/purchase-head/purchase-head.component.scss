@@ -1,0 +1,108 @@
+.select {
+    margin-bottom: 10px;
+}
+
+.select:last-of-type {
+    margin-bottom: 0;
+}
+
+.bdb {
+    border-bottom: 1px solid rgba(255, 255, 255, .5);
+}
+
+.bdb-gap {
+    padding-bottom: 10px;
+}
+
+.part-wrap {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.option-wrap {
+    width: 80%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    width: 100px;
+}
+
+.option {
+    display: inline-block;
+    margin-right: 15px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    vertical-align: top;
+    padding: 3px;
+}
+
+.tag {
+    background: white;
+    color: dodgerblue;
+}
+
+.input {
+    width: 400px;
+    display: flex;
+    margin-bottom: 0;
+}
+
+.input input {
+    width: 50%;
+}
+
+.option-nobot {
+    margin-bottom: 0;
+    padding: 0;
+}
+
+.timegap {
+    line-height: 30px;
+}
+
+.toggle {
+    float: right;
+}
+
+.toggle-select {
+    position: absolute;
+    bottom: -16px;
+    width: 90px;
+    left: 50%;
+    margin-left: -45px;
+    display: flex;
+    justify-content: center;
+    button .icon {
+        margin-right: 5px;
+    }
+}
+
+.section-search {
+    display: flex;
+    >span {
+        line-height: 35px;
+        width: 45px;
+        text-align: center;
+    }
+    >input {
+        width: 155px;
+    }
+    .btn-group {
+        width: 200px;
+        >input {
+            width: 155px;
+        }
+        >.input-group-btn button {
+            width: 46px;
+            padding: 0;
+        }
+    }
+}
+
+.unvisible {
+    visibility: hidden;
+}

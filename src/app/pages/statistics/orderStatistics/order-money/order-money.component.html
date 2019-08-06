@@ -1,0 +1,138 @@
+<div class="card card-block">
+  <app-order-head (childChangePlateForm) = "getchildChangePlateForm($event)"
+                  (childChangeOrdertimeSearch) = "getchildChangeOrdertimeSearch($event)"
+                  (childSelectOrder) = "getchildSelectOrder($event)"
+                  (childChangeAccounts) = "getchildChangeAccounts($event)"
+                  (childChangeCountry) = "getchildChangeCountry($event)"
+                  (childOnchangeTime) = "getchildOnchangeTime($event)">
+  </app-order-head>
+  <div class="toggle-btn">
+    <div class="arrorw arrorw-right" (click)="toggleBar(0)"><p> > > > > > > </p></div>
+    <span class="title-b" (click)="toggleBar(1)">表格</span>
+    <div class="toggele-bar" [ngStyle]="{'left':toggle?'0':'50%'}"></div>
+    <span class="title-t" (click)="toggleBar(0)">图表</span>
+    <div class="arrorw arrorw-left" (click)="toggleBar(1)"><p> < < < < < < </p></div>
+  </div>
+
+
+  <div class="content-wrap">
+    <div class="table-wrap" [ngClass]="{'none':!toggle}">
+      <form class="pagination-wrapper custom-nav-form">
+        <div class="form-group pages">
+          <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+                               autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                               screenReaderCurrentLabel="You're on page">
+          </pagination-controls>
+        </div>
+        <div class="to">
+          <div class="topage">
+            <p>跳至</p>
+          </div>
+          <div class="topage" style="width: 60px;">
+            <div class="inputPage">
+              <p>
+                <input type="search" class="form-control" name="to"  (keyup.enter)="topage()">
+              </p>
+            </div>
+          </div>
+          <div class="topage">
+            <p>页</p>
+          </div>
+          <div class="topage out" style="margin-left: 0;" (click)="tolast()">
+            <p>尾页</p>
+          </div>
+        </div>
+        <div class="form-group options pages">
+          <div class="input-group input-group-sm">
+            <select class="form-control" name="pageChangedName"  [(ngModel)]="PageInfo.pageSize">
+              <option>1</option>
+              <option>2</option>
+              <option>5</option>
+              <option>10</option>
+              <option>20</option>
+              <option>50</option>
+              <option>100</option>
+              <option>200</option>
+            </select>
+            <span class="input-group-addon addon-right">条/页</span>
+            <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条数据</span>
+            <span class="input-group-addon addon-right output" (click)="doExport()">导出</span>
+          </div>
+        </div>
+        <div class="statistics-wrap">
+          <p><span>订单总单量</span><i class="blue-text">{{totalSumData.totalNumber}}</i></p>
+          <p><span>订单总金额(USD)</span><i class="money-text">{{totalSumData.totalAmount}}</i></p>
+          <p style="text-align: left"><button class="btn btn-warning customBtn" (click)="openMoneySatisticsModal()">帐号对应金额统计</button></p>
+        </div>
+      </form>
+      <table class="table table-hover table-bordered" id="table">
+        <thead>
+        <tr class="black-muted-bg">
+          <th style="width: 150px;">时间</th>
+          <!--<th *ngIf="selectedAccount.ChannelId!=-1">帐号</th>-->
+          <th *ngIf="isShowAccount">帐号</th>
+          <th style="width: 100px;">订单数量</th>
+          <th style="width: 100px;">总金额(USD)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of backmoneyinfo|paginate: { id: 'pager',
+                                                        itemsPerPage:PageInfo.pageSize,
+                                                        currentPage:PageInfo.pageIndex,
+                                                        totalItems:PageInfo.totalCount};let index = index">
+          <td>{{item.currentTimeDesc}}</td>
+          <!--<td *ngIf="selectedAccount.ChannelId!=-1">{{item.channelName}}</td>-->
+          <td *ngIf="isShowAccount">{{item.channelName}}</td>
+          <td>{{item.orderCount}}</td>
+          <td [ngClass]="{'red-text':smallestmoneyindex.indexOf(index)!=-1,'green-text':biggestmoneyindex.indexOf(index)!=-1}">{{item.totalAmount}}</td>
+        </tr>
+        </tbody>
+      </table>
+      <form class="pagination-wrapper" *ngIf="PageInfo.totalCount>20&&PageInfo.pageSize==20">
+        <div class="form-group pages">
+          <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+                               autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                               screenReaderCurrentLabel="You're on page">
+          </pagination-controls>
+        </div>
+        <div class="to" *ngIf="PageInfo.totalCount>PageInfo.pageSize">
+          <div class="topage">
+            <p>跳至</p>
+          </div>
+          <div class="topage" style="width: 60px;">
+            <div class="inputPage">
+              <p>
+                <input type="number" class="form-control" name="to"  (keyup.enter)="topage()">
+              </p>
+            </div>
+          </div>
+          <div class="topage">
+            <p>页</p>
+          </div>
+          <div class="topage out" style="margin-left: 0;" (click)="tolast()">
+            <p>尾页</p>
+          </div>
+        </div>
+        <div class="form-group options pages">
+          <div class="input-group input-group-sm">
+            <select class="form-control" name="pageChangedName"  (ngModelChange)="OnQuery()">
+              <option>1</option>
+              <option>5</option>
+              <option>10</option>
+              <option>20</option>
+              <option>50</option>
+              <option>100</option>
+              <option>200</option>
+            </select>
+            <span class="input-group-addon addon-right">条/页</span>
+            <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条数据</span>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="lineChart-wrap" [ngClass]="{'none':toggle}">
+      <div id="ordermoneycontainer" style="margin-bottom: 30px;"></div>
+      <div id="orderbacknumcontainer" ></div>
+    </div>
+  </div>
+</div>

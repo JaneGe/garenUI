@@ -1,0 +1,145 @@
+<div *ngIf="orderDetails.items.length==0">
+  <p>暂时没有详情信息</p>
+</div>
+<div *ngIf="orderDetails.items.length>0">
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select style="height: 31px;cursor: not-allowed" disabled class="form-control" name="pageChangedName" [ngModel]="pageSize">
+          <option>1</option>
+          <option>5</option>
+          <option>6</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{total}}条数据</span>
+      </div>
+    </div>
+  </form>
+  <table class="table table-hover table-bordered gap">
+    <thead>
+      <tr class="black-muted-bg">
+        <th style="width:200px;">SKUCode</th>
+        <th style="width: 65px;">下单数量(双击修改)</th>
+        <th style="width: 65px;">到货数量</th>
+        <!--<th style="width: 65px;">入库数量</th>-->
+        <th>异常件</th>
+        <th style="width: 140px">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of orderDetails.items|paginate: { id: 'pager',
+                                                        itemsPerPage:pageSize,
+                                                        currentPage:currentPage,
+                                                        totalItems:total}">
+        <td>
+          <a class="hover-a" (click)="openDetail(SkuDetail,item.id)">{{item.skuCode}}</a>
+        </td>
+        <td class="max-text">
+          <div class="input-group" *ngIf="item.isEdit&&isEdit">
+            <input type="text" [(ngModel)]="updateCount" class="buy-count-text">
+            <button class="count-edit-btn" (click)="editBuyCount(item)">
+              <i class="ion-checkmark-round"></i>
+            </button>
+          </div>
+          <span *ngIf="!(item.isEdit&&isEdit)" (dblclick)="editBuyCount(item)">{{item.buyCount}}</span>
+        </td>
+        <td class="max-text">{{item.inStcokQuantity}}</td>
+        <!--<td class="max-text">0</td>-->
+        <td>
+          <div class="error" *ngIf="item.lackQuantity!=0 ||item.badQuantity!=0 ||item.sendWrongQuantity!=0">
+            <span style="display:block;">数量不准确：
+              <i class="errornum">{{item.lackQuantity}}</i>
+            </span>
+            <span style="display:block;">质量有问题：
+              <i class="errornum">{{item.badQuantity}}</i>
+            </span>
+            <span style="display:block;">货品不对版：
+              <i class="errornum">{{item.sendWrongQuantity}}</i>
+            </span>
+          </div>
+          <div class="error" *ngIf="item.lackQuantity==0 &&item.badQuantity==0&&item.sendWrongQuantity==0">
+            无
+          </div>
+        </td>
+        <td *ngIf="item.hasException">
+          <button class="btn btn-xs btn-danger" (click)="addRemarks($event.target,item.id)">标记处理完成</button>
+        </td>
+        <td *ngIf="!item.hasException&&(item.lackQuantity!=0||item.badQuantity!=0||item.sendWrongQuantity!=0);else none">
+          <button class="btn btn-xs btn-success" disabled="true">处理完成</button>
+        </td>
+        <ng-template #none>
+          <td *ngIf="!item.hasException">无</td>
+        </ng-template>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<ng-template #SkuDetail let-c="close">
+  <div class="pop-content">
+    <div class="modal-header head">
+      <h4 class="modal-title mytitle">Sku到货详情
+        <button class="close" aria-label="Close" (click)="c()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </h4>
+    </div>
+
+    <div class="modal-body">
+      <div class="slide-wrap">
+        <table class="table table-hover table-bordered gap">
+          <thead>
+            <tr class="black-muted-bg">
+              <th style="width: 100px">SkuCode</th>
+              <th style="width: 50px;">下单数量</th>
+              <th style="width:50px;">入库数量</th>
+              <th style="width:350px;">异常件</th>
+              <th style="width:80px;">操作人</th>
+              <th style="width:150px;">时间</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of item">
+              <td>
+                <a>{{item.skuCode}}</a>
+              </td>
+              <td>{{item.buyCount}}</td>
+              <td>{{item.inStcokQuantity}}</td>
+              <td style="padding:0;">
+                <div class="error" *ngIf="item.lackQuantity!=0 ||item.badQuantity!=0 ||item.sendWrongQuantity!=0">
+                  <span>数量不准确：
+                    <i class="errornum">{{item.lackQuantity}}</i>
+                  </span>
+                  <span>质量有问题：
+                    <i class="errornum">{{item.badQuantity}}</i>
+                  </span>
+                  <span>货品不对版：
+                    <i class="errornum">{{item.sendWrongQuantity}}</i>
+                  </span>
+                </div>
+                <div class="error" *ngIf="item.lackQuantity==0 &&item.badQuantity==0&&item.sendWrongQuantity==0">
+                  无
+                </div>
+              </td>
+              <td>{{item.createdByUserName}}</td>
+              <td>{{item.createdTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-sm btn-danger pull-right cancel" (click)="c()">关闭</button>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,203 @@
+.search-wrapper {
+    .search-condition {
+        float: left;
+        height: auto;
+        padding: 0 5px;
+        li {
+            width: 100%;
+            float: left;
+            margin: 5px 0;
+            .screen-wrapper {
+                position: relative;
+                margin: 0 10px;
+            }
+            .search-input {
+                display: inline-block;
+                width: 300px;
+                height: 30px;
+                margin-left: 0;
+            }
+            .margin-left {
+                float: left;
+                width: 90%;
+            }
+            .search-title {
+                width: 120px;
+                font-weight: bold;
+                float: left;
+                margin: 3px 0;
+            }
+            .input-group {
+                width: 400px;
+                height: 30px;
+                float: left;
+                .btn-group {
+                    .btn {
+                        border-radius: 0 3px 3px 0;
+                    }
+                }
+            }
+        }
+        .bubble {
+            position: absolute;
+            top: -5px;
+            right: -15px;
+            padding: 2px;
+            display: block;
+            width: auto;
+            height: auto;
+            border-radius: 3px;
+            background: #209e91;
+            color: #fff;
+            font-size: 12px;
+        }
+    }
+}
+
+.datePick-wrap {
+    display: inline-block;
+}
+
+.datePick {
+    display: flex;
+}
+
+.btn-box {
+    width: 100%;
+    height: 50px;
+    .btn {
+        float: left;
+        padding: 7px;
+        margin: 0 10px 0 0;
+    }
+}
+
+.checkbox {
+    float: left;
+    margin: 5px 10px;
+    span {
+        float: left;
+        margin: 3px;
+    }
+}
+
+.table {
+    font-size: 12px;
+    th {
+        span {
+            display: block;
+        }
+    }
+    td {
+        padding: 0;
+        span {
+            word-break: break-all !important;
+        }
+        a {
+            color: #fff;
+            &:hover {
+                text-decoration: underline !important;
+            }
+        }
+        .alwangwang {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: url(/assets/img/wangwang.png);
+            background-size: 100%;
+            position: relative;
+            top: 5px;
+        }
+        .edit-btn {
+            margin: 0 5px;
+        }
+        .sku-info {
+            width: 100%;
+            height: auto;
+            min-height: 80px;
+            border-bottom: 1px solid rgba(255, 255, 255, .5);
+            a {
+                display: block;
+                width: 70px;
+                height: 70px;
+                margin: 5px;
+                float: left;
+                border: 1px dotted rgba(255, 255, 255, .5);
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+        .info-wrapper {
+            width: auto;
+            height: auto;
+            padding: 0;
+            li {
+                height: auto;
+                padding: 0;
+                line-height: 22px;
+                a {
+                    text-decoration: underline !important;
+                    color: #0665ff;
+                }
+            }
+            .goods-property {
+                display: inline-block;
+                width: auto;
+                height: auto;
+                margin: 0 3px;
+                padding: 0 1px;
+                border: 1px solid #2095f5;
+                border-radius: 5px;
+                background: #00abff;
+            }
+            .num {
+                display: inline-block;
+                height: 20px;
+                line-height: 20px;
+                margin: 0 5px;
+            }
+            .edit-num {
+                display: inline-block;
+                width: 100px;
+                text-align: center;
+            }
+            .edit-num-btn {
+                display: inline-block;
+                width: 100px;
+                height: 30px;
+                line-height: 15px;
+                margin: 5px;
+                padding: 0 2px;
+                border: 1px solid #209e91;
+                border-radius: 3px;
+                background: #209e91;
+                color: #fff;
+                font-size: 14px;
+                cursor: pointer;
+            }
+        }
+    }
+}
+.datePick /deep/ .ngb-tp-hour,.datePick /deep/ .ngb-tp-minute,.datePick /deep/ .ngb-tp-second{
+    button{
+      display: none;
+    }
+    input{
+      padding: 5px;
+    }
+  }
+@media (max-width:1280px) {
+    //Mac Pro 13英寸
+    .table {
+        font-size: 12px;
+    }
+}
+
+@media (max-width:1440px) {
+    //Mac Pro 15英寸
+    .table {
+        font-size: 12px;
+    }
+}

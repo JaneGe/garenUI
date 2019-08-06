@@ -1,0 +1,86 @@
+<div class="pop-content">
+  <div class="modal-header">
+    <span class="modal-title">黑名单用户信息详情</span>
+    <button type="button" class="close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="card card-block buyer-info">
+      <form class="form">
+        <ul>
+          <li>
+            <label class="info-title">收件人：</label>
+            <span>{{blacklistUserInfo.buyerName}}</span>
+          </li>
+          <li>
+            <label class="info-title">地址1：</label>
+            <span>{{blacklistUserInfo.addressLine1}}</span>
+          </li>
+          <li>
+            <label class="info-title">地址2：</label>
+            <span>{{blacklistUserInfo.addressLine2}}</span>
+          </li>
+          <li>
+            <label class="info-title">城市：</label>
+            <span>{{blacklistUserInfo.city}}</span>
+          </li>
+          <li>
+            <label class="info-title">省州：</label>
+            <span>{{blacklistUserInfo.stateOrProvince}}</span>
+          </li>
+          <li>
+            <label class="info-title">国家：</label>
+            <span>{{blacklistUserInfo.countryCnName}}</span>
+          </li>
+          <li>
+            <label class="info-title">邮编：</label>
+            <span>{{blacklistUserInfo.postalCode}}</span>
+          </li>
+          <li>
+            <label class="info-title">电话1：</label>
+            <span>{{blacklistUserInfo.phoneNumber1}}</span>
+          </li>
+          <li>
+            <label class="info-title">电话2：</label>
+            <span>{{blacklistUserInfo.phoneNumber2}}</span>
+          </li>
+        </ul>
+      </form>
+    </div>
+    <div class="order-info-wrapper">
+      <div class="card card-block order-info" *ngFor="let item of blacklistUserInfo.blacklistUserItems;let i = index">
+        <label>
+          <span class="caption">订单号</span>{{item.orderNumber}}</label>
+        <div class="btn-group">
+          <button class="btn btn-xs btn-info" (click)="openTable(i)" *ngIf="item.isClose">查看详细</button>
+          <button class="btn btn-xs btn-info" (click)="openTable(i)" *ngIf="!item.isClose">收起</button>
+        </div>
+        <div class="scroll-table" [ngClass]="{'table-close':item.isClose}">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>SKUCode</th>
+                <th>{{modalType}}数量</th>
+                <th>{{modalType}}金额</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of item.orderItems">
+                <td>{{item.skuCode}}</td>
+                <td>{{item.reissueQuantity}}</td>
+                <td>{{item.reissueAmount}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-primary" (click)="closeModal()">关闭</button>
+    </div>
+  </div>
+</div>

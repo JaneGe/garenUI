@@ -1,0 +1,28 @@
+<li *ngIf="!menuItem.hidden" [title]="menuItem.title | translate" [ngClass]="{'al-sidebar-list-item': !child, 'ba-sidebar-sublist-item': child, 'selected': menuItem.selected && !menuItem.expanded, 'with-sub-menu': menuItem.children, 'ba-sidebar-item-expanded': menuItem.expanded,'bdb':menuItem.order==9999}" routerLinkActive="selected">
+  <a *ngIf="!menuItem.children && !menuItem.url" (mouseenter)="onHoverItem($event, item)" [routerLink]="menuItem.route.paths" [queryParams]="{pid:menuItem.route.id}"
+    class="al-sidebar-list-link" (click)="getPath(menuItem)">
+    <i *ngIf="menuItem.title == '采购单'&&hasPurchase" class="fa fa-exclamation-circle text-danger" style="margin-left:-38px;"></i>
+    <i *ngIf="menuItem.icon" class="{{ menuItem.icon }}"></i>
+    <span translate>{{ menuItem.title }}</span>
+  </a>
+
+  <a *ngIf="!menuItem.children && menuItem.url" (mouseenter)="onHoverItem($event, item)" [href]="menuItem.url" [target]="menuItem.target"
+    class="al-sidebar-list-link">
+    <i *ngIf="menuItem.icon" class="{{ menuItem.icon }}"></i>
+    <span translate>{{ menuItem.title }}</span>
+  </a>
+
+  <a *ngIf="menuItem.children" (mouseenter)="onHoverItem($event, item)" href (click)="onToggleSubMenu($event, menuItem)" class="al-sidebar-list-link"
+    style="position: relative;">
+    <i *ngIf="menuItem.title=='需人工处理'&&menuItem.order==100" class="fa fa-exclamation-circle text-danger" style="position: absolute;left: 18px;top:50%;margin-top: -6.5px;"></i>
+    <i *ngIf="menuItem.icon" class="{{ menuItem.icon }}"></i>
+    <span translate>{{ menuItem.title }}</span>
+    <b class="fa fa-angle-down" [ngClass]="{'fa-angle-up': menuItem.expanded}"></b>
+  </a>
+
+  <ul *ngIf="menuItem.children" class="al-sidebar-sublist" [ngClass]="{'slide-right': menuItem.slideRight}">
+    <ba-menu-item [menuItem]="subItem" [hasPurchase]="hasPurchase" [child]="true" (itemHover)="onHoverItem($event)" (toggleSubMenu)="onToggleSubMenu($event, subItem)"
+      *ngFor="let subItem of menuItem.children"></ba-menu-item>
+  </ul>
+
+</li>

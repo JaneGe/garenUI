@@ -1,0 +1,171 @@
+<!--<h3>最后更新时间：2017/12/22 下午 13:58</h3>-->
+<div class="card card-block select-part">
+  <div class="select bdb">
+    <div class="part-wrap">
+      <span class="title">平台：</span>
+    </div>
+    <div class="option-wrap">
+        <span class="option" *ngFor="let item of plateForm" (click)="changePlateForm(item)"
+              [ngClass]="{'tag':item.id==selectedplateForm}">{{item.text}}</span>
+    </div>
+    <!--<div class="toggle">-->
+      <!--<div class="btn-group">-->
+        <!--<button class="btn btn-sm" (click)="clicktop=0"-->
+                <!--[ngClass]="{'btn-primary':clicktop==1,'btn-default':clicktop==0}">筛选-->
+        <!--</button>-->
+        <!--<button class="btn btn-sm" (click)="clicktop=1"-->
+                <!--[ngClass]="{'btn-primary':clicktop==0,'btn-default':clicktop==1}">搜索-->
+        <!--</button>-->
+      <!--</div>-->
+    <!--</div>-->
+  </div>
+  <div *ngIf="clicktop==0">
+      <div class="select">
+        <div class="part-wrap">
+          <span class="title">时间筛选内容：</span>
+        </div>
+        <div class="option-wrap">
+        <span class="option" *ngFor="let item of ordertimesearch" (click)="changeOrdertimeSearch(item)"
+              [ngClass]="{'tag':item.id==selectedordertimesearch}">{{item.text}}</span>
+        </div>
+      </div>
+
+      <div class="select bdb">
+        <div class="part-wrap">
+          <span class="title">时间筛选：</span>
+        </div>
+        <div class="option-wrap">
+        <span class="option" *ngFor="let item of orderTime" (click)="selectorder(item.id)"
+              [ngClass]="{'tag':item.id==selectedorder}">{{item.text}}</span>
+          <div style="display: inline-block;position: relative;top:-5px;" *ngIf="selectedorder==5">
+            <div style="display: flex">
+                <span class="datePick-wrap">
+            <span class="datePick">
+              <div class="input-group" style="width: auto;">
+                <input class="form-control"  placeholder="yyyy-mm-dd" name="dp"  [(ngModel)]="ngTimeSearchStart" ngbDatepicker
+                       #start="ngbDatepicker">
+                <div class="input-group-addon" (click)="start.toggle()">
+                  <i class="ion-android-calendar"></i>
+                </div>
+              </div>
+
+            </span>
+          </span>
+              <span class="datePick-wrap">
+            <span class="datePick">
+              <ngb-timepicker [(ngModel)]="ngShortTimeStart" [seconds]="'true'"></ngb-timepicker>
+            </span>
+          </span>
+              -
+              <span class="datePick-wrap">
+            <span class="datePick">
+              <div class="input-group" style="width: auto;">
+                <input class="form-control"  placeholder="yyyy-mm-dd" name="dp" (change)="checkThenSearch()" [(ngModel)]="ngTimeSearchEnd" ngbDatepicker
+                       #end="ngbDatepicker">
+                <div class="input-group-addon" (click)="end.toggle()">
+                  <i class="ion-android-calendar"></i>
+                </div>
+              </div>
+            </span>
+          </span>
+
+              <span class="datePick-wrap">
+            <span class="datePick">
+              <ngb-timepicker [(ngModel)]="ngShortTimeEnd" [seconds]="'true'"></ngb-timepicker>
+            </span>
+           </span>
+
+              <button class="btn btn-sm btn-primary" (click)="doTimeSearch(true)">确定</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+  <div *ngIf="clickbottom==1">
+    <div class="select bdb" *ngIf="selectedplateForm!=0">
+      <div class="part-wrap">
+        <span class="title">帐号选择：</span>
+      </div>
+      <div class="option-wrap mb" *ngIf="accountList.length>0">
+        <select2 [data]="accountList" [options]="select2Options" #acSelect2 [value]="defaultAccountVal" [width]="300" (valueChanged)="onChangeAccountChanged($event,acSelect2)"></select2>
+      </div>
+    </div>
+
+    <div class="select">
+      <div class="part-wrap">
+        <span class="title">国家：</span>
+      </div>
+      <div class="option-wrap">
+        <span class="option" *ngFor="let item of country" (click)="changeCountry(item)"
+              [ngClass]="{'tag':item.text==selectedcountry}">{{item.text}}</span>
+      </div>
+    </div>
+
+    <!-- 亏本搜索栏 -->
+    <div class="lose-money-choose" *ngIf="loseMoney">
+      <div>筛选亏本金额：<input type="text" [(ngModel)]="minCurrency" (keyup.enter)="changeCurrency()">&nbsp;&nbsp;~&nbsp;&nbsp;<input type="text" [(ngModel)]="maxCurrency" (keyup.enter)="changeCurrency()"></div>
+    </div>
+
+    <div class="select" [ngClass]="{'bdb':clickbottom==1}" *ngIf="specialtypehead=='backmoney'">
+      <div class="part-wrap">
+        <span class="title">是否完全退款：</span>
+      </div>
+      <div class="option-wrap">
+        <span class="option" *ngFor="let item of ifallback" (click)="selectedifallback=item.id"
+              [ngClass]="{'tag':item.id==selectedifallback}">{{item.text}}</span>
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+  <!--<div *ngIf="clicktop==1">-->
+    <!--<div class="select">-->
+      <!--<div class="part-wrap">-->
+        <!--<span class="title">订单金额：</span>-->
+      <!--</div>-->
+      <!--<div class="part-wrap">-->
+        <!--<div class="section-search">-->
+          <!--<input type="number" class="form-control">-->
+          <!--<span>~</span>-->
+          <!--<div class="btn-group">-->
+            <!--<input type="number" class="form-control">-->
+            <!--<span class="input-group-btn">-->
+            <!--<button class="btn btn-danger">搜索</button>-->
+            <!--</span>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="select">-->
+      <!--<div class="part-wrap">-->
+        <!--<span class="title">搜索条件：</span>-->
+      <!--</div>-->
+      <!--<div class="option-wrap">-->
+        <!--<span class="option" *ngFor="let item of searchopt" (click)="selectedsearchopt=item.id"-->
+              <!--[ngClass]="{'tag':item.id==selectedsearchopt}">{{item.text}}</span>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="select">-->
+      <!--<div class="part-wrap">-->
+        <!--<span class="title">搜索内容：</span>-->
+      <!--</div>-->
+      <!--<div class="part-wrap">-->
+        <!--<div class="input-group  input">-->
+          <!--<input type="search" class="form-control">-->
+          <!--<span class="input-group-btn">-->
+                <!--<button class="btn btn-sm btn-danger" (click)="OnQuery()">搜索</button>-->
+              <!--</span>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+  <div class="toggle-select">
+    <button *ngIf="clickbottom==0&&clicktop==0" class="btn btn-primary btn-sm" (click)="toggle1(0)">
+      <span class="icon ion-arrow-down-b"></span>高级筛选</button>
+    <button *ngIf="clickbottom==1&&clicktop==0" class="btn btn-primary btn-sm" (click)="toggle1(1)">
+      <span class="icon ion-arrow-up-b"></span>收起</button>
+  </div>
+</div>
+

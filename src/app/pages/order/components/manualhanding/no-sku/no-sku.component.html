@@ -1,0 +1,166 @@
+<app-search-head
+  (childSelectedChannelType)="getchildSelectedChannelType($event)"
+  (childSelectedChannelIds)="getchildSelectedChannelIds($event)"
+  (childOnSelectCountry)="getchildOnSelectCountry($event)"
+  (childSelectedTimeFiltType)="getchildSelectedTimeFiltType($event)"
+  (childSelectedTimeValueType)="getchildSelectedTimeValueType($event)"
+  (childTimeSearchStart)="getchildTimeSearchStart($event)"
+  (childTimeSearchEnd)="getchildTimeSearchEnd($event)"
+  (childSelectSearchType)="getchildSelectSearchType($event)"
+  (childSearchText)="getchildSearchText($event)"
+  (childOrderBatchsearchType)="getchildOrderBatchsearchType($event)"
+  (childOrderBatchsearchText)="getchildOrderBatchsearchText($event)"
+  (childOrderBatchsearch)="getchildOrderBatchsearch($event)">
+</app-search-head>
+<div class="btn-box">
+  <div class="checkbox">
+    <label class="checkbox-inline custom-checkbox nowrap">
+      <input type="checkbox"   [checked]="isCheckAllPages"   (change)="onCheclAllPageChange($event.target.checked)">
+      <span>选中所有页</span>
+    </label>
+  </div>
+  <div class="searchPart gap">
+    <div class="buttonpart">
+      <button class="btn btn-primary" (click)="ResetOrder($event.target)">重置订单</button>
+      <button class="btn btn-primary" (click)="VoidedOrder($event.target)">作废</button>
+      <button class="btn btn-primary" (click)="LockOrder($event.target)">锁定</button>
+    </div>
+  </div>
+</div>
+<form class="pagination-wrapper">
+  <div class="form-group pages">
+    <pagination-controls
+      class="my-pagination"
+      id="pager"
+      (pageChange)="pageChanged($event)"
+      maxSize="9"
+      directionLinks="true"
+      autoHide="true"
+      previousLabel="上一页"
+      nextLabel="下一页"
+      screenReaderPaginationLabel="Pagination"
+      screenReaderPageLabel="page"
+      screenReaderCurrentLabel="You're on page">
+    </pagination-controls>
+  </div>
+  <div class="form-group options pages">
+    <div class="input-group input-group-sm">
+      <select class="form-control"
+        name="pageChangedName"
+        [(ngModel)]="pageSize"
+        (ngModelChange)="loadData()">
+        <option>1</option>
+        <option>5</option>
+        <option>10</option>
+        <option>20</option>
+        <option>50</option>
+        <option>100</option>
+        <option>200</option>
+      </select>
+      <span class="input-group-addon addon-right">条/页</span>
+      <span class="input-group-addon addon-right">共{{total}}条数据</span>
+    </div>
+  </div>
+</form>
+<table class="table table-hover table-bordered">
+  <thead>
+    <tr>
+      <th>
+        <label class="checkbox-inline custom-checkbox nowrap">
+          <input type="checkbox"
+            [checked]="selectOrderIds.length == items.length && items.length > 0"
+            (change)="onCheckAllOrderChanged($event.target.checked)">
+          <span></span>
+        </label>
+      </th>
+      <th>订单号码</th>
+      <th>站点账号名称</th>
+      <th>收件人（国家）</th>
+      <th>订单金额(￥)</th>
+      <th>时间</th>
+      <th>状态</th>
+      <th>平台SKU</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let order of items | paginate: { id: 'pager',
+    itemsPerPage:pageSize,
+    currentPage:pageNumber,
+    totalItems:total};let i = index">
+      <td>
+        <label class="checkbox-inline custom-checkbox nowrap">
+          <input type="checkbox"
+            [checked]="selectOrderIds.indexOf(order.id) >= 0"
+            (change)="onCheckOrderChanged($event.target.checked, order.id)"/>
+          <span></span>
+        </label>
+      </td>
+      <td class="short-info">
+        <a href="javascript:;"
+          class="orderNumber-text"
+          (click)="openOrderDetailModal(order.id)">
+          {{order.orderNumber}}
+        </a>
+      </td>
+      <td class="short-info">
+        <p>站点账号：{{order.displayAccountName}}</p>
+        <p>销售人员：{{order.sellName}}</p>
+      </td>
+      <td class="short-info">
+        <p>{{order.buerName}}</p>
+        <p>国家：<img class="country-flag" src="{{order.flag}}" alt="">{{order.shippingCountryName}}</p>
+      </td>
+      <td class="short-info">{{order.totalAmountCny}}</td>
+      <td>
+        <div class="infobox">
+          <p>创建时间：{{order.buildTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</p>
+          <p>下单时间：{{order.orderedTime | amLocal | amDateFormat: 'YYYY-MM-DD HH:mm:ss'}}</p>
+        </div>
+      </td>
+      <td class="short-info">
+        <span>{{order.exceptionDesc}}</span>
+      </td>
+      <td class="short-info">
+        <p *ngFor="let item of order.orderLines; let i = index">
+          <a target="_blank" href="{{item.productUrl}}">{{item.externalSku}}</a>
+        </p>
+      </td>
+      <td class="short-info">
+        <a href="javascript:;" (click)="openOrderDetailModal(order.id)">详细</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<form class="pagination-wrapper">
+  <div class="form-group pages">
+    <pagination-controls
+      class="my-pagination"
+      id="pager"
+      (pageChange)="pageChanged($event)"
+      maxSize="9"
+      directionLinks="true"
+      autoHide="true"
+      previousLabel="上一页"
+      nextLabel="下一页"
+      screenReaderPaginationLabel="Pagination"
+      screenReaderPageLabel="page"
+      screenReaderCurrentLabel="You're on page">
+    </pagination-controls>
+  </div>
+  <div class="form-group options pages">
+    <div class="input-group input-group-sm">
+      <select class="form-control"   name="pageChangedName"   [(ngModel)]="pageSize"  (ngModelChange)="loadData()">
+        <option>1</option>
+        <option>5</option>
+        <option>10</option>
+        <option>20</option>
+        <option>50</option>
+        <option>100</option>
+        <option>200</option>
+      </select>
+      <span class="input-group-addon addon-right">条/页</span>
+      <span class="input-group-addon addon-right">共{{total}}条数据</span>
+    </div>
+  </div>
+</form>

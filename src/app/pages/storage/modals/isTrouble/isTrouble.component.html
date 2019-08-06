@@ -1,0 +1,46 @@
+<div class="pop-content" id="form">
+  <div class="modal-header">
+    <span class="modal-title">选择次品/坏件详情</span>
+  </div>
+  <div class="modal-body">
+    <label class="checkbox-inline custom-checkbox nowrap">
+      <input type="checkbox" [(ngModel)]="isLack" [checked]="isLack">
+      <span>数量不准确</span>
+    </label>
+    <label class="checkbox-inline custom-checkbox nowrap">
+      <input type="checkbox" [(ngModel)]="isQuality" [checked]="isQuality">
+      <span>质量有问题</span>
+    </label>
+    <label class="checkbox-inline custom-checkbox nowrap">
+      <input type="checkbox" [(ngModel)]="isRelease" [checked]="isRelease">
+      <span>货品不对版</span>
+    </label>
+    <div class="form-group" *ngIf="isLack">
+      <label>数量不准确：</label>
+      <div class="input-group">
+        <input aria-describedby="basic-addon2" class="form-control with-primary-addon" placeholder="输入该种类异常件数量" type="text">
+        <span class="input-group-addon input-group-addon-primary addon-right" id="basic-addon2">件</span>
+      </div>
+    </div>
+    <div class="form-group" *ngIf="isQuality">
+      <label>质量有问题：</label>
+      <div class="input-group">
+        <input aria-describedby="basic-addon2" class="form-control with-primary-addon" placeholder="输入该种类异常件数量" type="text">
+        <span class="input-group-addon input-group-addon-primary addon-right" id="basic-addon2">件</span>
+      </div>
+    </div>
+    <div class="form-group" *ngIf="isRelease">
+      <label>货品不对版：</label>
+      <div class="input-group">
+        <input aria-describedby="basic-addon2" class="form-control with-primary-addon" placeholder="输入该种类异常件数量" type="text">
+        <span class="input-group-addon input-group-addon-primary addon-right" id="basic-addon2">件</span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-primary">保存</button>
+      <button class="btn btn-default" (click)="closeModal()">关闭</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,534 @@
+<div class="tab-child">
+  <div class="card card-block select-part">
+    <div class="select">
+      <div class="select">
+        <div class="part-wrap">
+          <span class="title">仓库：</span>
+        </div>
+        <div class="option-wrap">
+          <span class="option" *ngFor="let item of warehouse" (click)="selectWarehouse(item.warehouseId)" [ngClass]="{'tag':item.warehouseId==selectedWarehouse}">{{item.name}}</span>
+        </div>
+        <div class="toggle">
+          <div class="btn-group">
+            <button class="btn btn-sm" (click)="toggle(1)" [ngClass]="{'btn-primary':clicktop==0,'btn-default':clicktop==1}">筛选</button>
+            <button class="btn btn-sm" (click)="toggle(0)" [ngClass]="{'btn-primary':clicktop==1,'btn-default':clicktop==0}">搜索</button>
+          </div>
+        </div>
+      </div>
+      <div class="select">
+        <div class="part-wrap">
+          <span class="title">1688帐号：</span>
+        </div>
+        <div class="option-wrap">
+          <span class="option" (click)="select1688(-1)" [ngClass]="{'tag':-1==selected1688}">全部</span>
+          <span class="option" *ngFor="let item of account1688" (click)="select1688(item.id)" [ngClass]="{'tag':item.id==selected1688}">{{item.text}}</span>
+        </div>
+      </div>
+      <div class="select">
+        <div class="part-wrap">
+          <span class="title">审单人：</span>
+        </div>
+        <div class="option-wrap" style="margin-top:-5px">
+          <select2 [width]="395" [data]="allAudit" (valueChanged)="onChangePurchaseAuditChanged($event)"></select2>
+        </div>
+      </div>
+      <!--<div class="select">-->
+      <!--<div class="part-wrap">-->
+      <!--<span class="title">支付宝帐号：</span>-->
+      <!--</div>-->
+      <!--<div class="option-wrap">-->
+      <!--<span class="option" *ngFor="let item of account1688" (click)="selectzfb(item)" [ngClass]="{'tag':item==selectedzfb}">{{item}}</span>-->
+      <!--</div>-->
+      <!--</div>-->
+      <div *ngIf="clickbottom==1&&clicktop==0">
+        <div class="select">
+          <div class="part-wrap">
+            <span class="title">状态筛选：</span>
+          </div>
+          <div class="option-wrap">
+            <span class="option" *ngFor="let item of status" (click)="selectStatu(item.id)" [ngClass]="{'tag':item.id==selectedstatu}">{{item.text}}</span>
+          </div>
+        </div>
+        <div class="select">
+          <div class="part-wrap">
+            <span class="title">付款状态：</span>
+          </div>
+          <div class="option-wrap">
+            <span class="option" *ngFor="let item of paySearch" (click)="selectPay(item.id)" [ngClass]="{'tag':item.id==selectedPay}">{{item.text}}</span>
+          </div>
+        </div>
+        <div class="select">
+          <div class="part-wrap">
+            <span class="title">买家备注：</span>
+          </div>
+          <div class="option-wrap">
+            <span class="option" *ngFor="let item of isRemark" (click)="selectIsRemark(item.id)" [ngClass]="{'tag':item.id==selectedIsRemark}">{{item.text}}</span>
+          </div>
+        </div>
+
+        <div class="select">
+          <div class="part-wrap">
+            <span class="title">拆包状态：</span>
+          </div>
+          <div class="option-wrap">
+            <span class="option" *ngFor="let item of unpackStatus" (click)="selectunpackStatus(item.id)" [ngClass]="{'tag':item.id==selectedunpackStatus}">{{item.text}}</span>
+          </div>
+        </div>
+        <div class="select">
+          <div class="part-wrap">
+            <span class="title">到货状态：</span>
+          </div>
+          <div class="option-wrap">
+            <span class="option" *ngFor="let item of receiveStatus" (click)="selectreceiveStatus(item.id)" [ngClass]="{'tag':item.id==selectedreceiveStatus}">{{item.text}}</span>
+          </div>
+        </div>
+        <!--<div class="select">-->
+        <!--<div class="part-wrap">-->
+        <!--<span class="title">是否议价：</span>-->
+        <!--</div>-->
+        <!--<div class="option-wrap">-->
+        <!--<span class="option" *ngFor="let item of selectedConfirm" (click)="selectConfirmFun(item.id)" [ngClass]="{'tag':item.id==selectConfirm}">{{item.text}}</span>-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="select" style="border-bottom: 1px solid white;">
+          <div class="part-wrap">
+            <span class="title">时段筛选：</span>
+          </div>
+          <div class="option-wrap" style="min-height: 36px;">
+            <span class="option" *ngFor="let item of selectedTime" (click)="selectTimeConfirm(item.id)" [ngClass]="{'tag':item.id==selectTime}">{{item.text}}</span>
+            <!--<span class="option no-bottom">-->
+            <!--<ng-datepicker *ngIf="selectTime==5" [(ngModel)]="timeSearchStart" [options]="DatepickerOptions"></ng-datepicker>-->
+            <!--</span>-->
+            <!--<span class="option no-bottom">-->
+            <!--<ng-datepicker *ngIf="selectTime==5" [(ngModel)]="timeSearchEnd" [options]="DatepickerOptions"></ng-datepicker>-->
+            <!--</span>-->
+            <!--<span class="option no-bottom">-->
+            <!--<button *ngIf="selectTime==5" class="btn btn-primary" (click)="OnUserSetTimeQuery()">确定</button>-->
+            <!--</span>-->
+            <div style="display: inline-block;position: relative;top:-5px;" *ngIf="selectTime==5">
+              <div style="display: flex">
+                <span class="datePick-wrap">
+                  <span class="datePick">
+                    <!--<ng-datepicker [(ngModel)]="timeSearchStart" [options]="DatepickerOptions"></ng-datepicker>-->
+                    <div class="input-group" style="width: auto;">
+                      <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="ngTimeSearchStart" ngbDatepicker #start="ngbDatepicker">
+                      <div class="input-group-addon" (click)="start.toggle()">
+                        <i class="ion-android-calendar"></i>
+                      </div>
+                    </div>
+
+                  </span>
+                </span>
+                <span class="datePick-wrap">
+                  <span class="datePick">
+                    <ngb-timepicker [(ngModel)]="ngShortTimeStart" [seconds]="'true'"></ngb-timepicker>
+                  </span>
+                </span>
+                -
+                <span class="datePick-wrap">
+                  <span class="datePick">
+                    <!--<ng-datepicker [(ngModel)]="timeSearchEnd" [options]="DatepickerOptions"></ng-datepicker>-->
+                    <div class="input-group" style="width: auto;">
+                      <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="ngTimeSearchEnd" ngbDatepicker #end="ngbDatepicker">
+                      <div class="input-group-addon" (click)="end.toggle()">
+                        <i class="ion-android-calendar"></i>
+                      </div>
+                    </div>
+                  </span>
+                </span>
+
+                <span class="datePick-wrap">
+                  <span class="datePick">
+                    <ngb-timepicker [(ngModel)]="ngShortTimeEnd" [seconds]="'true'"></ngb-timepicker>
+                  </span>
+                </span>
+
+                <button class="btn btn-sm btn-primary" (click)="doTimeSearch()">确定</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="select">
+          <div class="part-wrap">
+            <span class="title">特殊筛选：</span>
+          </div>
+          <div class="option-wrap">
+            <span class="option" [ngClass]="{'tag':!isopen}" (click)="Specialchoose(false)">收起</span>
+            <span class="option" [ngClass]="{'tag':isopen}" (click)="Specialchoose(true)">展开</span>
+          </div>
+        </div>
+        <div class="select" *ngIf="isopen">
+          <div class="part-wrap">
+            <span class="title">未发货天数：</span>
+          </div>
+          <div class="option-wrap" style="min-height: 36px;">
+            <span class="option" *ngFor="let item of specialSearch" (click)="selectSpecial(item.id)" [ngClass]="{'tag':item.id==selectedSpecial}">{{item.text}}</span>
+            <span class="option no-bottom" *ngIf="selectedSpecial==5">
+              <input type="text" class="form-control" type="text" name="noSendGoodDayValue" style="padding:5px 10px" value="{{unSendGoodDayUseSet}}"
+                (change)="setUnSendGoodDayUseSet($event.target)" (keypress)="isNumber($event)">
+            </span>
+            <span class="option no-bottom" *ngIf="selectedSpecial==5">
+              <button class="btn btn-primary" (click)="OnQuery()">确定</button>
+            </span>
+          </div>
+        </div>
+        <div class="select" *ngIf="isopen">
+          <div class="part-wrap">
+            <span class="title">发货无物流：</span>
+          </div>
+          <div class="option-wrap">
+            <span class="option" *ngFor="let item of noLogisticsTime" (click)="selectnologitics(item.id)" [ngClass]="{'tag':item.id==selectednologistics}">{{item.text}}</span>
+          </div>
+        </div>
+        <div class="select" *ngIf="isopen">
+          <div class="part-wrap">
+            <span class="title red-text">拆包异常：</span>
+          </div>
+          <div class="option-wrap">
+            <span class="option" *ngFor="let item of unpackError" (click)="selectunpackError(item.id)" [ngClass]="{'tag':item.id==selectedunpackError}">{{item.text}}</span>
+          </div>
+        </div>
+        <div class="select" *ngIf="selectedunpackError==1&&isopen">
+          <div class="part-wrap">
+            <span class="title">是否处理完成：</span>
+          </div>
+          <div class="option-wrap">
+            <div class="option-wrap">
+              <span class="option" *ngFor="let item of ishandledone" (click)="selectishandledone(item.id)" [ngClass]="{'tag':selectedishandledone==item.id}">{{item.text}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="select" *ngIf="selectedunpackError==1&&isopen">
+          <div class="part-wrap">
+            <span class="title">未处理天数：</span>
+          </div>
+          <div class="option-wrap">
+            <div class="option-wrap">
+              <span class="option" *ngFor="let item of nothandleday" (click)="selectnothandleday(item.id)" [ngClass]="{'tag':selectednothandleday==item.id}">{{item.text}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="select" *ngIf="selectedunpackError==1&&isopen">
+          <div class="part-wrap">
+            <span class="title">异常状态：</span>
+            <span class="title" style="font-size: 12px;">(多选)</span>
+          </div>
+          <div class="option-wrap">
+            <div class="option-wrap">
+              <span class="option" *ngFor="let item of isunpackError" (click)="selectIsunpackError(item.id)" [ngClass]="{'tag':selectedisunpackError.indexOf(item.id)!=-1}">{{item.text}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="clicktop==1">
+      <div class="select">
+        <div class="part-wrap">
+          <span class="title">搜索类型：</span>
+        </div>
+        <div class="option-wrap">
+          <span class="option" *ngFor="let item of searchKind" (click)="selectsearchKind(item.id)" [ngClass]="{'tag':item.id==selectedsearchKind}">{{item.text}}</span>
+        </div>
+      </div>
+      <div class="select bdb bdb-gap">
+        <div class="part-wrap">
+          <span class="title">搜索内容：</span>
+        </div>
+        <div class="part-wrap">
+          <div class="input-group  input">
+            <input type="search" class="form-control" [(ngModel)]="searchText">
+            <span class="input-group-btn">
+              <button class="btn btn-sm btn-danger" (click)="OnQuery()">搜索</button>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="select bdb bdb-gap">
+        <div class="part-wrap">
+          <span class="title">提交人搜索：</span>
+        </div>
+        <div class="part-wrap">
+          <select2 class="country-select" [data]="man" [value]="selectValue" (valueChanged)="onChangeCountryChanged($event)"></select2>
+        </div>
+        <div class="part-wrap opt">
+          <span class="tag opttag inline" *ngFor="let item of selectValues" (click)="del(item)">{{item.text}}
+            <i class="ion-close-circled"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="toggle-select">
+      <button *ngIf="clickbottom==0&&clicktop==0" class="btn btn-primary btn-sm" (click)="toggle1(0)">
+        <span class="icon ion-arrow-down-b"></span>高级筛选</button>
+      <button *ngIf="clickbottom==1&&clicktop==0" class="btn btn-primary btn-sm" (click)="toggle1(1)">
+        <span class="icon ion-arrow-up-b"></span>收起</button>
+    </div>
+  </div>
+
+  <div class="action">
+    <!--<label class="checkbox-inline custom-checkbox nowrap">-->
+    <!--<input type="checkbox" [checked]="isCheckAllPages" (change)="onCheclAllPageChange($event.target.checked)" />-->
+    <!--<span>选中所有页</span>-->
+    <!--</label>-->
+    <!--<input type="checkbox" id="selectall">-->
+    <!-- <button class="btn btn-sm btn-primary" (click)="testDetailsModal()">导出</button> -->
+    <button class="btn btn-sm btn-primary" (click)="batchSyncOrders()">批量同步</button>
+    <div class="infomations">
+      <p>
+        <span class="inline">当前未付金额：</span>
+        <i class="inline yellow-text">￥{{noPayMoney}}</i>
+      </p>
+      <p>
+        <span class="inline">当前已付金额：</span>
+        <i class="inline yellow-text">￥{{payMoney}}</i>
+      </p>
+      <p>
+        <span class="inline">总计：</span>
+        <i class="inline yellow-text">￥{{totalMoney}}</i>
+      </p>
+    </div>
+  </div>
+
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="OnQuery()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条数据</span>
+      </div>
+    </div>
+  </form>
+  <div class="table-wrap">
+    <table class="table table-hover table-bordered gap">
+      <thead>
+        <tr class="black-muted-bg">
+          <th>
+            <label class="checkbox-inline custom-checkbox nowrap">
+              <input type="checkbox" [checked]="selectPackageIds.length === info.length && info.length > 0" (change)="onCheckAllPackageChanged($event.target.checked)">
+              <span></span>
+            </label>
+          </th>
+          <th>订单号</th>
+          <th>供应商【卖家】</th>
+          <th>商品详情</th>
+          <th>金额详情</th>
+          <th>物流/备注</th>
+          <th>状态</th>
+          <th>付款状态</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of info|paginate: { id: 'pager',
+                                                        itemsPerPage:PageInfo.pageSize,
+                                                        currentPage:PageInfo.pageIndex,
+                                                        totalItems:PageInfo.totalCount};let i = index">
+          <td>
+            <label class="checkbox-inline custom-checkbox nowrap">
+              <input type="checkbox" [checked]="selectPackageIds.indexOf(item.orderNumber) >= 0" (change)="onCheckPackageChanged($event.target.checked, item.orderNumber)">
+              <span></span>
+            </label>
+          </td>
+          <td>
+            <span class="sep text-left orderNumber-text">{{item.orderNumber}}</span>
+            <span class="sep text-left">下单号：{{item.purchaseNumber}}</span>
+            <span class="sep text-left">提交人：{{item.buyerName}}</span>
+            <span class="sep text-left lg-text">审单人：{{item.confirmUser}}</span>
+            <span class="sep text-left">创建时间：{{item.createdTime.slice(0,10)}}</span>
+            <span class="sep text-left">{{item.createdTime.slice(11,19)}}</span>
+          </td>
+          <td>
+            <span class="sep text-left"> {{item.sellerCompanyName}}</span>
+            <span class="sep text-left"> {{item.sellerLoginId}}
+              <a *ngIf="item.sellerLoginId != null" href="https://amos.alicdn.com/getcid.aw?v=3&uid={{item.sellerLoginId}}&site=cnalichn&groupid=0&charset=UTF-8"
+                target="_blank" class="alwangwang"></a>
+            </span>
+          </td>
+          <td class="detail">
+            <table class="table">
+              <tbody>
+                <tr>
+                  <td>skuCode</td>
+                  <td>折扣单价</td>
+                  <td>单价(￥)
+                    <br>最低价</td>
+                  <td>上次价格</td>
+                  <td>数量</td>
+                  <td>链接</td>
+                </tr>
+                <tr *ngFor="let ordersku of item.platformOrderItems | fiveItem:item.platformOrderItems">
+                  <td>{{ordersku.skuCode}}</td>
+                  <td>
+                    <div class="edit-wrap">
+                      <input type="text" class="discount-edit" [(ngModel)]="ordersku.disCountPrice">
+                      <button class="discount-btn" (click)="changeDisCountPrice(ordersku.disCountPrice,ordersku.puchaseItemId)">
+                        <i class="ion-checkmark-round"></i>
+                      </button>
+                    </div>
+                  </td>
+                  <td>{{ordersku.skuOrderPrice}}
+                    <br/>{{ordersku.lowestPrice}}</td>
+                  <td>{{ordersku.lastPrice}}</td>
+                  <td>{{ordersku.buyCount}}</td>
+                  <td>
+                    <a href="https://detail.1688.com/offer/{{ordersku.aliOfferId}}.html" target="_blank" class="sku-link">查看</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan=4>
+                    <i class="pull-left black" (click)="openMoreSkuModal(item.id)">更多>>>></i>
+                  </td>
+                  <td colspan=2>
+                    <i class="bg-info seemore" (click)="openPurchaseHistoryModal(item.supplierId,item.platformOrderItems[0].skuId,item.platformOrderItems)">查看采购历史</i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+          <td>
+            <span class="sep text-left">总价：
+              <span class="max-text green-text">{{item.totalPayAmount | number:'1.1-4'}}</span>
+            </span>
+            <span class="sep text-left">商品总价：
+              <span class="lg-text yellow-text">{{item.totalProductAmount | number:'1.1-4'}}</span>
+            </span>
+            <span class="sep text-left">运费：
+              <span class="lg-text blue-text">{{item.shippingAmount | number:'1.1-4'}}</span>
+            </span>
+            <span class="sep text-left">折扣优惠：
+              <span class="lg-text red-text">{{item.skuDiscountAmount}}</span>
+            </span>
+
+          </td>
+          <td class="detail-sales">
+            <div class="mark" (mouseover)="checkModal(i,1)" (mouseout)="checkModal(i,0)"></div>
+            <!-- detail-modal  -->
+            <div class="detail-modal-body" style="display:none;" (mouseover)="checkModal(i,1)" (mouseout)="checkModal(i,0)">
+              <div class="detail-modal-content">
+                <span class="sep" *ngIf="item.logisticsItems">{{item.logisticsItems.arrivedTimeShow}}</span>
+                <span class="sep" *ngIf="item.logisticsItems">{{item.logisticsItems.note}}</span>
+                <span *ngIf="!item.logisticsItems">无物流信息</span>
+                <p>
+                  <span class="text-info">买家备注：</span> {{item.note}}</p>
+                <p *ngIf="((item.refuseNote))&&item.refuseNote!=''">
+                  <span class="text-warning">拒绝原因：</span>{{item.refuseNote}}</p>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+
+            <span class="sep" *ngIf="item.logisticsItems">{{item.logisticsItems.arrivedTimeShow}}</span>
+            <span class="sep" *ngIf="item.logisticsItems">{{item.logisticsItems.note}}</span>
+            <p *ngIf="item.note">
+              <span class="text-info">买家备注：</span>{{item.note}}</p>
+            <p *ngIf="((item.refuseNote))&&item.refuseNote!=''">
+              <span class="text-warning">拒绝原因：</span>{{item.refuseNote}}</p>
+          </td>
+          <td>
+            <div>
+              <!-- <p>平台状态：</p> -->
+              <p class="yellow-text display-block">{{item.platformOrderStatusShow}}</p>
+              <p class="display-block" *ngIf="item.platformOrderStatusShow!='交易关闭'">
+                <span class="display-block">拆包状态</span>
+                <span class="blue-text" style="font-size:15px;">{{item.unPackSkuStatusShow}}</span>
+                <span class="display-block">到货状态</span>
+                <span class="blue-text" style="font-size:15px;">{{item.arriveSkuStatusShow}}</span>
+                <span *ngIf="!item.hasException" class="green-text unpackerror">(正常)</span>
+                <span *ngIf="item.hasException" class="red-text unpackerror">(异常)</span>
+              </p>
+              <p *ngIf="item.isRefund&&item.platformOrderStatusShow!='交易关闭'">
+                <span>是否退款：</span> 是</p>
+              <p *ngIf="!item.isRefund&&item.platformOrderStatusShow!='交易关闭'">
+                <span>是否退款：</span> 否</p>
+            </div>
+          </td>
+          <td class="nagotiate">
+            <span class="sep" *ngIf="(!item.isConfirmPrice)&&(!item.isConfirmPay)&&(!item.isRefuse)&&item.platformOrderStatus=='WaitBuyerPay'"
+              [ngStyle]="{'background':'#ff7e00'}">未议价</span>
+            <span class="sep" *ngIf="item.isConfirmPrice&&(!item.isConfirmPay)&&(!item.isRefuse) && item.platformOrderStatus!='TradeClose'"
+              [ngStyle]="{'background':'#8bd22f'}">议价完成</span>
+            <span class="sep" *ngIf="item.isConfirmPrice&&(item.isConfirmPay)&&(!isRefuse)&&item.platformOrderStatus=='WaitBuyerPay'"
+              [ngStyle]="{'background':'#1a8020'}">标记付款</span>
+            <span class="sep" *ngIf="item.platformOrderStatus!='WaitBuyerPay'&&item.platformOrderStatus!='TradeClose'" [ngStyle]="{'background':'dodgerblue'}">已付款</span>
+            <span class="sep" *ngIf="item.isRefuse" [ngStyle]="{'background':'#d40044'}">交易关闭</span>
+            <span class="sep" *ngIf="item.isRefuse" [ngStyle]="{'background':'#ff42f8'}">财务拒绝</span>
+          </td>
+          <td>
+            <span class="sep">
+              <a *ngIf="(!item.isConfirmPrice)&&(item.platformOrderStatus=='WaitBuyerPay')&&(!item.isConfirmPay)&&(getCurrentAuthoritiy('Price'))"
+                href="javascript:;" [style.backgroundColor]="'#ff7e00'" class="btn btn-sm" (click)="confirmPrice(item.id,PageInfo.pageIndex)">标记议价</a>
+            </span>
+            <span class="sep" *ngIf="(item.isConfirmPrice)&&(!item.isConfirmPay)&&(item.platformOrderStatus=='WaitBuyerPay')&&(getCurrentAuthoritiy('Pay'))">
+              <a href="javascript:;" class="btn btn-sm btn-primary" (click)="ConfirmPayForOrder(item.id,PageInfo.pageIndex)">标记付款</a>
+            </span>
+            <span class="sep" *ngIf="(item.platformOrderStatus=='WaitBuyerPay')&&(getCurrentAuthoritiy('Refused'))">
+              <a href="javascript:;" class="btn btn-sm btn-danger" (click)="openAddRemarksModal(item.id,$event.target)">拒绝</a>
+            </span>
+            <span class="sep">
+              <a href="javascript:;" class="btn btn-sm btn-info" (click)="openDetailsModal(item.id,item.purchaseNumber,item.unPackSkuStatusShow)">详情</a>
+            </span>
+            <span class="sep sync" *ngIf="(!(item.platformOrderStatus=='TradeSucess'||item.platformOrderStatus=='TradeClose'))&&(getCurrentAuthoritiy('Snyc'))">
+              <button style="width: 100%;color:white;" [disabled]="sync1688OrderIds.indexOf(item.id) >= 0" class="btn btn-sm default-button"
+                (click)="sync1688Order(item.id,PageInfo.pageIndex)">同步</button>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <form class="pagination-wrapper">
+    <div class="form-group pages">
+      <pagination-controls class="my-pagination" id="pager" (pageChange)="pageChanged($event)" maxSize="9" directionLinks="true"
+        autoHide="true" previousLabel="上一页" nextLabel="下一页" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page">
+      </pagination-controls>
+    </div>
+    <!-- <div class="to" *ngIf="PageInfo.totalCount>PageInfo.pageSize">
+        <div class="topage">
+          <p>跳至</p>
+        </div>
+        <div class="topage" style="width: 60px;">
+          <div class="inputPage">
+            <p>
+              <input type="search" class="form-control" name="to" [(ngModel)]="Topage" (keyup.enter)="topage()">
+            </p>
+          </div>
+        </div>
+        <div class="topage">
+          <p>页</p>
+        </div>
+        <div class="topage out" style="margin-left: 0;" (click)="tolast()">
+          <p>尾页</p>
+        </div>
+      </div> -->
+    <div class="form-group options pages">
+      <div class="input-group input-group-sm">
+        <select class="form-control" name="pageChangedName" [(ngModel)]="PageInfo.pageSize" (ngModelChange)="OnQuery()">
+          <option>1</option>
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+          <option>100</option>
+          <option>200</option>
+        </select>
+        <span class="input-group-addon addon-right">条/页</span>
+        <span class="input-group-addon addon-right">共{{PageInfo.totalCount}}条数据</span>
+      </div>
+    </div>
+  </form>
+</div>

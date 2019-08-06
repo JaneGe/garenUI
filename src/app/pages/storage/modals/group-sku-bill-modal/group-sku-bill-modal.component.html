@@ -1,0 +1,49 @@
+<div class="pop-content" id="form">
+  <div class="modal-header">
+    <span class="modal-title">打印组合商品标签</span>
+  </div>
+  <div class="modal-body">
+    <div class="print-body">
+      <table class="bill-wrap" style="width: 40mm;height: 29mm;float:left;">
+        <tbody>
+          <tr>
+            <td style="font-size:3mm;text-align:center">{{skuCode}}</td>
+            <td style="font-size:3mm;text-align:center">{{optionUser}}</td>
+          </tr>
+          <tr>
+            <td colspan="2" class="qr-wrap">
+              <div class="code" id="barcode-target" style="float: left;margin:0 5mm;"></div>
+              <span class="bill-number" style="font-size:3mm">到货{{instockNumber}}</span>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" style="font-size:3mm;text-align:center">① {{optionTime | date: 'yy/MM/d H:mm:ss'}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="bill-wrap" style="width: 40mm;height: 29mm;float:left;margin-left:4mm;">
+        <tbody>
+          <tr>
+            <td style="font-size:3mm;text-align:center">{{trackNumber}}</td>
+            <td style="font-size:3mm;text-align:center">{{purchaseUser}}</td>
+          </tr>
+          <tr>
+            <td colspan="2" class="qr-wrap">
+              <div class="code" id="barcode-target-track" style="margin:0 6mm"></div>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" style="font-size:3mm;text-align:center">② {{purchaseTime | date: 'yy/MM/d H:mm:ss'}}</td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group">
+      <button class="btn btn-danger" (click)="closeModal()">关闭</button>
+      <button class="btn btn-primary" (click)="printPDF()">打印</button>
+    </div>
+  </div>
+</div>
