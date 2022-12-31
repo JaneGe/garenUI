@@ -101,7 +101,7 @@
   },
   "devDependencies": {
     "@angular-devkit/core": "^0.4.7",
-    "@angular/cli": "^1.6.8",
+    "@angular/cli": "^15.0.4",
     "@angular/compiler-cli": "4.4.6",
     "@types/fullcalendar": "2.7.40",
     "@types/jasmine": "2.5.38",
